@@ -94,9 +94,12 @@ background: #444;
 color:white;
 padding:8px;
 }
+table{
+border:2px solid #222;
+}
 
 td{
-border:1px solid #ccc;
+border:2px solid #333;
 padding:6px;
 }
 
