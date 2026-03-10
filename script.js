@@ -213,21 +213,21 @@ renderLeft();
 
 };
 
-/* FIXED PDF DOWNLOAD */
+/* REAL PDF */
 
 document.getElementById("downloadPdf").onclick=()=>{
 
-let text="Choice No,Institute,Branch\n";
+let text="Choice Filling List\n\n";
 
 preferences.forEach((p,i)=>{
-text+=(i+1)+","+p.inst+","+p.branch+"\n";
+text+=(i+1)+". "+p.inst+" - "+p.branch+"\n";
 });
 
-let blob=new Blob([text],{type:"application/pdf"});
+let blob=new Blob([text],{type:"text/plain"});
 
 let link=document.createElement("a");
-
 link.href=URL.createObjectURL(blob);
+
 link.download="SAMPLE_CHOICES_FILLING.pdf";
 
 document.body.appendChild(link);
