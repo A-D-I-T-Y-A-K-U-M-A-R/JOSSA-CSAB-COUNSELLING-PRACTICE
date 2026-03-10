@@ -7,20 +7,27 @@ const availableCount = document.getElementById("availableCount");
 const filledCount = document.querySelector(".filledCount");
 const savedCount = document.querySelector(".savedCount");
 
+const searchInputs = document.querySelectorAll(".search-row input");
+const clearButtons = document.querySelectorAll(".clearBtn");
+
 let data = [];
+let filteredData = [];
 
 fetch("data.json")
 .then(res => res.json())
 .then(json => {
 
 data = json;
+filteredData = [...data];
 
-availableCount.textContent =
-"Total Available Choices: " + data.length;
-
+updateAvailableCount();
 renderLeftTable();
 
 });
+
+function updateAvailableCount(){
+availableCount.textContent = "Total Available Choices: " + filteredData.length;
+}
 
 function renderLeftTable(){
 
@@ -28,7 +35,7 @@ leftTable.innerHTML = "";
 
 let lastInstitute = "";
 
-data.forEach(item => {
+filteredData.forEach(item => {
 
 if(lastInstitute !== "" && lastInstitute !== item.inst){
 
@@ -45,20 +52,23 @@ lastInstitute = item.inst;
 
 let row = document.createElement("tr");
 
+let alreadyAdded = preferences.some(p => p.inst === item.inst && p.branch === item.branch);
+
 row.innerHTML = `
 <td>${item.inst}</td>
 <td>${item.branch}</td>
 <td contenteditable="true"></td>
-<td><button class="addBtn">Add</button></td>
+<td><button class="addBtn" ${alreadyAdded ? "disabled" : ""}>Add</button></td>
 `;
 
+if(!alreadyAdded){
 row.querySelector(".addBtn").onclick = () => {
 
 let choiceNo = row.children[2].textContent.trim();
-
 addPreference(item.inst,item.branch,choiceNo);
 
 };
+}
 
 leftTable.appendChild(row);
 
@@ -85,6 +95,7 @@ preferences.push({inst,branch});
 }
 
 renderRightTable();
+renderLeftTable();
 autoSave();
 
 }
@@ -109,6 +120,7 @@ row.querySelector(".deleteBtn").onclick=()=>{
 preferences.splice(i,1);
 
 renderRightTable();
+renderLeftTable();
 autoSave();
 
 };
@@ -159,6 +171,7 @@ if(saved){
 preferences=JSON.parse(saved);
 
 renderRightTable();
+renderLeftTable();
 
 savedCount.textContent =
 "Total Saved Choices: "+preferences.length;
@@ -167,8 +180,58 @@ savedCount.textContent =
 
 }
 
-document
-.getElementById("saveChoices")
-.onclick=autoSave;
+document.getElementById("saveChoices").onclick=autoSave;
 
 loadSaved();
+
+/* SEARCH SYSTEM */
+
+function applySearch(){
+
+let type = searchInputs[0].value.toLowerCase();
+let inst = searchInputs[1].value.toLowerCase();
+let branch = searchInputs[2].value.toLowerCase();
+
+filteredData = data.filter(item => {
+
+return (
+item.type.toLowerCase().includes(type) &&
+item.inst.toLowerCase().includes(inst) &&
+item.branch.toLowerCase().includes(branch)
+);
+
+});
+
+updateAvailableCount();
+renderLeftTable();
+
+}
+
+searchInputs.forEach(input => {
+
+input.addEventListener("input",applySearch);
+
+});
+
+/* CLEAR BUTTONS */
+
+clearButtons.forEach((btn,index)=>{
+
+btn.onclick=()=>{
+
+searchInputs[index].value="";
+applySearch();
+
+};
+
+});
+
+/* CLEAR ALL FILTERS */
+
+document.getElementById("clearFilters").onclick=()=>{
+
+searchInputs.forEach(i=>i.value="");
+
+applySearch();
+
+};
