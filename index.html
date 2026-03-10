@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JoSAA / CSAB Choice Filling Simulator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1 class="header">JoSAA / CSAB Choice Filling Simulator</h1>
+
+<div class="mode">
+<button id="josaaBtn">JoSAA</button>
+<button id="csabBtn">CSAB</button>
+</div>
+
+<div class="search-row">
+
+<div>
+<input type="text" placeholder="Institute Type">
+<button class="clearBtn">Clear</button>
+</div>
+
+<div>
+<input type="text" placeholder="Institute Name">
+<button class="clearBtn">Clear</button>
+</div>
+
+<div>
+<input type="text" placeholder="Branch">
+<button class="clearBtn">Clear</button>
+</div>
+
+</div>
+
+<div class="top-buttons">
+<button id="clearFilters">Clear All Filters</button>
+<button id="downloadPdf">Download PDF</button>
+</div>
+
+<div class="tables">
+
+<div class="left">
+
+<h2>Available Choices</h2>
+<p class="counter" id="availableCount"></p>
+
+<table id="leftTable">
+<thead>
+<tr>
+<th>Institute</th>
+<th>Branch</th>
+<th>Choice No</th>
+<th>Add</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</div>
+
+<div class="right">
+
+<h2>Filled Choices</h2>
+
+<div class="prefInfo">
+<span class="filledCount">Total Filled Choices: 0</span>
+<span class="savedCount">Total Saved Choices: 0</span>
+<button id="saveChoices">Save Choices</button>
+</div>
+
+<table id="rightTable">
+
+<thead>
+<tr>
+<th>Institute</th>
+<th>Branch</th>
+<th>Choice No</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
