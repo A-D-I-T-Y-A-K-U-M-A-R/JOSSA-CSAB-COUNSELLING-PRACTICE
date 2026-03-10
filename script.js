@@ -35,7 +35,7 @@ if(lastInstitute !== "" && lastInstitute !== item.inst){
 let sep = document.createElement("tr");
 
 sep.innerHTML =
-"<td colspan='4' style='background:lightyellow;height:10px'></td>";
+"<td colspan='4' style='background:lightyellow;height:8px'></td>";
 
 leftTable.appendChild(sep);
 
@@ -54,8 +54,7 @@ row.innerHTML = `
 
 row.querySelector(".addBtn").onclick = () => {
 
-let choiceNo =
-row.children[2].textContent.trim();
+let choiceNo = row.children[2].textContent.trim();
 
 addPreference(item.inst,item.branch,choiceNo);
 
@@ -68,9 +67,11 @@ leftTable.appendChild(row);
 }
 
 function addPreference(inst,branch,choiceNo){
+
 if(preferences.some(p => p.inst === inst && p.branch === branch)){
 return;
 }
+
 let pos = parseInt(choiceNo);
 
 if(pos && pos>0 && pos<=preferences.length){
@@ -99,28 +100,31 @@ let row=document.createElement("tr");
 row.innerHTML=`
 <td>${p.inst}</td>
 <td>${p.branch}</td>
-<td contenteditable="true" class="choiceCell">${i+1}</td>
+<td><input class="choiceInput" type="number" value="${i+1}" min="1"></td>
 <td><button class="deleteBtn">Delete</button></td>
 `;
-row.querySelector(".choiceCell").onblur = (e)=>{
 
-let newPos = parseInt(e.target.textContent);
+row.querySelector(".deleteBtn").onclick=()=>{
+
+preferences.splice(i,1);
+
+renderRightTable();
+autoSave();
+
+};
+
+row.querySelector(".choiceInput").onchange=(e)=>{
+
+let newPos=parseInt(e.target.value);
 
 if(!newPos || newPos<1 || newPos>preferences.length){
 renderRightTable();
 return;
 }
 
-let item = preferences.splice(i,1)[0];
+let item=preferences.splice(i,1)[0];
+
 preferences.splice(newPos-1,0,item);
-
-renderRightTable();
-autoSave();
-
-};
-row.querySelector(".deleteBtn").onclick=()=>{
-
-preferences.splice(i,1);
 
 renderRightTable();
 autoSave();
