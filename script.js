@@ -1,41 +1,40 @@
-let preferences=[];
+let preferences = [];
 
-const leftTable=document.querySelector("#leftTable tbody");
-const rightTable=document.querySelector("#rightTable tbody");
+const leftTable = document.querySelector("#leftTable tbody");
+const rightTable = document.querySelector("#rightTable tbody");
 
-const availableCount=document.getElementById("availableCount");
-const filledCount=document.querySelector(".filledCount");
-const savedCount=document.querySelector(".savedCount");
+const availableCount = document.getElementById("availableCount");
+const filledCount = document.querySelector(".filledCount");
+const savedCount = document.querySelector(".savedCount");
 
-const typeSearch=document.getElementById("typeSearch");
-const instSearch=document.getElementById("instSearch");
-const branchSearch=document.getElementById("branchSearch");
+const typeSearch = document.getElementById("typeSearch");
+const instSearch = document.getElementById("instSearch");
+const branchSearch = document.getElementById("branchSearch");
 
-const instList=document.getElementById("instList");
-const branchList=document.getElementById("branchList");
+const instList = document.getElementById("instList");
+const branchList = document.getElementById("branchList");
 
-let data=[];
-let filteredData=[];
+let data = [];
+let filteredData = [];
 
 fetch("data.json")
-.then(r=>r.json())
-.then(json=>{
+.then(r => r.json())
+.then(json => {
 
-data=json;
-filteredData=[...data];
+data = json;
+filteredData = [...data];
 
 populateLists();
-loadSaved();
 renderLeft();
 
 });
 
 function populateLists(){
 
-let instSet=new Set();
-let branchSet=new Set();
+let instSet = new Set();
+let branchSet = new Set();
 
-data.forEach(d=>{
+data.forEach(d => {
 instSet.add(d.inst);
 branchSet.add(d.branch);
 });
@@ -178,9 +177,15 @@ let s=localStorage.getItem("prefs");
 
 if(s){
 preferences=JSON.parse(s);
+renderRight();
+renderLeft();
 }
 
 }
+
+document.getElementById("saveChoices").onclick=autoSave;
+
+loadSaved();
 
 document.getElementById("searchBtn").onclick=()=>{
 
@@ -215,20 +220,19 @@ renderLeft();
 
 document.getElementById("downloadPdf").onclick=()=>{
 
-let text="Choice No,Institute,Branch\n";
+let text="Choice No | Institute | Branch\n\n";
 
 preferences.forEach((p,i)=>{
-text+=(i+1)+","+p.inst+","+p.branch+"\n";
+text+=(i+1)+" | "+p.inst+" | "+p.branch+"\n";
 });
 
-let blob=new Blob([text],{type:"text/csv"});
-let link=document.createElement("a");
+let blob=new Blob([text],{type:"application/pdf"});
 
+let link=document.createElement("a");
 link.href=URL.createObjectURL(blob);
+
 link.download="SAMPLE_CHOICES_FILLING.pdf";
 
-document.body.appendChild(link);
 link.click();
-document.body.removeChild(link);
 
 };
