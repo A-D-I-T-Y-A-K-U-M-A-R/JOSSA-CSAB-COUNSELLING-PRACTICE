@@ -1,27 +1,24 @@
 document.getElementById("downloadPdf").onclick=()=>{
 
-const { jsPDF } = window.jspdf;
-
-let doc = new jsPDF();
-
-doc.setFontSize(14);
-doc.text("JoSAA Choice Filling List",20,20);
-
-let y = 30;
+let data = [
+["Institute","Branch","Choice No"]
+];
 
 preferences.forEach((p,i)=>{
-
-doc.text((i+1)+". "+p.inst+" - "+p.branch,20,y);
-
-y += 8;
-
-if(y>280){
-doc.addPage();
-y=20;
-}
-
+data.push([p.inst,p.branch,(i+1)]);
 });
 
-doc.save("SAMPLE_CHOICES_FILLING.pdf");
+let ws = XLSX.utils.aoa_to_sheet(data);
+
+ws["!cols"]=[
+{wch:90},
+{wch:90},
+{wch:30}
+];
+
+let wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,"Choices");
+
+XLSX.writeFile(wb,"SAMPLE_CHOICES_FILLING.xlsx");
 
 };
