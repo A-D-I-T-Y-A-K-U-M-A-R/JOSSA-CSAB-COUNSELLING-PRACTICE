@@ -16,20 +16,24 @@
 
 <div class="search-row">
 
-<div>
-<input type="text" placeholder="Institute Type">
-<button class="clearBtn">Clear</button>
-</div>
+<select id="typeSearch">
+<option value="">Institute Type</option>
+<option value="IIT">IIT</option>
+<option value="NIT">NIT</option>
+<option value="IIIT">IIIT</option>
+<option value="GFTI">GFTI</option>
+</select>
+<button class="clearBtn" id="clearType">Clear</button>
 
-<div>
-<input type="text" placeholder="Institute Name">
-<button class="clearBtn">Clear</button>
-</div>
+<input list="instList" id="instSearch" placeholder="Institute Name">
+<datalist id="instList"></datalist>
+<button class="clearBtn" id="clearInst">Clear</button>
 
-<div>
-<input type="text" placeholder="Branch">
-<button class="clearBtn">Clear</button>
-</div>
+<input list="branchList" id="branchSearch" placeholder="Branch">
+<datalist id="branchList"></datalist>
+<button class="clearBtn" id="clearBranch">Clear</button>
+
+<button id="searchBtn">Search</button>
 
 </div>
 
@@ -55,8 +59,7 @@
 </tr>
 </thead>
 
-<tbody>
-</tbody>
+<tbody></tbody>
 
 </table>
 
@@ -83,8 +86,7 @@
 </tr>
 </thead>
 
-<tbody>
-</tbody>
+<tbody></tbody>
 
 </table>
 
