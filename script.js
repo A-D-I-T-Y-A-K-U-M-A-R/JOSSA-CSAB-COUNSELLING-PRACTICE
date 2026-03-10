@@ -1,106 +1,125 @@
-let preferences = [];
+let preferences=[];
 
-const leftTable = document.querySelector("#leftTable tbody");
-const rightTable = document.querySelector("#rightTable tbody");
+const leftTable=document.querySelector("#leftTable tbody");
+const rightTable=document.querySelector("#rightTable tbody");
 
-const availableCount = document.getElementById("availableCount");
-const filledCount = document.querySelector(".filledCount");
-const savedCount = document.querySelector(".savedCount");
+const availableCount=document.getElementById("availableCount");
+const filledCount=document.querySelector(".filledCount");
+const savedCount=document.querySelector(".savedCount");
 
-const searchInputs = document.querySelectorAll(".search-row input");
-const clearButtons = document.querySelectorAll(".clearBtn");
+const typeSearch=document.getElementById("typeSearch");
+const instSearch=document.getElementById("instSearch");
+const branchSearch=document.getElementById("branchSearch");
 
-let data = [];
-let filteredData = [];
+const instList=document.getElementById("instList");
+const branchList=document.getElementById("branchList");
+
+let data=[];
+let filteredData=[];
+let mode="JOSSA";
 
 fetch("data.json")
-.then(res => res.json())
-.then(json => {
+.then(r=>r.json())
+.then(json=>{
 
-data = json;
-filteredData = [...data];
+data=json;
+filteredData=[...data];
 
-updateAvailableCount();
-renderLeftTable();
-
+populateLists();
+renderLeft();
 });
 
-function updateAvailableCount(){
-availableCount.textContent = "Total Available Choices: " + filteredData.length;
+function populateLists(){
+
+let instSet=new Set();
+let branchSet=new Set();
+
+data.forEach(d=>{
+instSet.add(d.inst);
+branchSet.add(d.branch);
+});
+
+instSet.forEach(i=>{
+let o=document.createElement("option");
+o.value=i;
+instList.appendChild(o);
+});
+
+branchSet.forEach(b=>{
+let o=document.createElement("option");
+o.value=b;
+branchList.appendChild(o);
+});
+
 }
 
-function renderLeftTable(){
+function renderLeft(){
 
-leftTable.innerHTML = "";
+leftTable.innerHTML="";
 
-let lastInstitute = "";
+let last="";
 
-filteredData.forEach(item => {
+filteredData.forEach(item=>{
 
-if(lastInstitute !== "" && lastInstitute !== item.inst){
+if(last!=="" && last!==item.inst){
 
-let sep = document.createElement("tr");
-
-sep.innerHTML =
-"<td colspan='4' style='background:lightyellow;height:8px'></td>";
-
+let sep=document.createElement("tr");
+sep.innerHTML="<td colspan='4' style='background:lightyellow;height:8px'></td>";
 leftTable.appendChild(sep);
 
 }
 
-lastInstitute = item.inst;
+last=item.inst;
 
-let row = document.createElement("tr");
+let row=document.createElement("tr");
 
-let alreadyAdded = preferences.some(p => p.inst === item.inst && p.branch === item.branch);
+let already=preferences.some(p=>p.inst===item.inst && p.branch===item.branch);
 
-row.innerHTML = `
+row.innerHTML=`
 <td>${item.inst}</td>
 <td>${item.branch}</td>
 <td contenteditable="true"></td>
-<td><button class="addBtn" ${alreadyAdded ? "disabled" : ""}>Add</button></td>
+<td><button class="addBtn" ${already?"disabled":""}>Add</button></td>
 `;
 
-if(!alreadyAdded){
-row.querySelector(".addBtn").onclick = () => {
+if(!already){
 
-let choiceNo = row.children[2].textContent.trim();
-addPreference(item.inst,item.branch,choiceNo);
+row.querySelector(".addBtn").onclick=()=>{
+
+let choice=row.children[2].textContent.trim();
+addPref(item.inst,item.branch,choice);
 
 };
+
 }
 
 leftTable.appendChild(row);
 
 });
 
+availableCount.textContent="Total Available Choices: "+filteredData.length;
+
 }
 
-function addPreference(inst,branch,choiceNo){
+function addPref(inst,branch,choice){
 
-if(preferences.some(p => p.inst === inst && p.branch === branch)){
-return;
-}
+if(preferences.some(p=>p.inst===inst && p.branch===branch)) return;
 
-let pos = parseInt(choiceNo);
+let pos=parseInt(choice);
 
 if(pos && pos>0 && pos<=preferences.length){
-
 preferences.splice(pos-1,0,{inst,branch});
-
 }else{
-
 preferences.push({inst,branch});
-
 }
 
-renderRightTable();
-renderLeftTable();
+renderRight();
+renderLeft();
 autoSave();
 
 }
 
-function renderRightTable(){
+function renderRight(){
 
 rightTable.innerHTML="";
 
@@ -111,34 +130,32 @@ let row=document.createElement("tr");
 row.innerHTML=`
 <td>${p.inst}</td>
 <td>${p.branch}</td>
-<td><input class="choiceInput" type="number" value="${i+1}" min="1"></td>
+<td><input type="number" value="${i+1}" min="1"></td>
 <td><button class="deleteBtn">Delete</button></td>
 `;
 
 row.querySelector(".deleteBtn").onclick=()=>{
 
 preferences.splice(i,1);
-
-renderRightTable();
-renderLeftTable();
+renderRight();
+renderLeft();
 autoSave();
 
 };
 
-row.querySelector(".choiceInput").onchange=(e)=>{
+row.querySelector("input").onchange=(e)=>{
 
-let newPos=parseInt(e.target.value);
+let n=parseInt(e.target.value);
 
-if(!newPos || newPos<1 || newPos>preferences.length){
-renderRightTable();
+if(!n || n<1 || n>preferences.length){
+renderRight();
 return;
 }
 
 let item=preferences.splice(i,1)[0];
+preferences.splice(n-1,0,item);
 
-preferences.splice(newPos-1,0,item);
-
-renderRightTable();
+renderRight();
 autoSave();
 
 };
@@ -147,35 +164,25 @@ rightTable.appendChild(row);
 
 });
 
-filledCount.textContent =
-"Total Filled Choices: "+preferences.length;
+filledCount.textContent="Total Filled Choices: "+preferences.length;
 
 }
 
 function autoSave(){
 
-localStorage.setItem("prefs",
-JSON.stringify(preferences));
-
-savedCount.textContent =
-"Total Saved Choices: "+preferences.length;
+localStorage.setItem("prefs",JSON.stringify(preferences));
+savedCount.textContent="Total Saved Choices: "+preferences.length;
 
 }
 
 function loadSaved(){
 
-let saved=localStorage.getItem("prefs");
+let s=localStorage.getItem("prefs");
 
-if(saved){
-
-preferences=JSON.parse(saved);
-
-renderRightTable();
-renderLeftTable();
-
-savedCount.textContent =
-"Total Saved Choices: "+preferences.length;
-
+if(s){
+preferences=JSON.parse(s);
+renderRight();
+renderLeft();
 }
 
 }
@@ -184,54 +191,33 @@ document.getElementById("saveChoices").onclick=autoSave;
 
 loadSaved();
 
-/* SEARCH SYSTEM */
+document.getElementById("searchBtn").onclick=()=>{
 
-function applySearch(){
+let t=typeSearch.value.toLowerCase();
+let i=instSearch.value.toLowerCase();
+let b=branchSearch.value.toLowerCase();
 
-let type = searchInputs[0].value.toLowerCase();
-let inst = searchInputs[1].value.toLowerCase();
-let branch = searchInputs[2].value.toLowerCase();
+filteredData=data.filter(d=>{
 
-filteredData = data.filter(item => {
-
-return (
-item.type.toLowerCase().includes(type) &&
-item.inst.toLowerCase().includes(inst) &&
-item.branch.toLowerCase().includes(branch)
+return(
+d.type.toLowerCase().includes(t) &&
+d.inst.toLowerCase().includes(i) &&
+d.branch.toLowerCase().includes(b)
 );
 
 });
 
-updateAvailableCount();
-renderLeftTable();
-
-}
-
-searchInputs.forEach(input => {
-
-input.addEventListener("input",applySearch);
-
-});
-
-/* CLEAR BUTTONS */
-
-clearButtons.forEach((btn,index)=>{
-
-btn.onclick=()=>{
-
-searchInputs[index].value="";
-applySearch();
+renderLeft();
 
 };
 
-});
-
-/* CLEAR ALL FILTERS */
-
 document.getElementById("clearFilters").onclick=()=>{
 
-searchInputs.forEach(i=>i.value="");
+typeSearch.value="";
+instSearch.value="";
+branchSearch.value="";
 
-applySearch();
+filteredData=[...data];
+renderLeft();
 
 };
