@@ -16,7 +16,6 @@ const branchList=document.getElementById("branchList");
 
 let data=[];
 let filteredData=[];
-let mode="JOSSA";
 
 fetch("data.json")
 .then(r=>r.json())
@@ -27,6 +26,7 @@ filteredData=[...data];
 
 populateLists();
 renderLeft();
+
 });
 
 function populateLists(){
@@ -135,12 +135,10 @@ row.innerHTML=`
 `;
 
 row.querySelector(".deleteBtn").onclick=()=>{
-
 preferences.splice(i,1);
 renderRight();
 renderLeft();
 autoSave();
-
 };
 
 row.querySelector("input").onchange=(e)=>{
@@ -219,5 +217,23 @@ branchSearch.value="";
 
 filteredData=[...data];
 renderLeft();
+
+};
+
+document.getElementById("downloadPdf").onclick=()=>{
+
+let text="Choice No | Institute | Branch\n\n";
+
+preferences.forEach((p,i)=>{
+text+=(i+1)+" | "+p.inst+" | "+p.branch+"\n";
+});
+
+let blob=new Blob([text],{type:"application/pdf"});
+let link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+link.download="SAMPLE_CHOICES_FILLING.pdf";
+
+link.click();
 
 };
