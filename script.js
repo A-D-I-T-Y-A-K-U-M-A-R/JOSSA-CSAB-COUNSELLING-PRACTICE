@@ -25,6 +25,7 @@ data=json;
 filteredData=[...data];
 
 populateLists();
+loadSaved();
 renderLeft();
 
 });
@@ -163,13 +164,13 @@ rightTable.appendChild(row);
 });
 
 filledCount.textContent="Total Filled Choices: "+preferences.length;
+savedCount.textContent="Total Saved Choices: "+preferences.length;
 
 }
 
 function autoSave(){
 
 localStorage.setItem("prefs",JSON.stringify(preferences));
-savedCount.textContent="Total Saved Choices: "+preferences.length;
 
 }
 
@@ -179,15 +180,9 @@ let s=localStorage.getItem("prefs");
 
 if(s){
 preferences=JSON.parse(s);
-renderRight();
-renderLeft();
 }
 
 }
-
-document.getElementById("saveChoices").onclick=autoSave;
-
-loadSaved();
 
 document.getElementById("searchBtn").onclick=()=>{
 
@@ -222,18 +217,20 @@ renderLeft();
 
 document.getElementById("downloadPdf").onclick=()=>{
 
-let text="Choice No | Institute | Branch\n\n";
+let text="Choice No,Institute,Branch\n";
 
 preferences.forEach((p,i)=>{
-text+=(i+1)+" | "+p.inst+" | "+p.branch+"\n";
+text+=(i+1)+","+p.inst+","+p.branch+"\n";
 });
 
-let blob=new Blob([text],{type:"application/pdf"});
+let blob=new Blob([text],{type:"text/csv"});
 let link=document.createElement("a");
 
 link.href=URL.createObjectURL(blob);
 link.download="SAMPLE_CHOICES_FILLING.pdf";
 
+document.body.appendChild(link);
 link.click();
+document.body.removeChild(link);
 
 };
