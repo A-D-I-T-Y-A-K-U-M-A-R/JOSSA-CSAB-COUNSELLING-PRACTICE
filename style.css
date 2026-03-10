@@ -1,0 +1,143 @@
+body{
+font-family: Arial, sans-serif;
+margin:0;
+padding:0;
+}
+
+/* HEADER */
+
+.header{
+background: #ffd8a8;
+padding:15px;
+text-align:center;
+}
+
+/* MODE BUTTONS */
+
+.mode{
+text-align:center;
+margin:10px;
+}
+
+.mode button{
+margin:5px;
+padding:8px 15px;
+}
+
+/* SEARCH AREA */
+
+.search-row{
+display:flex;
+justify-content:center;
+gap:15px;
+margin:15px;
+}
+
+.search-row input{
+padding:5px;
+}
+
+.clearBtn{
+background:orange;
+border:none;
+padding:5px 10px;
+}
+
+/* TOP BUTTONS */
+
+.top-buttons{
+text-align:center;
+margin:10px;
+}
+
+#clearFilters{
+background:red;
+color:white;
+padding:8px 15px;
+border:none;
+}
+
+#downloadPdf{
+background:lightgreen;
+padding:8px 15px;
+border:none;
+}
+
+/* TABLE LAYOUT */
+
+.tables{
+display:flex;
+justify-content:space-around;
+padding:10px;
+}
+
+.left,.right{
+width:45%;
+}
+
+/* COUNTERS */
+
+.counter{
+color:red;
+font-weight:bold;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background: #444;
+color:white;
+padding:8px;
+}
+
+td{
+border:1px solid #ccc;
+padding:6px;
+}
+
+/* BUTTONS */
+
+button{
+cursor:pointer;
+}
+
+.prefInfo{
+margin-bottom:10px;
+}
+
+.filledCount{
+color:red;
+margin-right:15px;
+}
+
+.savedCount{
+color:green;
+margin-right:15px;
+}
+
+#saveChoices{
+background:cyan;
+padding:6px 12px;
+border:none;
+}
+
+/* ADD DELETE BUTTONS */
+
+.addBtn{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+}
+
+.deleteBtn{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+}
