@@ -1,0 +1,20 @@
+[
+{"inst":"IIT Madras","branch":"Computer Science and Engineering","type":"IIT"},
+{"inst":"IIT Madras","branch":"Electrical Engineering","type":"IIT"},
+{"inst":"IIT Madras","branch":"Mechanical Engineering","type":"IIT"},
+
+{"inst":"IIT Delhi","branch":"Computer Science and Engineering","type":"IIT"},
+{"inst":"IIT Delhi","branch":"Electrical Engineering","type":"IIT"},
+
+{"inst":"NIT Trichy","branch":"Computer Science and Engineering","type":"NIT"},
+{"inst":"NIT Trichy","branch":"Electronics and Communication Engineering","type":"NIT"},
+
+{"inst":"NIT Surathkal","branch":"Computer Science and Engineering","type":"NIT"},
+{"inst":"NIT Surathkal","branch":"Mechanical Engineering","type":"NIT"},
+
+{"inst":"IIIT Hyderabad","branch":"Computer Science and Engineering","type":"IIIT"},
+{"inst":"IIIT Hyderabad","branch":"Electronics Engineering","type":"IIIT"},
+
+{"inst":"BIT Mesra","branch":"Computer Science and Engineering","type":"GFTI"},
+{"inst":"BIT Mesra","branch":"Mechanical Engineering","type":"GFTI"}
+]
