@@ -59,7 +59,7 @@ width:45%;
 }
 
 .right{
-margin-top:40px;
+margin-top:60px; /* earlier 40px → moved further down */
 }
 
 .tableTitle{
@@ -71,11 +71,13 @@ text-decoration:underline;
 #availableCount{
 color:red;
 font-weight:bold;
+font-size:16px;
 }
 
 .filledCount{
-color:lightgreen;
+color:red;           /* changed to red */
 font-weight:bold;
+font-size:16px;      /* same as left */
 }
 
 table{
