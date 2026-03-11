@@ -78,14 +78,15 @@ padding:5px 10px;
 }
 
 #downloadBtn{
-background:pink;
-color:black;
+background:#b3003c;
+color:white;
 border:none;
 padding:8px 15px;
 font-weight:bold;
 cursor:pointer;
+border-radius:4px;
 }
 
 #downloadBtn:hover{
-background:#ff99cc;
+background:#990033;
 }
