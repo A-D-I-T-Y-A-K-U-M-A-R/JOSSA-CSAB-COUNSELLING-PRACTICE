@@ -209,6 +209,8 @@ renderLeft();
 
 };
 
+/* ===== REAL PDF DOWNLOAD ===== */
+
 function downloadPDF(){
 
 let table=document.querySelector("#rightTable");
@@ -218,33 +220,31 @@ alert("Table not found");
 return;
 }
 
-let win=window.open("","","width=900,height=700");
-
-win.document.write(`
+let html=`
 <html>
 <head>
+<meta charset="utf-8">
 <title>JoSAA Choices</title>
 <style>
 body{font-family:Arial;padding:20px}
 table{border-collapse:collapse;width:100%}
-th,td{border:1px solid black;padding:8px;text-align:left}
+th,td{border:1px solid black;padding:8px}
 th{background:#eee}
 </style>
 </head>
 <body>
-
 <h2>JoSAA Choice List</h2>
-
 ${table.outerHTML}
-
 </body>
 </html>
-`);
+`;
 
-win.document.close();
+let blob=new Blob([html],{type:"application/octet-stream"});
 
-setTimeout(()=>{
-win.print();
-},500);
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="josaa_choices.html";
+
+a.click();
 
 }
