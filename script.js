@@ -274,3 +274,37 @@ a.click();
 document.body.removeChild(a);
 
 }
+
+function downloadPDF(){
+
+const { jsPDF } = window.jspdf;
+
+let doc = new jsPDF();
+
+let rows=document.querySelectorAll("#rightTable tbody tr");
+
+if(rows.length===0){
+alert("No choices to download");
+return;
+}
+
+let body=[];
+
+rows.forEach((r,i)=>{
+
+let inst=r.children[0].innerText;
+let branch=r.children[1].innerText;
+
+body.push([inst,branch,i+1]);
+
+});
+
+doc.autoTable({
+head:[["Institute","Branch","Choice No"]],
+body:body,
+startY:20
+});
+
+doc.save("josaa_choices.pdf");
+
+}
