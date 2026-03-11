@@ -211,21 +211,23 @@ renderLeft();
 
 function downloadPDF(){
 
-let rows=document.querySelectorAll("#rightTable tbody tr");
+let table=document.querySelector("#rightTable");
 
-if(rows.length===0){
-alert("No choices to download");
+if(!table){
+alert("Table not found");
 return;
 }
 
-let html=`
+let win=window.open("","","width=900,height=700");
+
+win.document.write(`
 <html>
 <head>
 <title>JoSAA Choices</title>
 <style>
-body{font-family:Arial}
+body{font-family:Arial;padding:20px}
 table{border-collapse:collapse;width:100%}
-th,td{border:1px solid black;padding:6px}
+th,td{border:1px solid black;padding:8px;text-align:left}
 th{background:#eee}
 </style>
 </head>
@@ -233,78 +235,16 @@ th{background:#eee}
 
 <h2>JoSAA Choice List</h2>
 
-<table>
-<tr>
-<th>Institute</th>
-<th>Branch</th>
-<th>Choice No</th>
-</tr>
-`;
+${table.outerHTML}
 
-rows.forEach((r,i)=>{
-
-let inst=r.children[0].innerText;
-let branch=r.children[1].innerText;
-
-html+=`
-<tr>
-<td>${inst}</td>
-<td>${branch}</td>
-<td>${i+1}</td>
-</tr>
-`;
-
-});
-
-html+=`
-</table>
 </body>
 </html>
-`;
+`);
 
-let blob=new Blob([html],{type:"application/pdf"});
-let url=URL.createObjectURL(blob);
+win.document.close();
 
-let a=document.createElement("a");
-a.href=url;
-a.download="josaa_choices.pdf";
-
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-
-}
-
-function downloadPDF(){
-
-const { jsPDF } = window.jspdf;
-
-let doc = new jsPDF();
-
-let rows=document.querySelectorAll("#rightTable tbody tr");
-
-if(rows.length===0){
-alert("No choices to download");
-return;
-}
-
-let body=[];
-
-rows.forEach((r,i)=>{
-
-let inst=r.children[0].innerText;
-let branch=r.children[1].innerText;
-
-body.push([inst,branch,i+1]);
-
-});
-
-doc.autoTable({
-head:[["Institute","Branch","Choice No"]],
-body:body,
-startY:20
-});
-
-doc.save("josaa_choices.pdf");
+setTimeout(()=>{
+win.print();
+},500);
 
 }
