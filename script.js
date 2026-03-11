@@ -207,6 +207,17 @@ renderLeft();
 
 };
 
+/* DELETE ALL FILLED CHOICES BUTTON */
+
+document.getElementById("deleteAllBtn").onclick=()=>{
+
+preferences=[];
+renderRight();
+renderLeft();
+autoSave();
+
+};
+
 function downloadPDF(){
 
 let rows=document.querySelectorAll("#rightTable tbody tr");
