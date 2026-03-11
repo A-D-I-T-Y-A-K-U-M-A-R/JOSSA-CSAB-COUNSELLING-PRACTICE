@@ -208,3 +208,60 @@ filteredData=[...data];
 renderLeft();
 
 };
+
+document.getElementById("downloadBtn").onclick=function(){
+
+let rows=document.querySelectorAll("#rightTable tbody tr");
+
+let html=`
+<html>
+<head>
+<title>JoSAA Choices</title>
+<style>
+body{font-family:Arial}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid black;padding:6px}
+th{background:#eee}
+</style>
+</head>
+<body>
+
+<h2>JoSAA Choice List</h2>
+
+<table>
+<tr>
+<th>Institute</th>
+<th>Branch</th>
+<th>Choice No</th>
+</tr>
+`;
+
+rows.forEach((r,i)=>{
+
+let inst=r.children[0].innerText;
+let branch=r.children[1].innerText;
+
+html+=`
+<tr>
+<td>${inst}</td>
+<td>${branch}</td>
+<td>${i+1}</td>
+</tr>
+`;
+
+});
+
+html+=`
+</table>
+</body>
+</html>
+`;
+
+let blob=new Blob([html],{type:"application/pdf"});
+
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="josaa_choices.pdf";
+a.click();
+
+};
