@@ -5,7 +5,6 @@ const rightTable=document.querySelector("#rightTable tbody");
 
 const availableCount=document.getElementById("availableCount");
 const filledCount=document.querySelector(".filledCount");
-const savedCount=document.querySelector(".savedCount");
 
 const typeSearch=document.getElementById("typeSearch");
 const instSearch=document.getElementById("instSearch");
@@ -160,7 +159,6 @@ rightTable.appendChild(row);
 });
 
 filledCount.textContent="Total Filled Choices: "+preferences.length;
-savedCount.textContent="Total Saved Choices: "+preferences.length;
 
 }
 
@@ -209,9 +207,6 @@ renderLeft();
 
 };
 
-
-/* ===== OPEN TABLE IN HTML WINDOW ===== */
-
 function downloadPDF(){
 
 let rows=document.querySelectorAll("#rightTable tbody tr");
@@ -221,54 +216,23 @@ alert("No choices to show");
 return;
 }
 
-let html=`
-<html>
-<head>
-<title>JoSAA Choice Preferences</title>
-
+let html=`<html><head><title>JoSAA Choice Preferences</title>
 <style>
-
-body{
-font-family:Arial;
-padding:20px;
-}
-
-table{
-border-collapse:collapse;
-width:100%;
-}
-
-th{
-background:orange;
-color:black;
-font-size:20px;
-height:30px;
-border:3px solid black;
-text-align:center;
-}
-
-td{
-font-size:18px;
-height:30px;
-border:3px solid black;
-text-align:center;
-}
-
+body{font-family:Arial;padding:20px;}
+table{border-collapse:collapse;width:100%;}
+th{background:orange;color:black;font-size:20px;height:30px;border:3px solid black;text-align:center;}
+td{font-size:18px;height:30px;border:3px solid black;text-align:center;}
 </style>
-
-</head>
-<body>
+</head><body>
 
 <h2>JoSAA Choice Preferences</h2>
 
 <table>
-
 <tr>
 <th>Choice No</th>
 <th>Institute</th>
 <th>Branch</th>
-</tr>
-`;
+</tr>`;
 
 rows.forEach((r,i)=>{
 
@@ -285,11 +249,7 @@ html+=`
 
 });
 
-html+=`
-</table>
-</body>
-</html>
-`;
+html+=`</table></body></html>`;
 
 let win=window.open("");
 win.document.write(html);
