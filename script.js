@@ -209,42 +209,36 @@ renderLeft();
 
 };
 
-/* ===== REAL PDF DOWNLOAD ===== */
+/* ===== EXCEL EXPORT ===== */
 
 function downloadPDF(){
 
-let table=document.querySelector("#rightTable");
+let rows=document.querySelectorAll("#rightTable tbody tr");
 
-if(!table){
-alert("Table not found");
+if(rows.length===0){
+alert("No choices to export");
 return;
 }
 
-let html=`
-<html>
-<head>
-<meta charset="utf-8">
-<title>JoSAA Choices</title>
-<style>
-body{font-family:Arial;padding:20px}
-table{border-collapse:collapse;width:100%}
-th,td{border:1px solid black;padding:8px}
-th{background:#eee}
-</style>
-</head>
-<body>
-<h2>JoSAA Choice List</h2>
-${table.outerHTML}
-</body>
-</html>
-`;
+let csv="Choice No,Institute,Branch\n";
 
-let blob=new Blob([html],{type:"application/octet-stream"});
+rows.forEach((r,i)=>{
 
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="josaa_choices.html";
+let inst=r.children[0].innerText;
+let branch=r.children[1].innerText;
 
-a.click();
+csv+=`${i+1},"${inst}","${branch}"\n`;
+
+});
+
+let blob=new Blob([csv],{type:"text/csv"});
+
+let link=document.createElement("a");
+link.href=URL.createObjectURL(blob);
+link.download="josaa_choices.csv";
+
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
 
 }
