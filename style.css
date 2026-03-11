@@ -76,3 +76,16 @@ color:white;
 border:none;
 padding:5px 10px;
 }
+
+#downloadBtn{
+background:#FFF4D6;
+color:black;
+border:1px solid #d6c59a;
+padding:8px 15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+#downloadBtn:hover{
+background:#f3e3b6;
+}
