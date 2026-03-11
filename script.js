@@ -209,11 +209,10 @@ renderLeft();
 
 };
 
-/* ===== DOWNLOAD TABLE WITH CUSTOM FORMAT ===== */
+
+/* ===== EXCEL EXPORT ===== */
 
 function downloadPDF(){
-
-const { jsPDF } = window.jspdf;
 
 let rows=document.querySelectorAll("#rightTable tbody tr");
 
@@ -222,58 +221,34 @@ alert("No choices to export");
 return;
 }
 
-let body=[];
+let data=[
+["Choice No","Institute","Branch"]
+];
 
 rows.forEach((r,i)=>{
 
 let inst=r.children[0].innerText;
 let branch=r.children[1].innerText;
 
-body.push([i+1,inst,branch]);
+data.push([i+1,inst,branch]);
 
 });
 
-let doc=new jsPDF({
-orientation:"portrait",
-unit:"pt"
-});
+let ws=XLSX.utils.aoa_to_sheet(data);
 
-doc.autoTable({
+/* column width */
+ws["!cols"]=[
+{wch:12},
+{wch:45},
+{wch:15}
+];
 
-startY:40,
+/* row height */
+ws["!rows"]=data.map(()=>({hpt:30}));
 
-head:[["Choice No","Institute","Branch"]],
+let wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,"Choices");
 
-body:body,
-
-styles:{
-fontSize:18,
-halign:"center",
-valign:"middle",
-minCellHeight:30,
-lineColor:[0,0,0],
-lineWidth:1.5
-},
-
-headStyles:{
-fontSize:20,
-fillColor:[255,165,0],
-textColor:0,
-halign:"center",
-valign:"middle",
-minCellHeight:30,
-lineColor:[0,0,0],
-lineWidth:1.5
-},
-
-columnStyles:{
-0:{cellWidth:90},
-1:{cellWidth:90},
-2:{cellWidth:30}
-}
-
-});
-
-doc.save("josaa_choices.pdf");
+XLSX.writeFile(wb,"josaa_choices.xlsx");
 
 }
