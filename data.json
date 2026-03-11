@@ -84,7 +84,6 @@
 {"inst":"NIT Calicut","branch":"Production Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Calicut","branch":"Engineering Physics (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Calicut","branch":"Architecture (5 Years, B.Arch)","type":"NIT"},
-
 {"inst":"NIT Durgapur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Durgapur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Durgapur","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -93,13 +92,11 @@
 {"inst":"NIT Durgapur","branch":"Chemical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Durgapur","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Durgapur","branch":"Biotechnology (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Goa","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Goa","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Goa","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Goa","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Goa","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Hamirpur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Hamirpur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Hamirpur","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -108,7 +105,6 @@
 {"inst":"NIT Hamirpur","branch":"Chemical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Hamirpur","branch":"Engineering Physics (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Hamirpur","branch":"Mathematics and Computing (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Jamshedpur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Jamshedpur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Jamshedpur","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -124,30 +120,25 @@
 {"inst":"NIT Kurukshetra","branch":"Information Technology (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Kurukshetra","branch":"Production and Industrial Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Kurukshetra","branch":"Mathematics and Computing (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Manipur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Manipur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Manipur","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Manipur","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Manipur","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Meghalaya","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Meghalaya","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Meghalaya","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Meghalaya","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Meghalaya","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Mizoram","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Mizoram","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Mizoram","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Mizoram","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Nagaland","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Nagaland","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Nagaland","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Nagaland","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Nagaland","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Patna","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Patna","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Patna","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -163,7 +154,6 @@
 {"inst":"NIT Raipur","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Raipur","branch":"Mining Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Raipur","branch":"Biomedical Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Rourkela","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Rourkela","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Rourkela","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -175,20 +165,17 @@
 {"inst":"NIT Rourkela","branch":"Mining Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Rourkela","branch":"Ceramic Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Rourkela","branch":"Biotechnology (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Silchar","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Silchar","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Silchar","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Silchar","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Silchar","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Silchar","branch":"Electronics and Instrumentation Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Sikkim","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Sikkim","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Sikkim","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Sikkim","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Sikkim","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Srinagar","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Srinagar","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Srinagar","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -202,7 +189,6 @@
 {"inst":"NIT Surat","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Surat","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Surat","branch":"Chemical Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Tiruchirappalli","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Tiruchirappalli","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Tiruchirappalli","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -212,7 +198,6 @@
 {"inst":"NIT Tiruchirappalli","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Tiruchirappalli","branch":"Production Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Tiruchirappalli","branch":"Instrumentation and Control Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"NIT Warangal","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Warangal","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Warangal","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
@@ -221,12 +206,10 @@
 {"inst":"NIT Warangal","branch":"Chemical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Warangal","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"NIT Warangal","branch":"Biotechnology (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"IIIT Allahabad","branch":"Information Technology (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Allahabad","branch":"Information Technology – Business Informatics (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Allahabad","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Allahabad","branch":"Information Technology (5 Years, Integrated B.Tech + M.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Gwalior","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Gwalior","branch":"Mathematics and Scientific Computing (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Gwalior","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"IIIT"},
@@ -237,33 +220,26 @@
 {"inst":"IIIT Hyderabad","branch":"Computational Linguistics (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Hyderabad","branch":"Computer Science and Engineering (5 Years, Dual Degree)","type":"IIIT"},
 {"inst":"IIIT Hyderabad","branch":"Electronics and Communication Engineering (5 Years, Dual Degree)","type":"IIIT"},
-
 {"inst":"IIIT Jabalpur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Jabalpur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Jabalpur","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Jabalpur","branch":"Smart Manufacturing (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Kancheepuram","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Kancheepuram","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Kancheepuram","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Kancheepuram","branch":"Smart Manufacturing (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Kottayam","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Kottayam","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Pune","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Pune","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Ranchi","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Ranchi","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"PEC Chandigarh","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"PEC Chandigarh","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"PEC Chandigarh","branch":"Electrical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"PEC Chandigarh","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"PEC Chandigarh","branch":"Civil Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"PEC Chandigarh","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"BIT Mesra","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"BIT Mesra","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"BIT Mesra","branch":"Electrical and Electronics Engineering (4 Years, B.Tech)","type":"GFTI"},
@@ -279,92 +255,73 @@
 {"inst":"Punjab Engineering College Chandigarh","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Punjab Engineering College Chandigarh","branch":"Civil Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Punjab Engineering College Chandigarh","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"SVNIT Surat","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"SVNIT Surat","branch":"Electronics Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"SVNIT Surat","branch":"Electrical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"SVNIT Surat","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"SVNIT Surat","branch":"Civil Engineering (4 Years, B.Tech)","type":"NIT"},
 {"inst":"SVNIT Surat","branch":"Chemical Engineering (4 Years, B.Tech)","type":"NIT"},
-
 {"inst":"IIIT Delhi","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Delhi","branch":"Computer Science and Artificial Intelligence (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Delhi","branch":"Computer Science and Biosciences (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Delhi","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Delhi","branch":"Computer Science and Social Sciences (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Lucknow","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Lucknow","branch":"Information Technology (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Lucknow","branch":"Computer Science and Artificial Intelligence (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Bhagalpur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Bhagalpur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Dharwad","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Dharwad","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Dharwad","branch":"Data Science and Artificial Intelligence (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Kalyani","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Kalyani","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Nagpur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Nagpur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Una","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Una","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Una","branch":"Information Technology (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIIT Vadodara","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIIT Vadodara","branch":"Information Technology (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIITDM Kancheepuram","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIITDM Kancheepuram","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIITDM Kancheepuram","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIITDM Kancheepuram","branch":"Smart Manufacturing (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"IIITDM Jabalpur","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIITDM Jabalpur","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIITDM Jabalpur","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"IIIT"},
 {"inst":"IIITDM Jabalpur","branch":"Smart Manufacturing (4 Years, B.Tech)","type":"IIIT"},
-
 {"inst":"Central University of Rajasthan","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Central University of Rajasthan","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Central University of Rajasthan","branch":"Biomedical Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"Central University of Jammu","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Central University of Jammu","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"Central University of Haryana","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Central University of Haryana","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"Central University of Karnataka","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Central University of Karnataka","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Gurukula Kangri Vishwavidyalaya, Haridwar","branch":"Computer Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Gurukula Kangri Vishwavidyalaya, Haridwar","branch":"Electronics Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Gurukula Kangri Vishwavidyalaya, Haridwar","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"School of Engineering, Tezpur University","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"School of Engineering, Tezpur University","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"School of Engineering, Tezpur University","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"School of Engineering, Tezpur University","branch":"Civil Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"School of Engineering, Tezpur University","branch":"Food Engineering and Technology (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"Indian Institute of Engineering Science and Technology Shibpur","branch":"Computer Science and Technology (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Indian Institute of Engineering Science and Technology Shibpur","branch":"Electronics and Telecommunication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Indian Institute of Engineering Science and Technology Shibpur","branch":"Electrical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Indian Institute of Engineering Science and Technology Shibpur","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Indian Institute of Engineering Science and Technology Shibpur","branch":"Civil Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Indian Institute of Engineering Science and Technology Shibpur","branch":"Metallurgical and Materials Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"Assam Engineering College, Guwahati","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Assam Engineering College, Guwahati","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Assam Engineering College, Guwahati","branch":"Electrical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Assam Engineering College, Guwahati","branch":"Mechanical Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Assam Engineering College, Guwahati","branch":"Civil Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Assam Engineering College, Guwahati","branch":"Chemical Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"J.K. Institute of Applied Physics and Technology, Allahabad University","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"J.K. Institute of Applied Physics and Technology, Allahabad University","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
-
 {"inst":"Sant Longowal Institute of Engineering and Technology","branch":"Computer Science and Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Sant Longowal Institute of Engineering and Technology","branch":"Electronics and Communication Engineering (4 Years, B.Tech)","type":"GFTI"},
 {"inst":"Sant Longowal Institute of Engineering and Technology","branch":"Electrical Engineering (4 Years, B.Tech)","type":"GFTI"},
