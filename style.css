@@ -2,48 +2,67 @@ body{
 font-family:Arial;
 margin:0;
 padding:0;
+background:linear-gradient(-45deg,#87CEEB,#b3e5ff,#87CEEB,#d6f4ff);
+background-size:400% 400%;
+animation:skyMove 15s infinite linear;
+}
+
+@keyframes skyMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 .header{
-background:#ffd8a8;
-padding:15px;
 text-align:center;
+margin-top:50px;
+font-size:34px;
+font-weight:bold;
+text-decoration:underline;
 }
 
 .search-row{
 display:flex;
 justify-content:center;
 gap:10px;
-margin:15px;
-}
-
-#searchBtn{
-background:#007bff;
-color:white;
-border:none;
-padding:6px 12px;
+margin-top:60px;
+align-items:center;
 }
 
 .top-buttons{
 text-align:center;
-margin:10px;
-}
-
-#clearFilters{
-background:red;
-color:white;
-border:none;
-padding:8px 15px;
+margin:20px;
 }
 
 .tables{
 display:flex;
 justify-content:space-around;
 padding:10px;
+margin-top:20px;
 }
 
 .left,.right{
 width:45%;
+}
+
+.right{
+margin-top:45px;
+}
+
+.tableTitle{
+text-align:center;
+font-weight:bold;
+text-decoration:underline;
+}
+
+#availableCount{
+color:red;
+font-weight:bold;
+}
+
+.filledCount{
+color:lightgreen;
+font-weight:bold;
 }
 
 table{
@@ -61,6 +80,7 @@ padding:8px;
 td{
 border:2px solid #333;
 padding:6px;
+text-align:center;
 }
 
 .addBtn{
@@ -77,6 +97,20 @@ border:none;
 padding:5px 10px;
 }
 
+#searchBtn{
+background:#007bff;
+color:white;
+border:none;
+padding:6px 12px;
+}
+
+#clearFilters{
+background:red;
+color:white;
+border:none;
+padding:8px 15px;
+}
+
 #downloadBtn{
 background:#b3003c;
 color:white;
@@ -89,4 +123,14 @@ border-radius:4px;
 
 #downloadBtn:hover{
 background:#990033;
+}
+
+.footer{
+margin-top:50px;
+border-top:3px solid black;
+text-align:center;
+padding:15px;
+font-family:cursive;
+font-size:20px;
+font-weight:bold;
 }
