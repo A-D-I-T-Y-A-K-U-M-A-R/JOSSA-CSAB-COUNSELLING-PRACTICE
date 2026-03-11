@@ -27,6 +27,19 @@ justify-content:center;
 gap:10px;
 margin-top:60px;
 align-items:center;
+position:relative;
+}
+
+#downloadBtn{
+position:absolute;
+right:10px;
+background:#b3003c;
+color:white;
+border:none;
+padding:8px 15px;
+font-weight:bold;
+cursor:pointer;
+border-radius:4px;
 }
 
 .top-buttons{
@@ -41,12 +54,13 @@ padding:10px;
 margin-top:20px;
 }
 
-.left,.right{
+.left{
 width:45%;
+margin-top:45px;
 }
 
 .right{
-margin-top:45px;
+width:45%;
 }
 
 .tableTitle{
@@ -111,26 +125,19 @@ border:none;
 padding:8px 15px;
 }
 
-#downloadBtn{
-background:#b3003c;
-color:white;
-border:none;
-padding:8px 15px;
-font-weight:bold;
-cursor:pointer;
-border-radius:4px;
-}
-
-#downloadBtn:hover{
-background:#990033;
-}
-
 .footer{
-margin-top:50px;
-border-top:3px solid black;
+margin-top:60px;
 text-align:center;
-padding:15px;
+}
+
+.line{
+border-top:3px solid black;
+margin:25px 0;
+}
+
+.footerText{
 font-family:cursive;
 font-size:20px;
 font-weight:bold;
+margin:15px 0;
 }
