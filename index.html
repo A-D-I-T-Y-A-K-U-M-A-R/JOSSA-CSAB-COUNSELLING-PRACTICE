@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <title>JoSAA Choice Filling Simulator</title>
@@ -27,18 +27,19 @@
 
 <button id="searchBtn">Search</button>
 
+<button id="downloadBtn" onclick="downloadPDF()">DOWNLOAD_TABLE</button>
+
 </div>
 
 <div class="top-buttons">
 <button id="clearFilters">Clear All Filters</button>
-<button id="downloadBtn" onclick="downloadPDF()">DOWNLOAD_TABLE</button>
 </div>
 
 <div class="tables">
 
 <div class="left">
 
-<h2>Available Choices</h2>
+<h2 class="tableTitle">Available Choices</h2>
 <p id="availableCount"></p>
 
 <table id="leftTable">
@@ -60,11 +61,10 @@
 
 <div class="right">
 
-<h2>Filled Choices</h2>
+<h2 class="tableTitle">Filled Choices</h2>
 
 <div class="prefInfo">
 <span class="filledCount"></span>
-<span class="savedCount"></span>
 </div>
 
 <table id="rightTable">
@@ -84,6 +84,10 @@
 
 </div>
 
+</div>
+
+<div class="footer">
+MADE BY ADITYA KUMAR SINGH
 </div>
 
 <script src="script.js"></script>
