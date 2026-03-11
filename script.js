@@ -209,9 +209,11 @@ renderLeft();
 
 };
 
-/* ===== EXCEL EXPORT ===== */
+/* ===== DOWNLOAD TABLE WITH CUSTOM FORMAT ===== */
 
 function downloadPDF(){
+
+const { jsPDF } = window.jspdf;
 
 let rows=document.querySelectorAll("#rightTable tbody tr");
 
@@ -220,25 +222,58 @@ alert("No choices to export");
 return;
 }
 
-let csv="Choice No,Institute,Branch\n";
+let body=[];
 
 rows.forEach((r,i)=>{
 
 let inst=r.children[0].innerText;
 let branch=r.children[1].innerText;
 
-csv+=`${i+1},"${inst}","${branch}"\n`;
+body.push([i+1,inst,branch]);
 
 });
 
-let blob=new Blob([csv],{type:"text/csv"});
+let doc=new jsPDF({
+orientation:"portrait",
+unit:"pt"
+});
 
-let link=document.createElement("a");
-link.href=URL.createObjectURL(blob);
-link.download="josaa_choices.csv";
+doc.autoTable({
 
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+startY:40,
+
+head:[["Choice No","Institute","Branch"]],
+
+body:body,
+
+styles:{
+fontSize:18,
+halign:"center",
+valign:"middle",
+minCellHeight:30,
+lineColor:[0,0,0],
+lineWidth:1.5
+},
+
+headStyles:{
+fontSize:20,
+fillColor:[255,165,0],
+textColor:0,
+halign:"center",
+valign:"middle",
+minCellHeight:30,
+lineColor:[0,0,0],
+lineWidth:1.5
+},
+
+columnStyles:{
+0:{cellWidth:90},
+1:{cellWidth:90},
+2:{cellWidth:30}
+}
+
+});
+
+doc.save("josaa_choices.pdf");
 
 }
