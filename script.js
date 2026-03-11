@@ -209,7 +209,6 @@ renderLeft();
 
 };
 
-
 /* ===== EXCEL EXPORT ===== */
 
 function downloadPDF(){
@@ -221,34 +220,26 @@ alert("No choices to export");
 return;
 }
 
-let data=[
-["Choice No","Institute","Branch"]
-];
+let csv="Choice No,Institute,Branch\n";
 
 rows.forEach((r,i)=>{
 
 let inst=r.children[0].innerText;
 let branch=r.children[1].innerText;
 
-data.push([i+1,inst,branch]);
+csv+=`${i+1},"${inst}","${branch}"\n`;
 
 });
 
-let ws=XLSX.utils.aoa_to_sheet(data);
+let blob=new Blob([csv],{type:"text/csv"});
 
-/* column width */
-ws["!cols"]=[
-{wch:12},
-{wch:45},
-{wch:15}
-];
+let link=document.createElement("a");
+link.href=URL.createObjectURL(blob);
+link.download="josaa_choices.csv";
 
-/* row height */
-ws["!rows"]=data.map(()=>({hpt:30}));
-
-let wb=XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb,ws,"Choices");
-
-XLSX.writeFile(wb,"josaa_choices.xlsx");
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
 
 }
+
