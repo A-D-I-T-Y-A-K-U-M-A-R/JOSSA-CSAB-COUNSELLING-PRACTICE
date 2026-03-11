@@ -32,7 +32,7 @@ position:relative;
 
 #downloadBtn{
 position:absolute;
-right:10px;
+right:0;
 background:#b3003c;
 color:white;
 border:none;
@@ -52,14 +52,10 @@ display:flex;
 justify-content:space-around;
 padding:10px;
 margin-top:20px;
+align-items:flex-start;
 }
 
-.left{
-width:45%;
-margin-top:45px;
-}
-
-.right{
+.left,.right{
 width:45%;
 }
 
