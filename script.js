@@ -209,36 +209,90 @@ renderLeft();
 
 };
 
-/* ===== EXCEL EXPORT ===== */
+
+/* ===== OPEN TABLE IN HTML WINDOW ===== */
 
 function downloadPDF(){
 
 let rows=document.querySelectorAll("#rightTable tbody tr");
 
 if(rows.length===0){
-alert("No choices to export");
+alert("No choices to show");
 return;
 }
 
-let csv="Choice No,Institute,Branch\n";
+let html=`
+<html>
+<head>
+<title>JoSAA Choice Preferences</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+}
+
+table{
+border-collapse:collapse;
+width:100%;
+}
+
+th{
+background:orange;
+color:black;
+font-size:20px;
+height:30px;
+border:3px solid black;
+text-align:center;
+}
+
+td{
+font-size:18px;
+height:30px;
+border:3px solid black;
+text-align:center;
+}
+
+</style>
+
+</head>
+<body>
+
+<h2>JoSAA Choice Preferences</h2>
+
+<table>
+
+<tr>
+<th>Choice No</th>
+<th>Institute</th>
+<th>Branch</th>
+</tr>
+`;
 
 rows.forEach((r,i)=>{
 
 let inst=r.children[0].innerText;
 let branch=r.children[1].innerText;
 
-csv+=`${i+1},"${inst}","${branch}"\n`;
+html+=`
+<tr>
+<td>${i+1}</td>
+<td>${inst}</td>
+<td>${branch}</td>
+</tr>
+`;
 
 });
 
-let blob=new Blob([csv],{type:"text/csv"});
+html+=`
+</table>
+</body>
+</html>
+`;
 
-let link=document.createElement("a");
-link.href=URL.createObjectURL(blob);
-link.download="josaa_choices.csv";
-
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+let win=window.open("");
+win.document.write(html);
+win.document.close();
 
 }
