@@ -209,9 +209,14 @@ renderLeft();
 
 };
 
-document.getElementById("downloadBtn").onclick=function(){
+function downloadPDF(){
 
 let rows=document.querySelectorAll("#rightTable tbody tr");
+
+if(rows.length===0){
+alert("No choices to download");
+return;
+}
 
 let html=`
 <html>
@@ -258,10 +263,14 @@ html+=`
 `;
 
 let blob=new Blob([html],{type:"application/pdf"});
+let url=URL.createObjectURL(blob);
 
 let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
+a.href=url;
 a.download="josaa_choices.pdf";
-a.click();
 
-};
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+}
