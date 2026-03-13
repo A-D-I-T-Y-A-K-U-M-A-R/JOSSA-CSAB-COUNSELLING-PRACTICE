@@ -1,17 +1,15 @@
-# JoSAA Choice Filling Simulator
+# JoSAA/CSAB Choice Filling Simulator
 
-JoSAA Choice Filling Simulator is a free web tool for JEE aspirants to practice JoSAA counselling.
+JoSAA/CSAB Choice Filling Simulator is a free web tool for JEE aspirants to practice JoSAA and CSAB counselling.
 
-Students can simulate their preference order for:
+Students can simulate preference order for:
 
 - IIT
 - NIT
 - IIIT
 - GFTI
 
-before filling the real JoSAA counselling choices.
-
-This simulator helps students understand how JoSAA choice filling works and test different combinations of institutes and branches.
+before filling real counselling choices.
 
 ## Try the simulator
 
@@ -20,6 +18,7 @@ https://a-d-i-t-y-a-k-u-m-a-r.github.io/JOSSA-CSAB-COUNSELLING-PRACTICE/
 ## Keywords
 
 JoSAA simulator  
+CSAB simulator  
 JoSAA counselling practice  
-JoSAA choice filling simulator  
-JEE counselling simulator
+CSAB counselling practice  
+choice filling simulator
