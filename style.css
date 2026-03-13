@@ -2,7 +2,7 @@ body{
 font-family:Arial;
 margin:0;
 padding:0;
-background:linear-gradient(-45deg,#87CEEB,#b3e5ff,#87CEEB,#d6f4ff);
+background:linear-gradient(-45deg,#87CEEB,#87CEEB,#87CEEB,#87CEEB);
 background-size:400% 400%;
 animation:skyMove 15s infinite linear;
 }
