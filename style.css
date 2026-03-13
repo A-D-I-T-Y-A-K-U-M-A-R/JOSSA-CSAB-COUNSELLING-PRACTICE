@@ -1,140 +1,92 @@
-body{
-font-family:Arial;
-margin:0;
-padding:0;
-background:linear-gradient(-45deg,#87CEEB,#b3e5ff,#87CEEB,#d6f4ff);
-background-size:400% 400%;
-animation:skyMove 15s infinite linear;
+*{
+box-sizing:border-box;
 }
 
-@keyframes skyMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+body{
+font-family: Arial, sans-serif;
+margin:0;
+padding:0;
 }
+
+/* header */
 
 .header{
 text-align:center;
-margin-top:50px;
-font-size:34px;
-font-weight:bold;
-text-decoration:underline;
-}
-
-.search-row{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:60px;
-align-items:center;
-position:relative;
-}
-
-#downloadBtn{
-position:absolute;
-right:0;
-background:#b3003c;
-color:white;
-border:none;
-padding:8px 15px;
-font-weight:bold;
-cursor:pointer;
-border-radius:4px;
-}
-
-.top-buttons{
-text-align:center;
-margin:20px;
-}
-
-.tables{
-display:flex;
-justify-content:space-around;
-padding:10px;
 margin-top:20px;
 }
 
-.left,.right{
-width:45%;
+/* search section */
+
+.search-row{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+align-items:center;
+margin:20px;
 }
 
-.tableTitle{
-text-align:center;
-font-weight:bold;
-text-decoration:underline;
+.search-row input,
+.search-row select,
+.search-row button{
+padding:6px;
+font-size:14px;
 }
 
-#availableCount{
-color:red;
-font-weight:bold;
-font-size:16px;
+/* tables container */
+
+.tables{
+display:flex;
+gap:20px;
+padding:10px;
+overflow-x:auto;     /* mobile horizontal scroll */
+white-space:nowrap;
 }
 
-.filledCount{
-color:red;
-font-weight:bold;
-font-size:16px;
+/* left and right tables */
+
+.left,
+.right{
+flex:0 0 auto;
+width:520px;         /* fixed table width */
 }
+
+/* table */
 
 table{
-border:2px solid #222;
 width:100%;
 border-collapse:collapse;
 }
 
-th{
-background:#444;
-color:white;
-padding:8px;
-}
-
-td{
-border:2px solid #333;
+th,td{
+border:1px solid #ccc;
 padding:6px;
 text-align:center;
+font-size:14px;
 }
 
-.addBtn{
-background:red;
-color:white;
-border:none;
-padding:5px 10px;
+/* buttons */
+
+button{
+cursor:pointer;
 }
 
-.deleteBtn{
-background:red;
-color:white;
-border:none;
-padding:5px 10px;
-}
-
-#searchBtn{
-background:#007bff;
-color:white;
-border:none;
-padding:6px 12px;
-}
-
-#clearFilters{
-background:red;
-color:white;
-border:none;
-padding:8px 15px;
-}
+/* footer */
 
 .footer{
-margin-top:60px;
 text-align:center;
+margin-top:40px;
+padding:10px;
 }
 
 .line{
-border-top:3px solid black;
-margin:25px 0;
+height:1px;
+background:#ccc;
+margin:10px 0;
 }
 
-.footerText{
-font-family:cursive;
-font-size:20px;
-font-weight:bold;
-margin:15px 0;
+/* delete button fix */
+
+#deleteAllBtn{
+position:relative;
 }
