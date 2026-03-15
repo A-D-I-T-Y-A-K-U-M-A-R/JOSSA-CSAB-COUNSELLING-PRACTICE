@@ -6,7 +6,7 @@ padding:0;
 /* FIXED LAYOUT WIDTH */
 min-width:1100px;
 
-background:linear-gradient(-45deg,#FFD700,#FFD700,#FFD700,#FFD700);
+background:linear-gradient(-45deg,#C0C0C0,#C0C0C0,#C0C0C0,#C0C0C0);
 background-size:400% 400%;
 animation:skyMove 15s infinite linear;
 }
