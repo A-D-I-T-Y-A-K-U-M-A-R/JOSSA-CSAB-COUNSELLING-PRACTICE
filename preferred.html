@@ -1,119 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-
 <title>Preferred Choices</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-<style>
-#previewTable th{height:70px;}
-#previewTable td{height:50px;}
-#previewTable, #previewTable th, #previewTable td{
-border:2px solid black;
-}
-
-#rank{
-background:gold;
-text-align:center;
-font-weight:bold;
-}
-#rank::placeholder{
-color:black;
-opacity:1;
-}
-</style>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
-<body id="top">
+<body>
 
-<h1 class="header">JOSAA/CSAB PRACTICE COUNSELLING CHOICES</h1>
+<div class="header">JOSAA/CSAB PRACTICE COUNSELLING CHOICES</div>
 
-<p style="text-align:center;">
+<!-- NOTE + FAQ -->
+<div style="text-align:center; margin-top:10px; position:relative;">
+<span>
 IMPORTANT NOTE: This counselling result is specifically accurate for candidates who are: Open Category | Home State: Jharkhand | Gender Neutral
+</span>
 
-<button onclick="document.getElementById('footer').scrollIntoView()"
-style="background:lime;padding:5px 10px;margin-left:10px;">
+<button style="
+position:absolute;
+right:120px;
+background:lime;
+border:2px solid black;
+padding:5px 12px;
+font-weight:bold;
+">
 FAQ
 </button>
-</p>
 
-<div style="text-align:center;margin-top:40px">
+</div>
 
-<input id="rank" type="number" placeholder="ENTER_RANK" style="padding:10px;border:none">
+<!-- INPUT AREA -->
+<div style="text-align:center; margin-top:30px;">
+
+<input type="number" id="rank" value="222" style="
+background:gold;
+border:none;
+padding:10px;
+width:200px;
+text-align:center;
+font-weight:bold;
+">
 
 <br><br>
 
-<select id="exam" style="padding:10px;background:cyan;border:none;font-weight:bold;">
-<option value="">EXAM_TYPE</option>
+<select id="exam" style="
+background:cyan;
+padding:8px 20px;
+font-weight:bold;
+">
 <option value="MAINS">JEE MAINS</option>
 <option value="ADVANCE">JEE ADVANCE</option>
 </select>
 
 <br><br>
 
-<button id="previewBtn"
-style="padding:10px 20px;background:#ff69b4;color:black;font-weight:bold;border:none">
+<button id="previewBtn" style="
+background:pink;
+padding:8px 20px;
+font-weight:bold;
+">
 SEE_PREVIEW
 </button>
 
 </div>
 
-<div style="display:flex;align-items:center;width:90%;margin:auto;margin-top:20px;position:relative;">
+<!-- BUTTONS ROW -->
+<div style="
+display:flex;
+justify-content:space-between;
+margin:40px 100px;
+">
 
-<select id="lockStatus"
-style="position:absolute;left:0;padding:10px;border:2px solid black;font-weight:bold;background:#8B0000;color:white;">
-<option value="unlock">UNLOCK</option>
+<select id="lockStatus" style="
+background:darkred;
+color:white;
+padding:10px 20px;
+font-weight:bold;
+">
 <option value="lock">LOCK</option>
+<option value="unlock">UNLOCK</option>
 </select>
 
-<a href="index.html" style="margin:auto;">
-<button style="padding:10px 20px;background:#800000;color:white;font-weight:bold;">
+<button style="
+background:darkred;
+color:white;
+padding:10px 25px;
+font-weight:bold;
+">
 GO_TO_CHOICE_FILLING
 </button>
-</a>
 
-<button onclick="resetAll()"
-style="position:absolute;right:0;background:#cc0033;color:white;padding:10px 20px;font-weight:bold;">
+<button onclick="resetAll()" style="
+background:crimson;
+color:white;
+padding:10px 25px;
+font-weight:bold;
+">
 UNFILTER_ALL
 </button>
 
 </div>
 
-<h2 style="text-align:center;margin-top:40px">PREVIEW</h2>
+<!-- 🔥 SEARCH BAR EXACT POSITION -->
+<div style="text-align:center;">
 
-<div style="width:95%;margin:auto;overflow:auto">
-<table id="previewTable"></table>
-</div>
+<div class="search-row">
 
-<div id="footer" class="footer">
-<div class="line"></div>
-<div class="footerText">MADE__BY__ADITYA__KUMAR__SINGH</div>
-<div class="line"></div>
+<select id="typeSearch2" style="background:#ddd;">
+<option value="">INSTITUTE TYPE</option>
+<option value="IIT">IIT</option>
+<option value="NIT">NIT</option>
+<option value="IIIT">IIIT</option>
+<option value="GFTI">GFTI</option>
+</select>
 
-<div style="text-align:center;margin-top:15px;">
-<a href="#top">
-<button style="background:lime;color:white;padding:6px 14px;">
-GO_TO_TOP
+<input id="instSearch2" placeholder="INSTITUTE NAME">
+<input id="branchSearch2" placeholder="BRANCH">
+
+<button id="searchBtn2" style="
+background:cyan;
+font-weight:bold;
+padding:6px 15px;
+">
+SEARCH
 </button>
-</a>
+
+<button id="clearSearch2" style="
+background:red;
+color:white;
+font-weight:bold;
+padding:6px 15px;
+">
+CLEAR_SEARCH
+</button>
+
 </div>
 
-<h2 style="text-align:center;margin-top:40px;text-decoration:underline;">FAQs</h2>
-
-<div style="max-width:900px;margin:auto;font-size:16px;line-height:1.7">
-<p><b>WHAT DOES THIS PAGE DO?</b><br>It generates counselling results.</p>
-<p><b>IS THIS PREDICTION ACCURATE?</b><br>Yes.</p>
-<p><b>IS THIS AN OFFICIAL WEBSITE?</b><br>No.</p>
 </div>
 
-<div class="line"></div>
+<!-- PREVIEW -->
+<div style="
+text-align:center;
+font-weight:bold;
+margin-top:20px;
+font-size:20px;
+">
+PREVIEW
 </div>
+
+<table id="previewTable"></table>
 
 <script src="preferred.js"></script>
+
 </body>
 </html>
