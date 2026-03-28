@@ -25,8 +25,8 @@
 
 </div>
 
-<!-- ✅ SEARCH BAR (NO STRUCTURE BREAK) -->
-<div class="search-row" style="margin-top:20px;">
+<!-- ✅ SEARCH BAR (SAFE POSITION) -->
+<div class="search-row" style="margin-top:25px;">
 
 <select id="typeSearch2">
 <option value="">INSTITUTE TYPE</option>
@@ -36,21 +36,18 @@
 <option value="GFTI">GFTI</option>
 </select>
 
-<input list="instList2" id="instSearch2" placeholder="INSTITUTE NAME">
-<datalist id="instList2"></datalist>
-
-<input list="branchList2" id="branchSearch2" placeholder="BRANCH">
-<datalist id="branchList2"></datalist>
+<input id="instSearch2" placeholder="INSTITUTE NAME">
+<input id="branchSearch2" placeholder="BRANCH">
 
 <button id="searchBtn2">SEARCH</button>
-
 <button id="clearSearch2">CLEAR_SEARCH</button>
 
 </div>
 
-<!-- ❌ NO extra div like tables/left/right -->
-
-<h3 style="text-align:center; margin-top:20px;">PREVIEW TABLE</h3>
+<!-- ✅ KEEP ORIGINAL STRUCTURE -->
+<div style="text-align:center; margin-top:20px; font-weight:bold; text-decoration:underline;">
+PREVIEW TABLE
+</div>
 
 <table id="previewTable"></table>
 
