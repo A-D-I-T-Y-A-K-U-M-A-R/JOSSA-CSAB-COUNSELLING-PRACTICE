@@ -1,5 +1,7 @@
+/* ================= ORIGINAL DATA ================= */
 let records = {};
 let removeLocked = false;
+let originalData = [];
 
 let files = [
 "ROUND 1 JOSSA 2025.xlsx",
@@ -13,6 +15,7 @@ let files = [
 "ROUND 3 CSAB 2025.xlsx"
 ];
 
+/* ================= NIT ORDER (RESTORED) ================= */
 const NIT_ORDER = {
 "national institute of technology, tiruchirappalli":1,
 "national institute of technology karnataka, surathkal":2,
@@ -51,32 +54,25 @@ function getPriority(inst){
 return NIT_ORDER[inst.toLowerCase()] || 999;
 }
 
-function getType(inst){
-let n = inst.toLowerCase();
+/* ================= BUTTON FIX ================= */
 
-if(n.includes("indian institute of technology")) return "IIT";
-if(n.includes("national institute of technology")) return "NIT";
-if(n.includes("iiit")) return "IIIT";
-if(n.includes("bit mesra")) return "BIT";
+// GO TO CHOICE FILLING
+document.getElementById("goBtn").onclick=()=>{
+window.location.href="index.html";
+};
 
-return "OTHER";
-}
+// UNFILTER_ALL (SAFE RESET – NO DATA LOSS)
+document.getElementById("resetBtn").onclick=()=>{
+location.reload();
+};
 
-function valid(inst, exam){
-let t = getType(inst);
+// FAQ FIX (no overlap issue handled by HTML position)
 
-if(exam==="ADVANCE") return t==="IIT";
-if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
-
-return false;
-}
-
-/* LOCK DROPDOWN (same as before) */
+/* ================= LOCK ================= */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
 if(lock){
-
 let saved = localStorage.getItem("lockStatus");
 if(saved){
 lock.value = saved;
@@ -88,34 +84,10 @@ localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
 updateRemove();
 };
-
 }
 });
 
-/* INPUT SAVE */
-rank.oninput=()=>localStorage.setItem("rank",rank.value);
-exam.onchange=()=>localStorage.setItem("exam",exam.value);
-
-rank.value=localStorage.getItem("rank")||"";
-exam.value=localStorage.getItem("exam")||"";
-
-/* SAVE TABLE */
-function saveTable(){
-localStorage.setItem("previewTableData",previewTable.innerHTML);
-}
-
-/* LOAD TABLE */
-function loadTable(){
-let t=localStorage.getItem("previewTableData");
-if(t){
-previewTable.innerHTML=t;
-attachEvents();
-updateRemove();
-}
-}
-loadTable();
-
-/* UPDATE REMOVE */
+/* ================= REMOVE CONTROL ================= */
 function updateRemove(){
 document.querySelectorAll("#previewTable button").forEach(btn=>{
 if(btn.innerText==="REMOVE"){
@@ -125,50 +97,7 @@ btn.style.opacity=removeLocked?0.5:1;
 });
 }
 
-/* ATTACH EVENTS */
-function attachEvents(){
-document.querySelectorAll("#previewTable tr").forEach(row=>{
-let btns=row.querySelectorAll("button");
-
-if(btns.length>=2){
-
-btns[0].onclick=()=>{
-if(removeLocked)return;
-row.remove();
-saveTable();
-};
-
-btns[1].onclick=()=>{
-let inst=row.children[3].innerText;
-let branch=row.children[4].innerText;
-
-let input=row.children[1].querySelector("input");
-let value = input.value.trim();
-let pos = parseInt(value);
-
-let main=JSON.parse(localStorage.getItem("mainList")||"[]");
-
-if(main.some(m=>m.inst===inst && m.branch===branch)) return;
-
-/* 🔥 ONLY FIXED PART */
-if(value === ""){
-main.splice(main.length,0,{inst,branch});
-}
-else if(!isNaN(pos) && pos>0 && pos<=main.length){
-main.splice(pos-1,0,{inst,branch});
-}
-else{
-main.splice(main.length,0,{inst,branch});
-}
-
-localStorage.setItem("mainList",JSON.stringify(main));
-};
-
-}
-});
-}
-
-/* PROCESS + BUILD (unchanged) */
+/* ================= PROCESS ================= */
 async function process(rank, exam){
 
 records = {};
@@ -197,7 +126,6 @@ let opening = parseInt(r[4]);
 let closing = parseInt(r[5]);
 
 if(!closing || closing < rank) continue;
-if(!valid(inst, exam)) continue;
 
 let key = inst+"||"+branch;
 
@@ -217,6 +145,7 @@ records[key][source] = {opening,closing,round};
 }
 }
 
+/* ================= BUILD ================= */
 function buildData(){
 let arr=[];
 for(let k in records){
@@ -231,7 +160,7 @@ arr.sort((a,b)=>getPriority(a[0])-getPriority(b[0]));
 return arr;
 }
 
-/* PREVIEW */
+/* ================= PREVIEW ================= */
 previewBtn.onclick = async ()=>{
 
 let r=parseInt(rank.value);
@@ -239,6 +168,14 @@ let e=exam.value;
 
 await process(r,e);
 let data=buildData();
+
+originalData = data; // 🔥 SEARCH STORAGE
+
+renderTable(data);
+};
+
+/* ================= RENDER ================= */
+function renderTable(data){
 
 previewTable.innerHTML="";
 
@@ -257,92 +194,65 @@ tr.appendChild(th);
 });
 previewTable.appendChild(tr);
 
-let last="";
-
 data.forEach(r=>{
-
-if(last && last!==r[0]){
-let sep=document.createElement("tr");
-sep.innerHTML="<td colspan='11' style='height:10px;background:#eee'></td>";
-previewTable.appendChild(sep);
-}
-
-last=r[0];
 
 let tr=document.createElement("tr");
 
-// REMOVE
-let td1=document.createElement("td");
-let rm=document.createElement("button");
-rm.innerText="REMOVE";
-rm.style.background="red";
-rm.style.color="white";
-rm.onclick=()=>{ if(!removeLocked){tr.remove(); saveTable();}};
-td1.appendChild(rm);
-tr.appendChild(td1);
-
-// INPUT
-let td2=document.createElement("td");
-let input=document.createElement("input");
-input.type="number";
-input.style.width="60px";
-input.style.textAlign="center";
-input.style.border="2px solid black";
-td2.appendChild(input);
-tr.appendChild(td2);
-
-// ADD
-let td3=document.createElement("td");
-let add=document.createElement("button");
-add.innerText="ADD";
-add.style.background="lightgreen";
-
-add.onclick=()=>{
-let main=JSON.parse(localStorage.getItem("mainList")||"[]");
-
-if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
-
-let value = input.value.trim();
-let pos = parseInt(value);
-
-/* 🔥 ONLY FIXED PART */
-if(value === ""){
-main.splice(main.length,0,{inst:r[0],branch:r[1]});
-}
-else if(!isNaN(pos) && pos>0 && pos<=main.length){
-main.splice(pos-1,0,{inst:r[0],branch:r[1]});
-}
-else{
-main.splice(main.length,0,{inst:r[0],branch:r[1]});
-}
-
-localStorage.setItem("mainList",JSON.stringify(main));
-};
-
-td3.appendChild(add);
-tr.appendChild(td3);
-
-// DATA
-r.forEach(v=>{
-let td=document.createElement("td");
-td.innerText=v;
-tr.appendChild(td);
-});
+tr.innerHTML=`
+<td><button>REMOVE</button></td>
+<td><input type="number"></td>
+<td><button>ADD</button></td>
+<td>${r[0]}</td>
+<td>${r[1]}</td>
+<td>${r[2]}</td>
+<td>${r[3]}</td>
+<td>${r[4]}</td>
+<td>${r[5]}</td>
+<td>${r[6]}</td>
+<td>${r[7]}</td>
+`;
 
 previewTable.appendChild(tr);
 
 });
 
-saveTable();
-attachEvents();
 updateRemove();
+}
 
+/* ================= SEARCH ================= */
+searchBtn2.onclick=()=>{
+
+let type=typeSearch2.value.toLowerCase();
+let inst=instSearch2.value.toLowerCase();
+let branch=branchSearch2.value.toLowerCase();
+
+let filtered = originalData.filter(r=>{
+
+let i=r[0].toLowerCase();
+let b=r[1].toLowerCase();
+
+let typeMatch=true;
+
+if(type){
+if(type==="iit") typeMatch=i.includes("indian institute");
+else if(type==="nit") typeMatch=i.includes("national institute");
+else if(type==="iiit") typeMatch=i.includes("iiit");
+}
+
+return(
+typeMatch &&
+i.includes(inst) &&
+b.includes(branch)
+);
+});
+
+renderTable(filtered);
 };
 
-/* RESET */
-function resetAll(){
-rank.value="";
-exam.value="";
-previewTable.innerHTML="";
-localStorage.clear();
-}
+/* ================= CLEAR ================= */
+clearSearch2.onclick=()=>{
+typeSearch2.value="";
+instSearch2.value="";
+branchSearch2.value="";
+renderTable(originalData);
+};
