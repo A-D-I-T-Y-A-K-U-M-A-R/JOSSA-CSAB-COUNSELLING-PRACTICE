@@ -71,31 +71,15 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* =========================
-   LOCK DROPDOWN (FIXED)
-========================= */
+/* LOCK DROPDOWN */
 document.addEventListener("DOMContentLoaded",()=>{
-
 let lock = document.getElementById("lockStatus");
-
 if(lock){
-
-// ✅ LOAD SAVED VALUE
-let saved = localStorage.getItem("lockStatus");
-if(saved){
-lock.value = saved;
-removeLocked = (saved === "lock");
-}
-
-// ✅ SAVE ON CHANGE
-lock.onchange = ()=>{
-localStorage.setItem("lockStatus", lock.value);
+lock.onchange=()=>{
 removeLocked = (lock.value==="lock");
 updateRemove();
 };
-
 }
-
 });
 
 /* INPUT SAVE */
@@ -168,7 +152,7 @@ localStorage.setItem("mainList",JSON.stringify(main));
 });
 }
 
-/* PROCESS */
+/* PROCESS + BUILD (UNCHANGED) */
 async function process(rank, exam){
 
 records = {};
@@ -202,71 +186,141 @@ if(!valid(inst, exam)) continue;
 let key = inst+"||"+branch;
 
 if(!records[key]){
-records[key]={
-inst,
-branch,
-bestRank:closing,
-round,
-source
-};
+records[key] = {inst,branch,JOSSA:{},CSAB:{}};
+}
+
+let curr = records[key][source];
+
+if(!curr.round || round < curr.round){
+records[key][source] = {opening,closing,round};
 }
 
 }
+
 }catch(e){}
 }
-
-buildTable();
 }
 
-/* BUILD TABLE */
-function buildTable(){
-
-previewTable.innerHTML="";
-
-let arr=Object.values(records);
-
-arr.sort((a,b)=>a.bestRank-b.bestRank);
-
-arr.forEach((r,i)=>{
-
-let row=document.createElement("tr");
-
-row.innerHTML=`
-<td>${i+1}</td>
-<td><input type="number" value="${i+1}" min="1"></td>
-<td><button>REMOVE</button></td>
-<td>${r.inst}</td>
-<td>${r.branch}</td>
-<td>${r.bestRank}</td>
-<td>${r.round}</td>
-<td>${r.source}</td>
-<td><button>ADD</button></td>
-`;
-
-previewTable.appendChild(row);
-
-});
-
-attachEvents();
-saveTable();
-updateRemove();
+function buildData(){
+let arr=[];
+for(let k in records){
+let d=records[k];
+arr.push([
+d.inst,d.branch,
+d.JOSSA.opening||"",d.JOSSA.closing||"",d.JOSSA.round||"",
+d.CSAB.opening||"",d.CSAB.closing||"",d.CSAB.round||""
+]);
+}
+arr.sort((a,b)=>getPriority(a[0])-getPriority(b[0]));
+return arr;
 }
 
-/* BUTTON */
-previewBtn.onclick=()=>{
+/* PREVIEW */
+previewBtn.onclick = async ()=>{
+
 let r=parseInt(rank.value);
 let e=exam.value;
 
-if(!r || !e){
-alert("ENTER RANK AND EXAM");
-return;
+await process(r,e);
+let data=buildData();
+
+previewTable.innerHTML="";
+
+let headers=[
+"REMOVE","FILL TO NUMBER","ADD",
+"Institute","Branch",
+"JoSAA Opening","JoSAA Closing","JoSAA Round",
+"CSAB Opening","CSAB Closing","CSAB Round"
+];
+
+let tr=document.createElement("tr");
+headers.forEach(h=>{
+let th=document.createElement("th");
+th.innerText=h;
+tr.appendChild(th);
+});
+previewTable.appendChild(tr);
+
+let last="";
+
+data.forEach(r=>{
+
+if(last && last!==r[0]){
+let sep=document.createElement("tr");
+sep.innerHTML="<td colspan='11' style='height:10px;background:#eee'></td>";
+previewTable.appendChild(sep);
 }
 
-process(r,e);
+last=r[0];
+
+let tr=document.createElement("tr");
+
+// REMOVE
+let td1=document.createElement("td");
+let rm=document.createElement("button");
+rm.innerText="REMOVE";
+rm.style.background="red";
+rm.style.color="white";
+rm.onclick=()=>{ if(!removeLocked){tr.remove(); saveTable();}};
+td1.appendChild(rm);
+tr.appendChild(td1);
+
+// INPUT
+let td2=document.createElement("td");
+let input=document.createElement("input");
+input.type="number";
+input.style.width="60px";
+input.style.textAlign="center";
+input.style.border="2px solid black";
+td2.appendChild(input);
+tr.appendChild(td2);
+
+// ADD
+let td3=document.createElement("td");
+let add=document.createElement("button");
+add.innerText="ADD";
+add.style.background="lightgreen";
+
+add.onclick=()=>{
+let main=JSON.parse(localStorage.getItem("mainList")||"[]");
+
+if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
+
+let pos=parseInt(input.value);
+
+if(pos && pos>0 && pos<=main.length){
+main.splice(pos-1,0,{inst:r[0],branch:r[1]});
+}else{
+main.push({inst:r[0],branch:r[1]});
+}
+
+localStorage.setItem("mainList",JSON.stringify(main));
+};
+
+td3.appendChild(add);
+tr.appendChild(td3);
+
+// DATA
+r.forEach(v=>{
+let td=document.createElement("td");
+td.innerText=v;
+tr.appendChild(td);
+});
+
+previewTable.appendChild(tr);
+
+});
+
+saveTable();
+attachEvents();
+updateRemove();
+
 };
 
 /* RESET */
 function resetAll(){
+rank.value="";
+exam.value="";
+previewTable.innerHTML="";
 localStorage.clear();
-location.reload();
 }
