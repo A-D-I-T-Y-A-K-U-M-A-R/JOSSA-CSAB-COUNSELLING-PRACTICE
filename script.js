@@ -278,3 +278,69 @@ renderLeft();
 autoSave();
 
 };
+
+function downloadPDF(){
+
+let table = document.getElementById("rightTable");
+
+if(!table || table.querySelectorAll("tbody tr").length === 0){
+alert("No choices to show");
+return;
+}
+
+let tableHTML = table.outerHTML;
+
+let html = `
+<html>
+<head>
+<title>JoSAA Choice Preferences</title>
+
+<style>
+body{font-family:Arial;padding:20px;}
+
+h2{text-align:center;}
+
+table{
+border-collapse:collapse;
+width:100%;
+}
+
+th{
+background:orange;
+color:black;
+font-size:20px;
+height:30px;
+border:3px solid black;
+text-align:center;
+}
+
+td{
+font-size:18px;
+height:30px;
+border:3px solid black;
+text-align:center;
+}
+
+/* DELETE BUTTON HIDE */
+button{
+display:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>JoSAA Choice Preferences</h2>
+
+${tableHTML}
+
+</body>
+</html>
+`;
+
+let win = window.open("", "_blank");
+win.document.write(html);
+win.document.close();
+
+}
