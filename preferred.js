@@ -71,7 +71,7 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN FIXED */
+/* LOCK DROPDOWN (same as before) */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
@@ -150,15 +150,15 @@ let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
-/* FIXED */
+/* 🔥 ONLY FIXED PART */
 if(value === ""){
-main.push({inst,branch});
+main.splice(main.length,0,{inst,branch});
 }
 else if(!isNaN(pos) && pos>0 && pos<=main.length){
 main.splice(pos-1,0,{inst,branch});
 }
 else{
-main.push({inst,branch});
+main.splice(main.length,0,{inst,branch});
 }
 
 localStorage.setItem("mainList",JSON.stringify(main));
@@ -168,7 +168,7 @@ localStorage.setItem("mainList",JSON.stringify(main));
 });
 }
 
-/* PROCESS */
+/* PROCESS + BUILD (unchanged) */
 async function process(rank, exam){
 
 records = {};
@@ -305,15 +305,15 @@ if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
 let value = input.value.trim();
 let pos = parseInt(value);
 
-/* FIXED */
+/* 🔥 ONLY FIXED PART */
 if(value === ""){
-main.push({inst:r[0],branch:r[1]});
+main.splice(main.length,0,{inst:r[0],branch:r[1]});
 }
 else if(!isNaN(pos) && pos>0 && pos<=main.length){
 main.splice(pos-1,0,{inst:r[0],branch:r[1]});
 }
 else{
-main.push({inst:r[0],branch:r[1]});
+main.splice(main.length,0,{inst:r[0],branch:r[1]});
 }
 
 localStorage.setItem("mainList",JSON.stringify(main));
