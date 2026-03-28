@@ -16,16 +16,53 @@ const branchList=document.getElementById("branchList");
 let data=[];
 let filteredData=[];
 
+/* =========================
+   LOAD DATA
+========================= */
 fetch("data.json")
 .then(r=>r.json())
 .then(json=>{
 data=json;
 filteredData=[...data];
 populateLists();
-renderLeft();
 loadSaved();
+loadMainList();   // 🔥 FIXED
+renderLeft();
+renderRight();
 });
 
+/* =========================
+   LOAD MAIN LIST FROM 2ND PAGE (FIXED)
+========================= */
+function loadMainList(){
+
+let main = JSON.parse(localStorage.getItem("mainList")||"[]");
+
+// 🔥 IMPORTANT FIX: CLEAR only those coming from mainList
+preferences = preferences.filter(p=>{
+return !main.some(m=>m.inst===p.inst && m.branch===p.branch);
+});
+
+// 🔥 ADD IN SAME ORDER (POSITION PRESERVED)
+main.forEach((m,i)=>{
+
+// skip duplicate
+if(preferences.some(p=>p.inst===m.inst && p.branch===m.branch)) return;
+
+// insert at correct position
+if(i>=0 && i<=preferences.length){
+preferences.splice(i,0,{inst:m.inst,branch:m.branch});
+}else{
+preferences.push({inst:m.inst,branch:m.branch});
+}
+
+});
+
+}
+
+/* =========================
+   DROPDOWN LISTS
+========================= */
 function populateLists(){
 
 let instSet=new Set();
@@ -50,10 +87,15 @@ branchList.appendChild(o);
 
 }
 
+/* =========================
+   LEFT TABLE
+========================= */
 function renderLeft(){
 
 leftTable.innerHTML="";
 let last="";
+
+let main = JSON.parse(localStorage.getItem("mainList")||"[]");
 
 filteredData.forEach(item=>{
 
@@ -69,7 +111,11 @@ last=item.inst;
 
 let row=document.createElement("tr");
 
-let already=preferences.some(p=>p.inst===item.inst && p.branch===item.branch);
+// 🔥 UPDATED LOGIC (NO DUPLICATE)
+let already =
+preferences.some(p=>p.inst===item.inst && p.branch===item.branch)
+||
+main.some(m=>m.inst===item.inst && m.branch===item.branch);
 
 row.innerHTML=`
 <td>${item.inst}</td>
@@ -97,6 +143,9 @@ availableCount.textContent="Total Available Choices: "+filteredData.length;
 
 }
 
+/* =========================
+   ADD PREF
+========================= */
 function addPref(inst,branch,choice){
 
 if(preferences.some(p=>p.inst===inst && p.branch===branch)) return;
@@ -115,6 +164,9 @@ autoSave();
 
 }
 
+/* =========================
+   RIGHT TABLE
+========================= */
 function renderRight(){
 
 rightTable.innerHTML="";
@@ -162,22 +214,29 @@ filledCount.textContent="Total Filled Choices: "+preferences.length;
 
 }
 
+/* =========================
+   AUTO SAVE
+========================= */
 function autoSave(){
 localStorage.setItem("prefs",JSON.stringify(preferences));
 }
 
+/* =========================
+   LOAD SAVED
+========================= */
 function loadSaved(){
 
 let s=localStorage.getItem("prefs");
 
 if(s){
 preferences=JSON.parse(s);
-renderRight();
-renderLeft();
 }
 
 }
 
+/* =========================
+   SEARCH
+========================= */
 document.getElementById("searchBtn").onclick=()=>{
 
 let t=typeSearch.value.toLowerCase();
@@ -207,63 +266,15 @@ renderLeft();
 
 };
 
-/* DELETE ALL FILLED CHOICES BUTTON */
-
+/* =========================
+   DELETE ALL
+========================= */
 document.getElementById("deleteAllBtn").onclick=()=>{
 
 preferences=[];
+localStorage.removeItem("mainList");
 renderRight();
 renderLeft();
 autoSave();
 
 };
-
-function downloadPDF(){
-
-let rows=document.querySelectorAll("#rightTable tbody tr");
-
-if(rows.length===0){
-alert("No choices to show");
-return;
-}
-
-let html=`<html><head><title>JoSAA Choice Preferences</title>
-<style>
-body{font-family:Arial;padding:20px;}
-table{border-collapse:collapse;width:100%;}
-th{background:orange;color:black;font-size:20px;height:30px;border:3px solid black;text-align:center;}
-td{font-size:18px;height:30px;border:3px solid black;text-align:center;}
-</style>
-</head><body>
-
-<h2>JoSAA Choice Preferences</h2>
-
-<table>
-<tr>
-<th>Choice No</th>
-<th>Institute</th>
-<th>Branch</th>
-</tr>`;
-
-rows.forEach((r,i)=>{
-
-let inst=r.children[0].innerText;
-let branch=r.children[1].innerText;
-
-html+=`
-<tr>
-<td>${i+1}</td>
-<td>${inst}</td>
-<td>${branch}</td>
-</tr>
-`;
-
-});
-
-html+=`</table></body></html>`;
-
-let win=window.open("");
-win.document.write(html);
-win.document.close();
-
-}
