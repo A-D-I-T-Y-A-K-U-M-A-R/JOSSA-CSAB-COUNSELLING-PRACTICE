@@ -1,119 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-
 <title>Preferred Choices</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-<style>
-#previewTable th{height:70px;}
-#previewTable td{height:50px;}
-#previewTable, #previewTable th, #previewTable td{
-border:2px solid black;
-}
-
-#rank{
-background:gold;
-text-align:center;
-font-weight:bold;
-}
-#rank::placeholder{
-color:black;
-opacity:1;
-}
-</style>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
-<body id="top">
+<body>
 
-<h1 class="header">JOSAA/CSAB PRACTICE COUNSELLING CHOICES</h1>
+<div class="header">PREFERRED CHOICE BUILDER</div>
 
-<p style="text-align:center;">
-IMPORTANT NOTE: This counselling result is specifically accurate for candidates who are: Open Category | Home State: Jharkhand | Gender Neutral
+<div class="top-buttons">
 
-<button onclick="document.getElementById('footer').scrollIntoView()"
-style="background:lime;padding:5px 10px;margin-left:10px;">
-FAQ
-</button>
-</p>
-
-<div style="text-align:center;margin-top:40px">
-
-<input id="rank" type="number" placeholder="ENTER_RANK" style="padding:10px;border:none">
-
-<br><br>
-
-<select id="exam" style="padding:10px;background:cyan;border:none;font-weight:bold;">
-<option value="">EXAM_TYPE</option>
-<option value="MAINS">JEE MAINS</option>
-<option value="ADVANCE">JEE ADVANCE</option>
+<select id="exam">
+<option value="MAINS">MAINS</option>
+<option value="ADVANCE">ADVANCE</option>
 </select>
 
-<br><br>
+<input type="number" id="rank" placeholder="ENTER RANK">
 
-<button id="previewBtn"
-style="padding:10px 20px;background:#ff69b4;color:black;font-weight:bold;border:none">
-SEE_PREVIEW
-</button>
+<button id="previewBtn">PREVIEW</button>
+
+<button onclick="resetAll()">UNFILTER_ALL</button>
 
 </div>
 
-<div style="display:flex;align-items:center;width:90%;margin:auto;margin-top:20px;position:relative;">
+<!-- ✅ SEARCH BAR (NO STRUCTURE BREAK) -->
+<div class="search-row" style="margin-top:20px;">
 
-<select id="lockStatus"
-style="position:absolute;left:0;padding:10px;border:2px solid black;font-weight:bold;background:#8B0000;color:white;">
-<option value="unlock">UNLOCK</option>
-<option value="lock">LOCK</option>
+<select id="typeSearch2">
+<option value="">INSTITUTE TYPE</option>
+<option value="IIT">IIT</option>
+<option value="NIT">NIT</option>
+<option value="IIIT">IIIT</option>
+<option value="GFTI">GFTI</option>
 </select>
 
-<a href="index.html" style="margin:auto;">
-<button style="padding:10px 20px;background:#800000;color:white;font-weight:bold;">
-GO_TO_CHOICE_FILLING
-</button>
-</a>
+<input list="instList2" id="instSearch2" placeholder="INSTITUTE NAME">
+<datalist id="instList2"></datalist>
 
-<button onclick="resetAll()"
-style="position:absolute;right:0;background:#cc0033;color:white;padding:10px 20px;font-weight:bold;">
-UNFILTER_ALL
-</button>
+<input list="branchList2" id="branchSearch2" placeholder="BRANCH">
+<datalist id="branchList2"></datalist>
+
+<button id="searchBtn2">SEARCH</button>
+
+<button id="clearSearch2">CLEAR_SEARCH</button>
 
 </div>
 
-<h2 style="text-align:center;margin-top:40px">PREVIEW</h2>
+<!-- ❌ NO extra div like tables/left/right -->
 
-<div style="width:95%;margin:auto;overflow:auto">
+<h3 style="text-align:center; margin-top:20px;">PREVIEW TABLE</h3>
+
 <table id="previewTable"></table>
-</div>
-
-<div id="footer" class="footer">
-<div class="line"></div>
-<div class="footerText">MADE__BY__ADITYA__KUMAR__SINGH</div>
-<div class="line"></div>
-
-<div style="text-align:center;margin-top:15px;">
-<a href="#top">
-<button style="background:lime;color:white;padding:6px 14px;">
-GO_TO_TOP
-</button>
-</a>
-</div>
-
-<h2 style="text-align:center;margin-top:40px;text-decoration:underline;">FAQs</h2>
-
-<div style="max-width:900px;margin:auto;font-size:16px;line-height:1.7">
-<p><b>WHAT DOES THIS PAGE DO?</b><br>It generates counselling results.</p>
-<p><b>IS THIS PREDICTION ACCURATE?</b><br>Yes.</p>
-<p><b>IS THIS AN OFFICIAL WEBSITE?</b><br>No.</p>
-</div>
-
-<div class="line"></div>
-</div>
 
 <script src="preferred.js"></script>
+
 </body>
 </html>
