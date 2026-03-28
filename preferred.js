@@ -71,14 +71,26 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN */
+/* LOCK DROPDOWN (FIXED ONLY THIS PART) */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
+
 if(lock){
+
+// LOAD SAVED VALUE
+let saved = localStorage.getItem("lockStatus");
+if(saved){
+lock.value = saved;
+removeLocked = (saved === "lock");
+}
+
+// SAVE ON CHANGE
 lock.onchange=()=>{
+localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
 updateRemove();
 };
+
 }
 });
 
