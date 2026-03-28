@@ -71,20 +71,18 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN (FIXED ONLY THIS PART) */
+/* LOCK DROPDOWN (FIXED) */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
 if(lock){
 
-// LOAD SAVED VALUE
 let saved = localStorage.getItem("lockStatus");
 if(saved){
 lock.value = saved;
 removeLocked = (saved === "lock");
 }
 
-// SAVE ON CHANGE
 lock.onchange=()=>{
 localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
@@ -151,7 +149,8 @@ let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
-if(pos && pos>0 && pos<=main.length){
+/* ✅ FIXED PART ONLY */
+if(!isNaN(pos) && pos>0 && pos<=main.length){
 main.splice(pos-1,0,{inst,branch});
 }else{
 main.push({inst,branch});
@@ -267,7 +266,6 @@ last=r[0];
 
 let tr=document.createElement("tr");
 
-// REMOVE
 let td1=document.createElement("td");
 let rm=document.createElement("button");
 rm.innerText="REMOVE";
@@ -277,7 +275,6 @@ rm.onclick=()=>{ if(!removeLocked){tr.remove(); saveTable();}};
 td1.appendChild(rm);
 tr.appendChild(td1);
 
-// INPUT
 let td2=document.createElement("td");
 let input=document.createElement("input");
 input.type="number";
@@ -287,7 +284,6 @@ input.style.border="2px solid black";
 td2.appendChild(input);
 tr.appendChild(td2);
 
-// ADD
 let td3=document.createElement("td");
 let add=document.createElement("button");
 add.innerText="ADD";
@@ -298,9 +294,9 @@ let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
 
+/* ✅ FIXED PART ONLY */
 let pos=parseInt(input.value);
-
-if(pos && pos>0 && pos<=main.length){
+if(!isNaN(pos) && pos>0 && pos<=main.length){
 main.splice(pos-1,0,{inst:r[0],branch:r[1]});
 }else{
 main.push({inst:r[0],branch:r[1]});
@@ -312,7 +308,6 @@ localStorage.setItem("mainList",JSON.stringify(main));
 td3.appendChild(add);
 tr.appendChild(td3);
 
-// DATA
 r.forEach(v=>{
 let td=document.createElement("td");
 td.innerText=v;
