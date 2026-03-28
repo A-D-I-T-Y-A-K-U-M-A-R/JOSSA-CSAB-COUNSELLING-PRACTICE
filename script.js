@@ -26,13 +26,13 @@ data=json;
 filteredData=[...data];
 populateLists();
 loadSaved();
-loadMainList();   // 🔥 FIXED
+// loadMainList();   // 🔥 DISABLED (FIX)
 renderLeft();
 renderRight();
 });
 
 /* =========================
-   LOAD MAIN LIST FROM 2ND PAGE (FIXED)
+   LOAD MAIN LIST FROM 2ND PAGE
 ========================= */
 function loadMainList(){
 
@@ -139,17 +139,27 @@ availableCount.textContent="Total Available Choices: "+filteredData.length;
 }
 
 /* =========================
-   ADD PREF
+   ADD PREF (FIXED)
 ========================= */
 function addPref(inst,branch,choice){
 
 if(preferences.some(p=>p.inst===inst && p.branch===branch)) return;
 
-let pos=parseInt(choice);
+let pos = parseInt(choice);
 
-if(pos && pos>0 && pos<=preferences.length){
-preferences.splice(pos-1,0,{inst,branch});
+// VALID POSITION
+if(!isNaN(pos) && pos > 0){
+
+if(pos <= preferences.length){
+preferences.splice(pos-1, 0, {inst,branch});
 }else{
+preferences.push({inst,branch});
+}
+
+}
+
+// INVALID / EMPTY → BOTTOM
+else{
 preferences.push({inst,branch});
 }
 
@@ -275,7 +285,7 @@ autoSave();
 };
 
 /* =========================
-   DOWNLOAD (ONLY MODIFIED PART)
+   DOWNLOAD (UNCHANGED)
 ========================= */
 function downloadPDF(){
 
