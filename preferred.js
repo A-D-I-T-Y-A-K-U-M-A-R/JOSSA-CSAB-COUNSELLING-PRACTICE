@@ -71,7 +71,7 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN (FIXED) */
+/* LOCK DROPDOWN FIXED */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
@@ -143,16 +143,21 @@ let inst=row.children[3].innerText;
 let branch=row.children[4].innerText;
 
 let input=row.children[1].querySelector("input");
-let pos=parseInt(input.value);
+let value = input.value.trim();
+let pos = parseInt(value);
 
 let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
-/* ✅ FIXED PART ONLY */
-if(!isNaN(pos) && pos>0 && pos<=main.length){
+/* FIXED */
+if(value === ""){
+main.push({inst,branch});
+}
+else if(!isNaN(pos) && pos>0 && pos<=main.length){
 main.splice(pos-1,0,{inst,branch});
-}else{
+}
+else{
 main.push({inst,branch});
 }
 
@@ -163,7 +168,7 @@ localStorage.setItem("mainList",JSON.stringify(main));
 });
 }
 
-/* PROCESS + BUILD (UNCHANGED) */
+/* PROCESS */
 async function process(rank, exam){
 
 records = {};
@@ -266,6 +271,7 @@ last=r[0];
 
 let tr=document.createElement("tr");
 
+// REMOVE
 let td1=document.createElement("td");
 let rm=document.createElement("button");
 rm.innerText="REMOVE";
@@ -275,6 +281,7 @@ rm.onclick=()=>{ if(!removeLocked){tr.remove(); saveTable();}};
 td1.appendChild(rm);
 tr.appendChild(td1);
 
+// INPUT
 let td2=document.createElement("td");
 let input=document.createElement("input");
 input.type="number";
@@ -284,6 +291,7 @@ input.style.border="2px solid black";
 td2.appendChild(input);
 tr.appendChild(td2);
 
+// ADD
 let td3=document.createElement("td");
 let add=document.createElement("button");
 add.innerText="ADD";
@@ -294,11 +302,17 @@ let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
 
-/* ✅ FIXED PART ONLY */
-let pos=parseInt(input.value);
-if(!isNaN(pos) && pos>0 && pos<=main.length){
+let value = input.value.trim();
+let pos = parseInt(value);
+
+/* FIXED */
+if(value === ""){
+main.push({inst:r[0],branch:r[1]});
+}
+else if(!isNaN(pos) && pos>0 && pos<=main.length){
 main.splice(pos-1,0,{inst:r[0],branch:r[1]});
-}else{
+}
+else{
 main.push({inst:r[0],branch:r[1]});
 }
 
@@ -308,6 +322,7 @@ localStorage.setItem("mainList",JSON.stringify(main));
 td3.appendChild(add);
 tr.appendChild(td3);
 
+// DATA
 r.forEach(v=>{
 let td=document.createElement("td");
 td.innerText=v;
