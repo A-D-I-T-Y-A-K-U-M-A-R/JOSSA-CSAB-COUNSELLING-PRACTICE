@@ -38,18 +38,14 @@ function loadMainList(){
 
 let main = JSON.parse(localStorage.getItem("mainList")||"[]");
 
-// 🔥 IMPORTANT FIX: CLEAR only those coming from mainList
 preferences = preferences.filter(p=>{
 return !main.some(m=>m.inst===p.inst && m.branch===p.branch);
 });
 
-// 🔥 ADD IN SAME ORDER (POSITION PRESERVED)
 main.forEach((m,i)=>{
 
-// skip duplicate
 if(preferences.some(p=>p.inst===m.inst && p.branch===m.branch)) return;
 
-// insert at correct position
 if(i>=0 && i<=preferences.length){
 preferences.splice(i,0,{inst:m.inst,branch:m.branch});
 }else{
@@ -111,7 +107,6 @@ last=item.inst;
 
 let row=document.createElement("tr");
 
-// 🔥 UPDATED LOGIC (NO DUPLICATE)
 let already =
 preferences.some(p=>p.inst===item.inst && p.branch===item.branch)
 ||
@@ -279,31 +274,26 @@ autoSave();
 
 };
 
+/* =========================
+   DOWNLOAD (ONLY MODIFIED PART)
+========================= */
 function downloadPDF(){
 
-let table = document.getElementById("rightTable");
+let rows = document.querySelectorAll("#rightTable tbody tr");
 
-if(!table || table.querySelectorAll("tbody tr").length === 0){
+if(rows.length === 0){
 alert("No choices to show");
 return;
 }
 
-let tableHTML = table.outerHTML;
-
-let html = `
-<html>
+let html = `<html>
 <head>
 <title>JoSAA Choice Preferences</title>
 
 <style>
 body{font-family:Arial;padding:20px;}
 
-h2{text-align:center;}
-
-table{
-border-collapse:collapse;
-width:100%;
-}
+table{border-collapse:collapse;width:100%;}
 
 th{
 background:orange;
@@ -320,11 +310,6 @@ height:30px;
 border:3px solid black;
 text-align:center;
 }
-
-/* DELETE BUTTON HIDE */
-button{
-display:none;
-}
 </style>
 
 </head>
@@ -333,13 +318,35 @@ display:none;
 
 <h2>JoSAA Choice Preferences</h2>
 
-${tableHTML}
+<table>
+
+<tr>
+<th>Choice No</th>
+<th>Institute</th>
+<th>Branch</th>
+</tr>`;
+
+rows.forEach((r)=>{
+
+let inst = r.children[0].innerText;
+let branch = r.children[1].innerText;
+let choice = r.children[2].querySelector("input").value;
+
+html += `
+<tr>
+<td>${choice}</td>
+<td>${inst}</td>
+<td>${branch}</td>
+</tr>`;
+
+});
+
+html += `</table>
 
 </body>
-</html>
-`;
+</html>`;
 
-let win = window.open("", "_blank");
+let win = window.open("");
 win.document.write(html);
 win.document.close();
 
