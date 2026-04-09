@@ -513,3 +513,27 @@ localStorage.clear();
 undoStack = [];
   
 }
+
+function undoRemove(){
+
+if(undoStack.length === 0) return;
+
+let last = undoStack.pop();
+
+let temp = document.createElement("table");
+temp.innerHTML = "<tbody>" + last + "</tbody>";
+
+let restoredRow = temp.querySelector("tr");
+
+let table = document.getElementById("previewTable");
+
+if(table.rows.length > 1){
+table.insertBefore(restoredRow, table.rows[1]);
+}else{
+table.appendChild(restoredRow);
+}
+
+saveTable();
+attachEvents();
+updateRemove();
+}
