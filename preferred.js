@@ -71,7 +71,7 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN (same as before) */
+/* LOCK DROPDOWN */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
@@ -130,7 +130,7 @@ function attachEvents(){
 document.querySelectorAll("#previewTable tr").forEach(row=>{
 let btns=row.querySelectorAll("button");
 
-if(btns.length>=2){
+if(btns.length>=1){
 
 btns[0].onclick=()=>{
 if(removeLocked)return;
@@ -138,19 +138,20 @@ row.remove();
 saveTable();
 };
 
+if(btns.length>=2){
 btns[1].onclick=()=>{
 let inst=row.children[3].innerText;
 let branch=row.children[4].innerText;
 
-let input=row.children[1].querySelector("input");
-let value = input.value.trim();
+let input=row.children[1]?.querySelector("input");
+let value = input ? input.value.trim() : "";
 let pos = parseInt(value);
 
 let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
+if(inst && branch){
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
-/* 🔥 ONLY FIXED PART */
 if(value === ""){
 main.splice(main.length,0,{inst,branch});
 }
@@ -162,13 +163,15 @@ main.splice(main.length,0,{inst,branch});
 }
 
 localStorage.setItem("mainList",JSON.stringify(main));
+}
 };
+}
 
 }
 });
 }
 
-/* PROCESS + BUILD (unchanged) */
+/* PROCESS + BUILD */
 async function process(rank, exam){
 
 records = {};
@@ -262,8 +265,25 @@ let last="";
 data.forEach(r=>{
 
 if(last && last!==r[0]){
+
 let sep=document.createElement("tr");
-sep.innerHTML="<td colspan='11' style='height:10px;background:#eee'></td>";
+
+/* 🔥 CHANGE: ADD REMOVE BUTTON IN SEPARATOR */
+let td=document.createElement("td");
+td.colSpan=11;
+td.style.height="10px";
+td.style.background="#eee";
+
+let btn=document.createElement("button");
+btn.innerText="REMOVE";
+btn.style.background="red";
+btn.style.color="white";
+
+btn.onclick=()=>{ if(!removeLocked){ sep.remove(); saveTable(); } };
+
+td.appendChild(btn);
+sep.appendChild(td);
+
 previewTable.appendChild(sep);
 }
 
@@ -305,7 +325,6 @@ if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
 let value = input.value.trim();
 let pos = parseInt(value);
 
-/* 🔥 ONLY FIXED PART */
 if(value === ""){
 main.splice(main.length,0,{inst:r[0],branch:r[1]});
 }
