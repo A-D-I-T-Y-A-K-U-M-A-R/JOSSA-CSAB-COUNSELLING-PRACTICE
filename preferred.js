@@ -57,7 +57,7 @@ let n = inst.toLowerCase();
 if(n.includes("indian institute of technology")) return "IIT";
 if(n.includes("national institute of technology")) return "NIT";
 if(n.includes("iiit")) return "IIIT";
-if(n.includes("bit mesra")) return "BIT";
+if(n.includes("birla institute of technology")) return "BIT";
 
 return "OTHER";
 }
