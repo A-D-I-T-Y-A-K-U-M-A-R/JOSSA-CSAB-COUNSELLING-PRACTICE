@@ -217,6 +217,8 @@ lock.value = saved;
 removeLocked = (saved === "lock");
 }
 
+updateRemove(); // ✅ IMPORTANT LINE
+
 lock.onchange=()=>{
 localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
@@ -248,14 +250,50 @@ updateRemove();
 }
 loadTable();
 
+let savedUndo = localStorage.getItem("undoStack");
+if(savedUndo){
+undoStack = JSON.parse(savedUndo);
+}
+
 /* UPDATE REMOVE */
 function updateRemove(){
-document.querySelectorAll("#previewTable button").forEach(btn=>{
-if(btn.innerText==="REMOVE"){
-btn.disabled=removeLocked;
-btn.style.opacity=removeLocked?0.5:1;
+
+// 🔴 REMOVE buttons
+document.querySelectorAll("#previewTable tr td:first-child button").forEach(btn=>{
+if(btn.innerText.includes("REMOVE")){
+
+btn.disabled = removeLocked;
+
+if(removeLocked){
+btn.classList.add("locked-btn");
+}else{
+btn.classList.remove("locked-btn");
+}
+
 }
 });
+
+// 🔴 UNDO button
+let undoBtn = document.getElementById("undoBtn");
+if(undoBtn){
+undoBtn.disabled = removeLocked;
+undoBtn.classList.toggle("locked-btn", removeLocked);
+}
+
+// 🔴 SEE PREVIEW button
+let previewBtn = document.getElementById("previewBtn");
+if(previewBtn){
+previewBtn.disabled = removeLocked;
+previewBtn.classList.toggle("locked-btn", removeLocked);
+}
+
+// 🔴 UNFILTER ALL button
+let resetBtn = document.querySelector("button[onclick='resetAll()']");
+if(resetBtn){
+resetBtn.disabled = removeLocked;
+resetBtn.classList.toggle("locked-btn", removeLocked);
+}
+
 }
 
 /* ATTACH EVENTS */
@@ -270,6 +308,7 @@ if(removeLocked)return;
 
 let index = Array.from(row.parentNode.children).indexOf(row);
 undoStack.push({ html: row.outerHTML, index: index });
+localStorage.setItem("undoStack", JSON.stringify(undoStack));
   
 row.remove();
 saveTable();
@@ -440,6 +479,7 @@ if(!removeLocked){
 
 let index = Array.from(tr.parentNode.children).indexOf(tr);
 undoStack.push({ html: tr.outerHTML, index: index });
+localStorage.setItem("undoStack", JSON.stringify(undoStack));
   
 tr.remove();
 saveTable();
@@ -521,6 +561,7 @@ function undoRemove(){
 if(undoStack.length === 0) return;
 
 let last = undoStack.pop();
+localStorage.setItem("undoStack", JSON.stringify(undoStack));
 
 let temp = document.createElement("table");
 temp.innerHTML = "<tbody>" + last.html + "</tbody>";
