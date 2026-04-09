@@ -415,7 +415,9 @@ undoStack = [];
 
 /* UNDO */
 function undoRemove(){
+
 if(undoStack.length === 0) return;
+if(!document.getElementById("previewTable")) return;
 
 let last = undoStack.pop();
 localStorage.setItem("undoStack", JSON.stringify(undoStack));
@@ -424,7 +426,8 @@ let temp = document.createElement("table");
 temp.innerHTML = "<tbody>" + last.html + "</tbody>";
 
 let restoredRow = temp.querySelector("tr");
-let table = document.getElementById("previewTable");
+
+let table = document.querySelector("#previewTable");
 
 if(table.rows.length > last.index){
 table.insertBefore(restoredRow, table.rows[last.index]);
