@@ -71,12 +71,10 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
 if(lock){
-
 let saved = localStorage.getItem("lockStatus");
 if(saved){
 lock.value = saved;
@@ -88,23 +86,19 @@ localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
 updateRemove();
 };
-
 }
 });
 
-/* INPUT SAVE */
 rank.oninput=()=>localStorage.setItem("rank",rank.value);
 exam.onchange=()=>localStorage.setItem("exam",exam.value);
 
 rank.value=localStorage.getItem("rank")||"";
 exam.value=localStorage.getItem("exam")||"";
 
-/* SAVE TABLE */
 function saveTable(){
 localStorage.setItem("previewTableData",previewTable.innerHTML);
 }
 
-/* LOAD TABLE */
 function loadTable(){
 let t=localStorage.getItem("previewTableData");
 if(t){
@@ -115,7 +109,6 @@ updateRemove();
 }
 loadTable();
 
-/* UPDATE REMOVE */
 function updateRemove(){
 document.querySelectorAll("#previewTable button").forEach(btn=>{
 if(btn.innerText==="REMOVE"){
@@ -125,7 +118,6 @@ btn.style.opacity=removeLocked?0.5:1;
 });
 }
 
-/* ATTACH EVENTS */
 function attachEvents(){
 document.querySelectorAll("#previewTable tr").forEach(row=>{
 let btns=row.querySelectorAll("button");
@@ -166,20 +158,16 @@ localStorage.setItem("mainList",JSON.stringify(main));
 }
 };
 }
-
 }
 });
 }
 
-/* PROCESS + BUILD */
 async function process(rank, exam){
 
 records = {};
 
 for(let file of files){
-
 try{
-
 let res = await fetch(file);
 let buf = await res.arrayBuffer();
 
@@ -213,7 +201,6 @@ let curr = records[key][source];
 if(!curr.round || round < curr.round){
 records[key][source] = {opening,closing,round};
 }
-
 }
 
 }catch(e){}
@@ -234,7 +221,6 @@ arr.sort((a,b)=>getPriority(a[0])-getPriority(b[0]));
 return arr;
 }
 
-/* PREVIEW */
 previewBtn.onclick = async ()=>{
 
 let r=parseInt(rank.value);
@@ -268,21 +254,30 @@ if(last && last!==r[0]){
 
 let sep=document.createElement("tr");
 
-/* 🔥 CHANGE: ADD REMOVE BUTTON IN SEPARATOR */
-let td=document.createElement("td");
-td.colSpan=11;
-td.style.height="10px";
-td.style.background="#eee";
+/* REMOVE column */
+let td1=document.createElement("td");
 
 let btn=document.createElement("button");
 btn.innerText="REMOVE";
-btn.style.background="red";
-btn.style.color="white";
+btn.style.background="white";
+btn.style.color="black";
 
-btn.onclick=()=>{ if(!removeLocked){ sep.remove(); saveTable(); } };
+/* double click */
+btn.ondblclick=()=>{
+if(!removeLocked){
+sep.remove();
+saveTable();
+}
+};
 
-td.appendChild(btn);
+td1.appendChild(btn);
+sep.appendChild(td1);
+
+/* empty remaining columns */
+for(let i=0;i<10;i++){
+let td=document.createElement("td");
 sep.appendChild(td);
+}
 
 previewTable.appendChild(sep);
 }
@@ -358,7 +353,6 @@ updateRemove();
 
 };
 
-/* RESET */
 function resetAll(){
 rank.value="";
 exam.value="";
