@@ -1,5 +1,6 @@
 let records = {};
 let removeLocked = false;
+
 let undoStack = [];
 
 let files = [
@@ -154,6 +155,7 @@ const OTHER_ORDER = {
 "university of hyderabad":128
 };
 
+
 function getPriority(inst){
 let name = inst.toLowerCase();
 if(NIT_ORDER[name]) return 1000 + NIT_ORDER[name];
@@ -212,21 +214,23 @@ localStorage.setItem("previewTableData",previewTable.innerHTML);
 
 /* LOAD TABLE */
 function loadTable(){
-let t = localStorage.getItem("previewTableData");
-
+let t=localStorage.getItem("previewTableData");
 if(t){
-previewTable.innerHTML = t;
+previewTable.innerHTML=t;
 updateRemove();
 }
-
-// 🔥 ALWAYS RESET UNDO AFTER REFRESH
-undoStack = [];
-localStorage.setItem("undoStack", JSON.stringify(undoStack));
 }
 loadTable();
 
+/* UNDO LOAD */
+let savedUndo = localStorage.getItem("undoStack");
+if(savedUndo){
+undoStack = JSON.parse(savedUndo);
+}
+
 /* UPDATE REMOVE */
 function updateRemove(){
+
 document.querySelectorAll("#previewTable tr td:first-child button").forEach(btn=>{
 if(btn.innerText.includes("REMOVE")){
 btn.disabled = removeLocked;
@@ -251,6 +255,7 @@ if(resetBtn){
 resetBtn.disabled = removeLocked;
 resetBtn.classList.toggle("locked-btn", removeLocked);
 }
+
 }
 
 /* PROCESS */
@@ -271,7 +276,6 @@ let source = file.toLowerCase().includes("jossa") ? "JOSSA" : "CSAB";
 
 for(let i=1;i<rows.length;i++){
 let r = rows[i];
-
 let inst = r[0];
 let branch = r[1];
 let opening = parseInt(r[4]);
@@ -413,6 +417,7 @@ undoStack = [];
 function undoRemove(){
 
 if(undoStack.length === 0) return;
+if(!document.getElementById("previewTable")) return;
 
 let last = undoStack.pop();
 localStorage.setItem("undoStack", JSON.stringify(undoStack));
@@ -424,12 +429,8 @@ let restoredRow = temp.querySelector("tr");
 
 let table = document.querySelector("#previewTable");
 
-// 🔥 ONLY DATA ROWS (IGNORE SEPARATOR)
-let rows = Array.from(table.querySelectorAll("tr"))
-.filter(r => r.querySelector("button"));
-
-if(rows.length > last.index){
-table.insertBefore(restoredRow, rows[last.index]);
+if(table.rows.length > last.index){
+table.insertBefore(restoredRow, table.rows[last.index]);
 }else{
 table.appendChild(restoredRow);
 }
@@ -438,19 +439,14 @@ saveTable();
 updateRemove();
 }
 
-/* EVENT SYSTEM */
+/* 🔥 FINAL EVENT SYSTEM (FIXED) */
 document.addEventListener("click", function(e){
 
 if(e.target.innerText.trim().includes("REMOVE")){
 if(removeLocked) return;
 
 let row = e.target.closest("tr");
-
-// 🔥 ONLY DATA ROW INDEX
-let rows = Array.from(row.parentNode.children)
-.filter(r => r.querySelector("button"));
-
-let index = rows.indexOf(row);
+let index = Array.from(row.parentNode.children).indexOf(row);
 
 undoStack.push({ html: row.outerHTML, index: index });
 localStorage.setItem("undoStack", JSON.stringify(undoStack));
