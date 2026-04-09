@@ -17,10 +17,10 @@ const NIT_ORDER = {
 "national institute of technology, tiruchirappalli":1,
 "national institute of technology karnataka, surathkal":2,
 "national institute of technology, rourkela":3,
-"national institute of technology, warangal":4,
-"national institute of technology calicut":5,
-"motilal nehru national institute of technology allahabad":6,
-"malaviya national institute of technology jaipur":7,
+"malaviya national institute of technology jaipur":4,
+"national institute of technology, warangal":5,
+"national institute of technology calicut":6,
+"motilal nehru national institute of technology allahabad":7,
 "national institute of technology, kurukshetra":8,
 "sardar vallabhbhai national institute of technology, surat":9,
 "national institute of technology hamirpur":10,
@@ -38,16 +38,13 @@ const NIT_ORDER = {
 "national institute of technology agartala":22,
 "national institute of technology arunachal pradesh":23,
 "national institute of technology goa":24,
-"national institute of technology puducherry":25,
-"national institute of technology meghalaya":26,
-"national institute of technology nagaland":27,
+"national institute of technology meghalaya":25,
+"national institute of technology nagaland":26,
+"national institute of technology puducherry":27,
 "national institute of technology sikkim":28,
 "national institute of technology, manipur":29,
 "national institute of technology, mizoram":30,
 "national institute of technology, srinagar":31
-
-}
-
 };
 
 function getPriority(inst){
