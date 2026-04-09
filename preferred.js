@@ -2,17 +2,24 @@ let records = {};
 let removeLocked = false;
 
 let undoStack = [];
+let JSON_DATA = {};
+
+async function loadJSON(){
+    const res = await fetch("preferred_data.json");
+    JSON_DATA = await res.json();
+}
+loadJSON();
 
 let files = [
-"ROUND 1 JOSSA 2025.xlsx",
-"ROUND 2 JOSSA 2025.xlsx",
-"ROUND 3 JOSSA 2025.xlsx",
-"ROUND 4 JOSSA 2025.xlsx",
-"ROUND 5 JOSSA 2025.xlsx",
-"ROUND 6 JOSSA 2025.xlsx",
-"ROUND 1 CSAB 2025.xlsx",
-"ROUND 2 CSAB 2025.xlsx",
-"ROUND 3 CSAB 2025.xlsx"
+"ROUND 1 JOSSA 2025",
+"ROUND 2 JOSSA 2025",
+"ROUND 3 JOSSA 2025",
+"ROUND 4 JOSSA 2025",
+"ROUND 5 JOSSA 2025",
+"ROUND 6 JOSSA 2025",
+"ROUND 1 CSAB 2025",
+"ROUND 2 CSAB 2025",
+"ROUND 3 CSAB 2025"
 ];
 
 const NIT_ORDER = {
@@ -264,22 +271,24 @@ records = {};
 
 for(let file of files){
 try{
-let res = await fetch(file);
-let buf = await res.arrayBuffer();
 
-let wb = XLSX.read(buf,{type:"array"});
-let ws = wb.Sheets[wb.SheetNames[0]];
-let rows = XLSX.utils.sheet_to_json(ws,{header:1});
+// ❌ OLD EXCEL CODE REMOVED
+// ✅ NEW JSON SOURCE
+let rows = JSON_DATA[file];
+if(!rows) continue;
 
-let round = parseInt(file.match(/round (\d+)/i)[1]);
+let match = file.match(/round (\d+)/i);
+let round = match ? parseInt(match[1]) : 0;
 let source = file.toLowerCase().includes("jossa") ? "JOSSA" : "CSAB";
 
-for(let i=1;i<rows.length;i++){
+// 🔥 JSON LOOP (updated mapping)
+for(let i=0;i<rows.length;i++){
 let r = rows[i];
-let inst = r[0];
-let branch = r[1];
-let opening = parseInt(r[4]);
-let closing = parseInt(r[5]);
+
+let inst = r["Institute"];
+let branch = r["Academic Program Name"];
+let opening = parseInt(r["Opening Rank"]);
+let closing = parseInt(r["Closing Rank"]);
 
 if(!closing || closing < rank) continue;
 if(!valid(inst, exam)) continue;
@@ -296,6 +305,7 @@ if(!curr.round || round < curr.round){
 records[key][source] = {opening,closing,round};
 }
 }
+
 }catch(e){}
 }
 }
@@ -324,7 +334,13 @@ return arr;
 }
 
 /* PREVIEW */
+
 previewBtn.onclick = async ()=>{
+
+if(Object.keys(JSON_DATA).length === 0){
+alert("Data loading... please wait 1 second");
+return;
+}
 
 let r=parseInt(rank.value);
 let e=exam.value;
