@@ -1,6 +1,9 @@
 let records = {};
 let removeLocked = false;
 
+let undoStack = [];
+
+
 let files = [
 "ROUND 1 JOSSA 2025.xlsx",
 "ROUND 2 JOSSA 2025.xlsx",
@@ -264,6 +267,9 @@ if(btns.length>=2){
 
 btns[0].onclick=()=>{
 if(removeLocked)return;
+
+undoStack.push(row.outerHTML);
+  
 row.remove();
 saveTable();
 };
@@ -428,7 +434,15 @@ let rm=document.createElement("button");
 rm.innerText="REMOVE";
 rm.style.background="red";
 rm.style.color="white";
-rm.onclick=()=>{ if(!removeLocked){tr.remove(); saveTable();}};
+rm.onclick=()=>{
+if(!removeLocked){
+
+undoStack.push(tr.outerHTML);
+
+tr.remove();
+saveTable();
+}
+};
 td1.appendChild(rm);
 tr.appendChild(td1);
 
@@ -495,4 +509,7 @@ rank.value="";
 exam.value="";
 previewTable.innerHTML="";
 localStorage.clear();
+
+undoStack = [];
+  
 }
