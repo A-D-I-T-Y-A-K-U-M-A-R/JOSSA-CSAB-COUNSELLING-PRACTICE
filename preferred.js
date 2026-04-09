@@ -71,10 +71,12 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
+/* LOCK DROPDOWN (same as before) */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
 if(lock){
+
 let saved = localStorage.getItem("lockStatus");
 if(saved){
 lock.value = saved;
@@ -86,19 +88,23 @@ localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
 updateRemove();
 };
+
 }
 });
 
+/* INPUT SAVE */
 rank.oninput=()=>localStorage.setItem("rank",rank.value);
 exam.onchange=()=>localStorage.setItem("exam",exam.value);
 
 rank.value=localStorage.getItem("rank")||"";
 exam.value=localStorage.getItem("exam")||"";
 
+/* SAVE TABLE */
 function saveTable(){
 localStorage.setItem("previewTableData",previewTable.innerHTML);
 }
 
+/* LOAD TABLE */
 function loadTable(){
 let t=localStorage.getItem("previewTableData");
 if(t){
@@ -109,6 +115,7 @@ updateRemove();
 }
 loadTable();
 
+/* UPDATE REMOVE */
 function updateRemove(){
 document.querySelectorAll("#previewTable button").forEach(btn=>{
 if(btn.innerText==="REMOVE"){
@@ -118,11 +125,12 @@ btn.style.opacity=removeLocked?0.5:1;
 });
 }
 
+/* ATTACH EVENTS */
 function attachEvents(){
 document.querySelectorAll("#previewTable tr").forEach(row=>{
 let btns=row.querySelectorAll("button");
 
-if(btns.length>=1){
+if(btns.length>=2){
 
 btns[0].onclick=()=>{
 if(removeLocked)return;
@@ -130,20 +138,19 @@ row.remove();
 saveTable();
 };
 
-if(btns.length>=2){
 btns[1].onclick=()=>{
 let inst=row.children[3].innerText;
 let branch=row.children[4].innerText;
 
-let input=row.children[1]?.querySelector("input");
-let value = input ? input.value.trim() : "";
+let input=row.children[1].querySelector("input");
+let value = input.value.trim();
 let pos = parseInt(value);
 
 let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
-if(inst && branch){
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
+/* 🔥 ONLY FIXED PART */
 if(value === ""){
 main.splice(main.length,0,{inst,branch});
 }
@@ -155,19 +162,21 @@ main.splice(main.length,0,{inst,branch});
 }
 
 localStorage.setItem("mainList",JSON.stringify(main));
-}
 };
-}
+
 }
 });
 }
 
+/* PROCESS + BUILD (unchanged) */
 async function process(rank, exam){
 
 records = {};
 
 for(let file of files){
+
 try{
+
 let res = await fetch(file);
 let buf = await res.arrayBuffer();
 
@@ -201,6 +210,7 @@ let curr = records[key][source];
 if(!curr.round || round < curr.round){
 records[key][source] = {opening,closing,round};
 }
+
 }
 
 }catch(e){}
@@ -221,6 +231,7 @@ arr.sort((a,b)=>getPriority(a[0])-getPriority(b[0]));
 return arr;
 }
 
+/* PREVIEW */
 previewBtn.onclick = async ()=>{
 
 let r=parseInt(rank.value);
@@ -251,34 +262,8 @@ let last="";
 data.forEach(r=>{
 
 if(last && last!==r[0]){
-
 let sep=document.createElement("tr");
-
-/* REMOVE column */
-let td1=document.createElement("td");
-
-let btn=document.createElement("button");
-btn.innerText="REMOVE";
-btn.style.background="white";
-btn.style.color="black";
-
-/* double click */
-btn.ondblclick=()=>{
-if(!removeLocked){
-sep.remove();
-saveTable();
-}
-};
-
-td1.appendChild(btn);
-sep.appendChild(td1);
-
-/* empty remaining columns */
-for(let i=0;i<10;i++){
-let td=document.createElement("td");
-sep.appendChild(td);
-}
-
+sep.innerHTML="<td colspan='11' style='height:10px;background:#eee'></td>";
 previewTable.appendChild(sep);
 }
 
@@ -320,6 +305,7 @@ if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
 let value = input.value.trim();
 let pos = parseInt(value);
 
+/* 🔥 ONLY FIXED PART */
 if(value === ""){
 main.splice(main.length,0,{inst:r[0],branch:r[1]});
 }
@@ -353,6 +339,7 @@ updateRemove();
 
 };
 
+/* RESET */
 function resetAll(){
 rank.value="";
 exam.value="";
