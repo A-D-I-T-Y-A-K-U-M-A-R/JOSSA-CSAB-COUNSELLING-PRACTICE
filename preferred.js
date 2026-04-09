@@ -44,38 +44,7 @@ const NIT_ORDER = {
 "national institute of technology sikkim":28,
 "national institute of technology, manipur":29,
 "national institute of technology, mizoram":30,
-"national institute of technology, srinagar":31,
-
-"indian institute of information technology, allahabad":55,
-"atal bihari vajpayee indian institute of information technology & management gwalior":56,
-"indian institute of information technology lucknow":57,
-"indian institute of information technology (iiit) nagpur":58,
-"indian institute of information technology (iiit) pune":59,
-"indian institute of information technology, raichur, karnataka":60,
-"indian institute of information technology surat":61,
-"indian institute of information technology (iiit) ranchi":62,
-"indian institute of information technology (iiit), sri city, chittoor":63,
-"indian institute of information technology (iiit)kota, rajasthan":64,
-"indian institute of information technology(iiit) una, himachal pradesh":75,
-"indian institute of information technology(iiit), vadodara, gujrat":76,
-"indian institute of information technology bhagalpur":67,
-"indian institute of information technology bhopal":68,
-"indian institute of information technology design & manufacturing kurnool, andhra pradesh":69,
-"indian institute of information technology guwahati":70,
-"indian institute of information technology tiruchirappalli":71,
-"indian institute of information technology(iiit) dharwad":72,
-"indian institute of information technology(iiit) kalyani, west bengal":73,
-"indian institute of information technology(iiit) kilohrad, sonepat, haryana":74,
-"indian institute of information technology(iiit) kottayam":75,
-"indian institute of information technology, agartala":76,
-"indian institute of information technology, design & manufacturing, kancheepuram":77,
-"indian institute of information technology, vadodara international campus diu (iiitvicd)":78,
-"international institute of information technology, bhubaneswar":79,
-"international institute of information technology, naya raipur":80,
-"indian institute of information technology senapati manipur":81,
-
-
-"birla institute of technology, mesra, ranchi":82
+"national institute of technology, srinagar":31
 
 }
 
