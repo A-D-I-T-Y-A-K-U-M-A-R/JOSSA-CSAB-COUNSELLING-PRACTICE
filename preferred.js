@@ -268,7 +268,8 @@ if(btns.length>=2){
 btns[0].onclick=()=>{
 if(removeLocked)return;
 
-undoStack.push(row.outerHTML);
+let index = Array.from(row.parentNode.children).indexOf(row);
+undoStack.push({ html: row.outerHTML, index: index });
   
 row.remove();
 saveTable();
@@ -437,8 +438,9 @@ rm.style.color="white";
 rm.onclick=()=>{
 if(!removeLocked){
 
-undoStack.push(tr.outerHTML);
-
+let index = Array.from(tr.parentNode.children).indexOf(tr);
+undoStack.push({ html: tr.outerHTML, index: index });
+  
 tr.remove();
 saveTable();
 }
@@ -521,18 +523,17 @@ if(undoStack.length === 0) return;
 let last = undoStack.pop();
 
 let temp = document.createElement("table");
-temp.innerHTML = "<tbody>" + last + "</tbody>";
+temp.innerHTML = "<tbody>" + last.html + "</tbody>";
 
 let restoredRow = temp.querySelector("tr");
 
 let table = document.getElementById("previewTable");
 
-if(table.rows.length > 1){
-table.insertBefore(restoredRow, table.rows[1]);
+if(table.rows.length > last.index){
+table.insertBefore(restoredRow, table.rows[last.index]);
 }else{
 table.appendChild(restoredRow);
 }
-
 saveTable();
 attachEvents();
 updateRemove();
