@@ -13,7 +13,6 @@ let files = [
 "ROUND 2 CSAB 2025.xlsx",
 "ROUND 3 CSAB 2025.xlsx"
 ];
-
 const NIT_ORDER = {
 "national institute of technology, tiruchirappalli":1,
 "national institute of technology karnataka, surathkal":2,
@@ -178,10 +177,14 @@ if(exam==="MAINS") return ["NIT","IIIT","OTHER"].includes(t);
 return false;
 }
 
-/* LOCK */
+/* 🔥 DOM READY (IMPORTANT) */
 document.addEventListener("DOMContentLoaded",()=>{
-let lock = document.getElementById("lockStatus");
 
+// LOAD TABLE AFTER DOM READY
+loadTable();
+
+// LOCK SYSTEM
+let lock = document.getElementById("lockStatus");
 if(lock){
 let saved = localStorage.getItem("lockStatus");
 if(saved){
@@ -196,6 +199,7 @@ removeLocked = (lock.value==="lock");
 updateRemove();
 };
 }
+
 });
 
 /* INPUT SAVE */
@@ -219,38 +223,24 @@ previewTable.innerHTML = t;
 updateRemove();
 }
 
-// 🔥 ALWAYS RESET UNDO AFTER REFRESH
+// 🔥 RESET UNDO (IMPORTANT)
 undoStack = [];
 localStorage.setItem("undoStack", JSON.stringify(undoStack));
 }
-loadTable();
 
 /* UPDATE REMOVE */
 function updateRemove(){
 document.querySelectorAll("#previewTable tr td:first-child button").forEach(btn=>{
 if(btn.innerText.includes("REMOVE")){
 btn.disabled = removeLocked;
-btn.classList.toggle("locked-btn", removeLocked);
 }
 });
 
 let undoBtn = document.getElementById("undoBtn");
-if(undoBtn){
-undoBtn.disabled = removeLocked;
-undoBtn.classList.toggle("locked-btn", removeLocked);
-}
+if(undoBtn) undoBtn.disabled = removeLocked;
 
 let previewBtn = document.getElementById("previewBtn");
-if(previewBtn){
-previewBtn.disabled = removeLocked;
-previewBtn.classList.toggle("locked-btn", removeLocked);
-}
-
-let resetBtn = document.querySelector("button[onclick='resetAll()']");
-if(resetBtn){
-resetBtn.disabled = removeLocked;
-resetBtn.classList.toggle("locked-btn", removeLocked);
-}
+if(previewBtn) previewBtn.disabled = removeLocked;
 }
 
 /* PROCESS */
@@ -363,8 +353,6 @@ let tr=document.createElement("tr");
 let td1=document.createElement("td");
 let rm=document.createElement("button");
 rm.innerText="REMOVE";
-rm.style.background="red";
-rm.style.color="white";
 td1.appendChild(rm);
 tr.appendChild(td1);
 
@@ -372,9 +360,6 @@ tr.appendChild(td1);
 let td2=document.createElement("td");
 let input=document.createElement("input");
 input.type="number";
-input.style.width="60px";
-input.style.textAlign="center";
-input.style.border="2px solid black";
 td2.appendChild(input);
 tr.appendChild(td2);
 
@@ -382,7 +367,6 @@ tr.appendChild(td2);
 let td3=document.createElement("td");
 let add=document.createElement("button");
 add.innerText="ADD";
-add.style.background="lightgreen";
 td3.appendChild(add);
 tr.appendChild(td3);
 
@@ -400,22 +384,12 @@ saveTable();
 updateRemove();
 };
 
-/* RESET */
-function resetAll(){
-rank.value="";
-exam.value="";
-previewTable.innerHTML="";
-localStorage.clear();
-undoStack = [];
-}
-
 /* UNDO */
 function undoRemove(){
 
 if(undoStack.length === 0) return;
 
 let last = undoStack.pop();
-localStorage.setItem("undoStack", JSON.stringify(undoStack));
 
 let temp = document.createElement("table");
 temp.innerHTML = "<tbody>" + last.html + "</tbody>";
@@ -424,7 +398,6 @@ let restoredRow = temp.querySelector("tr");
 
 let table = document.querySelector("#previewTable");
 
-// 🔥 ONLY DATA ROWS (IGNORE SEPARATOR)
 let rows = Array.from(table.querySelectorAll("tr"))
 .filter(r => r.querySelector("button"));
 
@@ -435,10 +408,9 @@ table.appendChild(restoredRow);
 }
 
 saveTable();
-updateRemove();
 }
 
-/* EVENT SYSTEM */
+/* EVENTS */
 document.addEventListener("click", function(e){
 
 if(e.target.innerText.trim().includes("REMOVE")){
@@ -446,44 +418,15 @@ if(removeLocked) return;
 
 let row = e.target.closest("tr");
 
-// 🔥 ONLY DATA ROW INDEX
 let rows = Array.from(row.parentNode.children)
 .filter(r => r.querySelector("button"));
 
 let index = rows.indexOf(row);
 
 undoStack.push({ html: row.outerHTML, index: index });
-localStorage.setItem("undoStack", JSON.stringify(undoStack));
 
 row.remove();
 saveTable();
-}
-
-if(e.target.innerText.trim().includes("ADD")){
-let row = e.target.closest("tr");
-
-let inst=row.children[3].innerText;
-let branch=row.children[4].innerText;
-
-let input=row.children[1].querySelector("input");
-let value = input.value.trim();
-let pos = parseInt(value);
-
-let main=JSON.parse(localStorage.getItem("mainList")||"[]");
-
-if(main.some(m=>m.inst===inst && m.branch===branch)) return;
-
-if(value === ""){
-main.splice(main.length,0,{inst,branch});
-}
-else if(!isNaN(pos) && pos>0 && pos<=main.length){
-main.splice(pos-1,0,{inst,branch});
-}
-else{
-main.splice(main.length,0,{inst,branch});
-}
-
-localStorage.setItem("mainList",JSON.stringify(main));
 }
 
 });
