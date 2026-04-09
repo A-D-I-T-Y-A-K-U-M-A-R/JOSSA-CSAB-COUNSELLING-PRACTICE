@@ -194,3 +194,16 @@ box-shadow:0 0 10px rgba(0,0,0,0.5);
 #undoBtn:hover{
 background:#008000;
 }
+
+/* 🔒 LOCK ICON STYLE */
+.locked-btn {
+  position: relative;
+}
+
+.locked-btn::after {
+  content: "🔒";
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 14px;
+}
