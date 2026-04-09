@@ -918,7 +918,7 @@
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 62005, "Closing Rank": 85440 },
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 64116, "Closing Rank": 80309 }
     
-    }],
+    ],
 
 
 
@@ -971,7 +971,7 @@
 
   
   
-  "ROUND 2 JOSSA 2025": [{
+  "ROUND 2 JOSSA 2025": [
 
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Computer Science and Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 1, "Closing Rank": 66 },
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Electrical Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 106, "Closing Rank": 418 },
@@ -1890,7 +1890,7 @@
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 72404, "Closing Rank": 93034 },
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 83160, "Closing Rank": 95835 }
     
-  }],
+  ],
 
 
 
@@ -1962,7 +1962,7 @@
 
 
   
-  "ROUND 3 JOSSA 2025": [{
+  "ROUND 3 JOSSA 2025": [
 
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Computer Science and Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 1, "Closing Rank": 66 },
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Electrical Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 106, "Closing Rank": 420 },
@@ -2881,7 +2881,7 @@
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 72404, "Closing Rank": 98864 },
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 83160, "Closing Rank": 102116 }
     
-  }],
+  ],
 
 
 
@@ -2949,7 +2949,7 @@
 
 
   
-  "ROUND 4 JOSSA 2025": [{
+  "ROUND 4 JOSSA 2025": [
 
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Computer Science and Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 1, "Closing Rank": 66 },
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Electrical Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 106, "Closing Rank": 420 },
@@ -3868,7 +3868,7 @@
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 83160, "Closing Rank": 107692 },
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 87309, "Closing Rank": 104360 }
     
-  }],
+  ],
 
 
 
@@ -3938,7 +3938,7 @@
 
 
   
-  "ROUND 5 JOSSA 2025": [{
+  "ROUND 5 JOSSA 2025": [
 
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Computer Science and Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 1, "Closing Rank": 66 },
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Electrical Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 106, "Closing Rank": 433 },
@@ -4857,7 +4857,7 @@
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 83160, "Closing Rank": 112547 },
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 87309, "Closing Rank": 108379 }
     
-  }],
+  ],
 
 
 
@@ -4950,7 +4950,7 @@
 
 
   
-  "ROUND 6 JOSSA 2025": [{
+  "ROUND 6 JOSSA 2025": [
 
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Computer Science and Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 1, "Closing Rank": 66 },
 { "Institute": "Indian Institute of Technology Bombay", "Academic Program Name": "Electrical Engineering (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 106, "Closing Rank": 433 },
@@ -5869,7 +5869,7 @@
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 87309, "Closing Rank": 115651 },
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "AI", "Gender": "Gender-Neutral", "Opening Rank": 95835, "Closing Rank": 120668 }
     
-  }],
+  ],
 
 
 
@@ -5974,7 +5974,7 @@
 
   
 
-  "ROUND 1 CSAB 2025": [{
+  "ROUND 1 CSAB 2025": [
 
 { "Institute": ""National Institute of Technology, Tiruchirappalli"", "Academic Program Name": "Computer Science and Engineering (4 Years, Bachelor of Technology)", "Quota": "Other State", "Gender": "Gender-Neutral", "Opening Rank": 1368, "Closing Rank": 1605 },
 { "Institute": ""National Institute of Technology, Tiruchirappalli"", "Academic Program Name": "Electronics and Communication Engineering (4 Years, Bachelor of Technology)", "Quota": "Other State", "Gender": "Gender-Neutral", "Opening Rank": 3413, "Closing Rank": 3878 },
@@ -6628,7 +6628,7 @@
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "All India", "Gender": "Gender-Neutral", "Opening Rank": 96941, "Closing Rank": 289108 },
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "All India", "Gender": "Gender-Neutral", "Opening Rank": 146586, "Closing Rank": 460929 }
     
-  }],
+  ],
 
 
 
@@ -6672,7 +6672,7 @@
 
 
   
-  "ROUND 2 CSAB 2025": [{
+  "ROUND 2 CSAB 2025": [
 
 { "Institute": ""National Institute of Technology, Tiruchirappalli"", "Academic Program Name": "Civil Engineering (4 Years, Bachelor of Technology)", "Quota": "Other State", "Gender": "Gender-Neutral", "Opening Rank": 21690, "Closing Rank": 22247 },
 { "Institute": "Malaviya National Institute of Technology Jaipur", "Academic Program Name": "Artificial Intelligence and Data Engineering (4 Years, Bachelor of Technology)", "Quota": "Other State", "Gender": "Gender-Neutral", "Opening Rank": 7921, "Closing Rank": 7921 },
@@ -7224,7 +7224,7 @@
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "All India", "Gender": "Gender-Neutral", "Opening Rank": 298599, "Closing Rank": 621129 },
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "All India", "Gender": "Gender-Neutral", "Opening Rank": 479377, "Closing Rank": 726316 }
     
-  }],
+  ],
 
 
 
@@ -7313,7 +7313,7 @@
 
 
   
-  "ROUND 3 CSAB 2025": [{
+  "ROUND 3 CSAB 2025": [
 
 { "Institute": ""National Institute of Technology, Tiruchirappalli"", "Academic Program Name": "Civil Engineering (4 Years, Bachelor of Technology)", "Quota": "Other State", "Gender": "Gender-Neutral", "Opening Rank": 22809, "Closing Rank": 22809 },
 { "Institute": "Maulana Azad National Institute of Technology Bhopal", "Academic Program Name": "Planning (4 Years, Bachelor of Planning)", "Quota": "Other State", "Gender": "Gender-Neutral", "Opening Rank": 1324, "Closing Rank": 1393 },
@@ -7853,5 +7853,5 @@
 { "Institute": ""Indian Institute of Handloom Technology(IIHT), Varanasi"", "Academic Program Name": "Handloom and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "All India", "Gender": "Gender-Neutral", "Opening Rank": 671359, "Closing Rank": 799742 },
 { "Institute": ""Indian Institute of Carpet Technology, Bhadohi"", "Academic Program Name": "Carpet and Textile Technology (4 Years, Bachelor of Technology)", "Quota": "All India", "Gender": "Gender-Neutral", "Opening Rank": 1064246, "Closing Rank": 1343430 }
     
-  }],
+  ]
 }
