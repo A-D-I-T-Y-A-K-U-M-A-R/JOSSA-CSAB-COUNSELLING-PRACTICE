@@ -442,7 +442,7 @@ updateRemove();
 /* 🔥 FINAL EVENT SYSTEM (FIXED) */
 document.addEventListener("click", function(e){
 
-if(e.target.innerText === "REMOVE"){
+if(e.target.innerText.trim().includes("REMOVE")){
 if(removeLocked) return;
 
 let row = e.target.closest("tr");
@@ -455,7 +455,7 @@ row.remove();
 saveTable();
 }
 
-if(e.target.innerText === "ADD"){
+if(e.target.innerText.trim().includes("ADD")){
 let row = e.target.closest("tr");
 
 let inst=row.children[3].innerText;
