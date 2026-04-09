@@ -71,12 +71,11 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
-/* LOCK DROPDOWN (same as before) */
+/* LOCK */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
 
 if(lock){
-
 let saved = localStorage.getItem("lockStatus");
 if(saved){
 lock.value = saved;
@@ -88,7 +87,6 @@ localStorage.setItem("lockStatus", lock.value);
 removeLocked = (lock.value==="lock");
 updateRemove();
 };
-
 }
 });
 
@@ -150,7 +148,6 @@ let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
-/* 🔥 ONLY FIXED PART */
 if(value === ""){
 main.splice(main.length,0,{inst,branch});
 }
@@ -168,7 +165,7 @@ localStorage.setItem("mainList",JSON.stringify(main));
 });
 }
 
-/* PROCESS + BUILD (unchanged) */
+/* PROCESS */
 async function process(rank, exam){
 
 records = {};
@@ -217,17 +214,39 @@ records[key][source] = {opening,closing,round};
 }
 }
 
+/* 🔥 BUILD + SORT (FINAL FIX) */
 function buildData(){
 let arr=[];
+
 for(let k in records){
 let d=records[k];
+
 arr.push([
 d.inst,d.branch,
 d.JOSSA.opening||"",d.JOSSA.closing||"",d.JOSSA.round||"",
 d.CSAB.opening||"",d.CSAB.closing||"",d.CSAB.round||""
 ]);
 }
-arr.sort((a,b)=>getPriority(a[0])-getPriority(b[0]));
+
+/* ✅ BLOCK GROUPING SORT */
+arr.sort((a,b)=>{
+
+let p1 = getPriority(a[0]);
+let p2 = getPriority(b[0]);
+
+if(p1 !== p2){
+  return p1 - p2;
+}
+
+// SAME COLLEGE → GROUP TOGETHER
+if(a[0] === b[0]){
+  return a[1].localeCompare(b[1]);
+}
+
+return a[0].localeCompare(b[0]);
+
+});
+
 return arr;
 }
 
@@ -305,7 +324,6 @@ if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
 let value = input.value.trim();
 let pos = parseInt(value);
 
-/* 🔥 ONLY FIXED PART */
 if(value === ""){
 main.splice(main.length,0,{inst:r[0],branch:r[1]});
 }
