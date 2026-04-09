@@ -3,7 +3,6 @@ let removeLocked = false;
 
 let undoStack = [];
 
-
 let files = [
 "ROUND 1 JOSSA 2025.xlsx",
 "ROUND 2 JOSSA 2025.xlsx",
@@ -157,52 +156,27 @@ const OTHER_ORDER = {
 };
 
 
-
 function getPriority(inst){
-
 let name = inst.toLowerCase();
-
-/* NIT */
-if(NIT_ORDER[name]){
-  return 1000 + NIT_ORDER[name];
-}
-
-/* IIIT */
-if(IIIT_ORDER[name]){
-  return 2000 + IIIT_ORDER[name];
-}
-
-/* GFTI */
-if(OTHER_ORDER[name]){
-  return 3000 + OTHER_ORDER[name];
-}
-
-/* IIT */
-if(IIT_ORDER[name]){
-  return 4000 + IIT_ORDER[name];
-}
-
+if(NIT_ORDER[name]) return 1000 + NIT_ORDER[name];
+if(IIIT_ORDER[name]) return 2000 + IIIT_ORDER[name];
+if(OTHER_ORDER[name]) return 3000 + OTHER_ORDER[name];
+if(IIT_ORDER[name]) return 4000 + IIT_ORDER[name];
 return 9999;
 }
 
-
-
 function getType(inst){
 let n = inst.toLowerCase();
-
 if(n.includes("indian institute of technology")) return "IIT";
 if(n.includes("national institute of technology")) return "NIT";
 if(n.includes("indian institute of information technology")) return "IIIT";
-
 return "OTHER";
 }
 
 function valid(inst, exam){
 let t = getType(inst);
-
 if(exam==="ADVANCE") return t==="IIT";
 if(exam==="MAINS") return ["NIT","IIIT","OTHER"].includes(t);
-
 return false;
 }
 
@@ -216,8 +190,7 @@ if(saved){
 lock.value = saved;
 removeLocked = (saved === "lock");
 }
-
-updateRemove(); // ✅ IMPORTANT LINE
+updateRemove();
 
 lock.onchange=()=>{
 localStorage.setItem("lockStatus", lock.value);
@@ -244,12 +217,12 @@ function loadTable(){
 let t=localStorage.getItem("previewTableData");
 if(t){
 previewTable.innerHTML=t;
-attachEvents();
 updateRemove();
 }
 }
 loadTable();
 
+/* UNDO LOAD */
 let savedUndo = localStorage.getItem("undoStack");
 if(savedUndo){
 undoStack = JSON.parse(savedUndo);
@@ -258,36 +231,25 @@ undoStack = JSON.parse(savedUndo);
 /* UPDATE REMOVE */
 function updateRemove(){
 
-// 🔴 REMOVE buttons
 document.querySelectorAll("#previewTable tr td:first-child button").forEach(btn=>{
 if(btn.innerText.includes("REMOVE")){
-
 btn.disabled = removeLocked;
-
-if(removeLocked){
-btn.classList.add("locked-btn");
-}else{
-btn.classList.remove("locked-btn");
-}
-
+btn.classList.toggle("locked-btn", removeLocked);
 }
 });
 
-// 🔴 UNDO button
 let undoBtn = document.getElementById("undoBtn");
 if(undoBtn){
 undoBtn.disabled = removeLocked;
 undoBtn.classList.toggle("locked-btn", removeLocked);
 }
 
-// 🔴 SEE PREVIEW button
 let previewBtn = document.getElementById("previewBtn");
 if(previewBtn){
 previewBtn.disabled = removeLocked;
 previewBtn.classList.toggle("locked-btn", removeLocked);
 }
 
-// 🔴 UNFILTER ALL button
 let resetBtn = document.querySelector("button[onclick='resetAll()']");
 if(resetBtn){
 resetBtn.disabled = removeLocked;
@@ -296,62 +258,12 @@ resetBtn.classList.toggle("locked-btn", removeLocked);
 
 }
 
-/* ATTACH EVENTS */
-function attachEvents(){
-document.querySelectorAll("#previewTable tr").forEach(row=>{
-let btns=row.querySelectorAll("button");
-
-if(btns.length>=2){
-
-btns[0].onclick=()=>{
-if(removeLocked)return;
-
-let index = Array.from(row.parentNode.children).indexOf(row);
-undoStack.push({ html: row.outerHTML, index: index });
-localStorage.setItem("undoStack", JSON.stringify(undoStack));
-  
-row.remove();
-saveTable();
-};
-
-btns[1].onclick=()=>{
-let inst=row.children[3].innerText;
-let branch=row.children[4].innerText;
-
-let input=row.children[1].querySelector("input");
-let value = input.value.trim();
-let pos = parseInt(value);
-
-let main=JSON.parse(localStorage.getItem("mainList")||"[]");
-
-if(main.some(m=>m.inst===inst && m.branch===branch)) return;
-
-if(value === ""){
-main.splice(main.length,0,{inst,branch});
-}
-else if(!isNaN(pos) && pos>0 && pos<=main.length){
-main.splice(pos-1,0,{inst,branch});
-}
-else{
-main.splice(main.length,0,{inst,branch});
-}
-
-localStorage.setItem("mainList",JSON.stringify(main));
-};
-
-}
-});
-}
-
 /* PROCESS */
 async function process(rank, exam){
-
 records = {};
 
 for(let file of files){
-
 try{
-
 let res = await fetch(file);
 let buf = await res.arrayBuffer();
 
@@ -363,9 +275,7 @@ let round = parseInt(file.match(/round (\d+)/i)[1]);
 let source = file.toLowerCase().includes("jossa") ? "JOSSA" : "CSAB";
 
 for(let i=1;i<rows.length;i++){
-
 let r = rows[i];
-
 let inst = r[0];
 let branch = r[1];
 let opening = parseInt(r[4]);
@@ -385,20 +295,16 @@ let curr = records[key][source];
 if(!curr.round || round < curr.round){
 records[key][source] = {opening,closing,round};
 }
-
 }
-
 }catch(e){}
 }
 }
 
-/* 🔥 BUILD + SORT (FINAL FIX) */
+/* BUILD */
 function buildData(){
 let arr=[];
-
 for(let k in records){
 let d=records[k];
-
 arr.push([
 d.inst,d.branch,
 d.JOSSA.opening||"",d.JOSSA.closing||"",d.JOSSA.round||"",
@@ -406,23 +312,12 @@ d.CSAB.opening||"",d.CSAB.closing||"",d.CSAB.round||""
 ]);
 }
 
-/* ✅ BLOCK GROUPING SORT */
 arr.sort((a,b)=>{
-
 let p1 = getPriority(a[0]);
 let p2 = getPriority(b[0]);
-
-if(p1 !== p2){
-  return p1 - p2;
-}
-
-// SAME COLLEGE → GROUP TOGETHER
-if(a[0] === b[0]){
-  return a[1].localeCompare(b[1]);
-}
-
+if(p1 !== p2) return p1 - p2;
+if(a[0] === b[0]) return a[1].localeCompare(b[1]);
 return a[0].localeCompare(b[0]);
-
 });
 
 return arr;
@@ -474,17 +369,6 @@ let rm=document.createElement("button");
 rm.innerText="REMOVE";
 rm.style.background="red";
 rm.style.color="white";
-rm.onclick=()=>{
-if(!removeLocked){
-
-let index = Array.from(tr.parentNode.children).indexOf(tr);
-undoStack.push({ html: tr.outerHTML, index: index });
-localStorage.setItem("undoStack", JSON.stringify(undoStack));
-  
-tr.remove();
-saveTable();
-}
-};
 td1.appendChild(rm);
 tr.appendChild(td1);
 
@@ -503,28 +387,6 @@ let td3=document.createElement("td");
 let add=document.createElement("button");
 add.innerText="ADD";
 add.style.background="lightgreen";
-
-add.onclick=()=>{
-let main=JSON.parse(localStorage.getItem("mainList")||"[]");
-
-if(main.some(m=>m.inst===r[0] && m.branch===r[1])) return;
-
-let value = input.value.trim();
-let pos = parseInt(value);
-
-if(value === ""){
-main.splice(main.length,0,{inst:r[0],branch:r[1]});
-}
-else if(!isNaN(pos) && pos>0 && pos<=main.length){
-main.splice(pos-1,0,{inst:r[0],branch:r[1]});
-}
-else{
-main.splice(main.length,0,{inst:r[0],branch:r[1]});
-}
-
-localStorage.setItem("mainList",JSON.stringify(main));
-};
-
 td3.appendChild(add);
 tr.appendChild(td3);
 
@@ -536,13 +398,10 @@ tr.appendChild(td);
 });
 
 previewTable.appendChild(tr);
-
 });
 
 saveTable();
-attachEvents();
 updateRemove();
-
 };
 
 /* RESET */
@@ -551,13 +410,11 @@ rank.value="";
 exam.value="";
 previewTable.innerHTML="";
 localStorage.clear();
-
 undoStack = [];
-  
 }
 
+/* UNDO */
 function undoRemove(){
-
 if(undoStack.length === 0) return;
 
 let last = undoStack.pop();
@@ -567,7 +424,6 @@ let temp = document.createElement("table");
 temp.innerHTML = "<tbody>" + last.html + "</tbody>";
 
 let restoredRow = temp.querySelector("tr");
-
 let table = document.getElementById("previewTable");
 
 if(table.rows.length > last.index){
@@ -575,7 +431,52 @@ table.insertBefore(restoredRow, table.rows[last.index]);
 }else{
 table.appendChild(restoredRow);
 }
+
 saveTable();
-attachEvents();
 updateRemove();
 }
+
+/* 🔥 FINAL EVENT SYSTEM (FIXED) */
+document.addEventListener("click", function(e){
+
+if(e.target.innerText === "REMOVE"){
+if(removeLocked) return;
+
+let row = e.target.closest("tr");
+let index = Array.from(row.parentNode.children).indexOf(row);
+
+undoStack.push({ html: row.outerHTML, index: index });
+localStorage.setItem("undoStack", JSON.stringify(undoStack));
+
+row.remove();
+saveTable();
+}
+
+if(e.target.innerText === "ADD"){
+let row = e.target.closest("tr");
+
+let inst=row.children[3].innerText;
+let branch=row.children[4].innerText;
+
+let input=row.children[1].querySelector("input");
+let value = input.value.trim();
+let pos = parseInt(value);
+
+let main=JSON.parse(localStorage.getItem("mainList")||"[]");
+
+if(main.some(m=>m.inst===inst && m.branch===branch)) return;
+
+if(value === ""){
+main.splice(main.length,0,{inst,branch});
+}
+else if(!isNaN(pos) && pos>0 && pos<=main.length){
+main.splice(pos-1,0,{inst,branch});
+}
+else{
+main.splice(main.length,0,{inst,branch});
+}
+
+localStorage.setItem("mainList",JSON.stringify(main));
+}
+
+});
