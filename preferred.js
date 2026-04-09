@@ -71,6 +71,29 @@ if(exam==="MAINS") return ["NIT","IIIT","BIT"].includes(t);
 return false;
 }
 
+/* 🔥 NEW: CLEAN SEPARATOR FUNCTION */
+function cleanSeparators(){
+
+let rows = [...document.querySelectorAll("#previewTable tr")];
+
+for(let i=0;i<rows.length-1;i++){
+
+let r1 = rows[i];
+let r2 = rows[i+1];
+
+if(isBlank(r1) && isBlank(r2)){
+    r2.remove();
+    i--;
+}
+
+}
+
+function isBlank(r){
+return r.children.length === 1 && r.innerText.trim() === "";
+}
+
+}
+
 /* LOCK DROPDOWN (same as before) */
 document.addEventListener("DOMContentLoaded",()=>{
 let lock = document.getElementById("lockStatus");
@@ -111,6 +134,7 @@ if(t){
 previewTable.innerHTML=t;
 attachEvents();
 updateRemove();
+cleanSeparators(); // 🔥 added
 }
 }
 loadTable();
@@ -135,6 +159,7 @@ if(btns.length>=2){
 btns[0].onclick=()=>{
 if(removeLocked)return;
 row.remove();
+cleanSeparators(); // 🔥 added
 saveTable();
 };
 
@@ -277,7 +302,12 @@ let rm=document.createElement("button");
 rm.innerText="REMOVE";
 rm.style.background="red";
 rm.style.color="white";
-rm.onclick=()=>{ if(!removeLocked){tr.remove(); saveTable();}};
+rm.onclick=()=>{ 
+if(!removeLocked){
+tr.remove(); 
+cleanSeparators(); // 🔥 added
+saveTable();
+}};
 td1.appendChild(rm);
 tr.appendChild(td1);
 
@@ -336,6 +366,7 @@ previewTable.appendChild(tr);
 saveTable();
 attachEvents();
 updateRemove();
+cleanSeparators(); // 🔥 added
 
 };
 
