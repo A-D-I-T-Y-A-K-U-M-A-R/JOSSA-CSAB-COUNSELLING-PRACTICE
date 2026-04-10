@@ -35,17 +35,7 @@ padding:8px 10px;
 font-weight:bold;
 }
 
-/* LEFT */
-#clearFilters{
-left:0%;
-transform:translate(0,-50%);
-}
-
-/* RIGHT */
-#searchBtn{
-left:100%;
-transform:translate(-100%,-50%);
-}
+/* 🔥 FIXED GEOMETRY (70px GAP EACH SIDE) */
 
 /* CENTER */
 #instSearch{
@@ -53,19 +43,35 @@ left:50%;
 width:18%;
 }
 
-/* LEFT-MID */
+/* TYPE */
 #typeSearch{
-left:25%;
+left:calc(50% - 140px);
 width:14%;
 }
 
-/* RIGHT-MID */
+/* BRANCH */
 #branchSearch{
-left:75%;
+left:calc(50% + 140px);
 width:14%;
 }
 
+/* CLEAR */
+#clearFilters{
+left:calc(50% - 280px);
+transform:translate(-50%,-50%);
+}
 
+/* SEARCH */
+#searchBtn{
+left:calc(50% + 280px);
+transform:translate(-50%,-50%);
+}
+
+/* SAFE WIDTH */
+.custom-search-row input,
+.custom-search-row select{
+box-sizing:border-box;
+}
 
 #rank{
 background:gold;
@@ -76,18 +82,12 @@ font-weight:bold;
 color:black;
 opacity:1;
 }
-
-.custom-search-row input,
-.custom-search-row select{
-box-sizing:border-box;
-}
 </style>
 
 </head>
 
 <body id="top">
 
-<!-- UNDO -->
 <button onclick="undoRemove()" id="undoBtn">⬅</button>
 
 <h1 class="header">JOSAA/CSAB PRACTICE COUNSELLING CHOICES</h1>
@@ -143,7 +143,7 @@ UNFILTER_ALL
 
 </div>
 
-<!-- 🔥 NEW SEARCH UI EXACT POSITION -->
+<!-- 🔥 SEARCH UI -->
 <div class="custom-search-row">
 
 <button id="clearFilters">CLEAR_ALL_SEARCHES</button>
