@@ -639,3 +639,18 @@ document.getElementById("addTableBtn").onclick = function(){
 
     alert("All Preview Rows Added Successfully ✅");
 };
+
+// ==========================
+// 🔥 FIX BUTTON POSITION BASED ON INITIAL VIEW
+// ==========================
+window.addEventListener("load", function(){
+
+    let btn = document.getElementById("addTableBtn");
+    let rect = btn.getBoundingClientRect();
+
+    // 🔥 convert to fixed position at same spot
+    btn.style.position = "fixed";
+    btn.style.top = rect.top + "px";
+    btn.style.left = rect.left + "px";
+
+});
