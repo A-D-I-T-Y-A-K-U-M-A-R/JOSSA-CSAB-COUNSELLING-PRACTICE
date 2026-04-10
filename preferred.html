@@ -84,6 +84,31 @@ style="position:absolute;right:0;background:#cc0033;color:white;padding:10px 20p
 UNFILTER_ALL
 </button>
 
+  <!-- 🔍 SEARCH UI (COPIED FROM 1ST PAGE) -->
+<div class="search-row">
+
+<select id="typeSearch">
+<option value="">Institute Type</option>
+<option value="IIT">IIT</option>
+<option value="NIT">NIT</option>
+<option value="IIIT">IIIT</option>
+<option value="GFTI">GFTI</option>
+</select>
+
+<input list="instList" id="instSearch" placeholder="Institute Name">
+<datalist id="instList"></datalist>
+
+<input list="branchList" id="branchSearch" placeholder="Branch">
+<datalist id="branchList"></datalist>
+
+<button id="searchBtn">Search</button>
+
+</div>
+
+<div class="top-buttons">
+<button id="clearFilters">Clear_All_SEARCH</button>
+</div>
+
 </div>
 
 <h2 style="text-align:center;margin-top:40px">PREVIEW</h2>
