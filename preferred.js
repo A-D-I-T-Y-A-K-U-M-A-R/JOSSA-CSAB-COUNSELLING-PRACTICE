@@ -4,9 +4,17 @@ let removeLocked = false;
 let undoStack = [];
 let JSON_DATA = {};
 
+let ORIGINAL_DATA = [];
+let CURRENT_DATA = [];
+
 async function loadJSON(){
     const res = await fetch("preferred_data.json");
     JSON_DATA = await res.json();
+
+    ORIGINAL_DATA = JSON_DATA["ROUND 1 JOSSA 2025"] || [];
+    CURRENT_DATA = [...ORIGINAL_DATA];
+
+    populateSearchLists();
 }
 loadJSON();
 
@@ -180,6 +188,35 @@ if(n.includes("indian institute of information technology")) return "IIIT";
 return "OTHER";
 }
 
+function populateSearchLists(){
+
+    let instSet = new Set();
+    let branchSet = new Set();
+
+    ORIGINAL_DATA.forEach(d=>{
+        instSet.add(d["Institute"]);
+        branchSet.add(d["Academic Program Name"]);
+    });
+
+    let instList = document.getElementById("instList");
+    let branchList = document.getElementById("branchList");
+
+    instList.innerHTML="";
+    branchList.innerHTML="";
+
+    instSet.forEach(i=>{
+        let o=document.createElement("option");
+        o.value=i;
+        instList.appendChild(o);
+    });
+
+    branchSet.forEach(b=>{
+        let o=document.createElement("option");
+        o.value=b;
+        branchList.appendChild(o);
+    });
+}
+
 function valid(inst, exam){
 let t = getType(inst);
 if(exam==="ADVANCE") return t==="IIT";
@@ -315,6 +352,15 @@ function buildData(){
 let arr=[];
 for(let k in records){
 let d=records[k];
+
+if(CURRENT_DATA.length){
+let found = CURRENT_DATA.some(x =>
+    x["Institute"]===d.inst &&
+    x["Academic Program Name"]===d.branch
+);
+if(!found) continue;
+}
+
 arr.push([
 d.inst,d.branch,
 d.JOSSA.opening||"",d.JOSSA.closing||"",d.JOSSA.round||"",
@@ -499,3 +545,45 @@ localStorage.setItem("mainList",JSON.stringify(main));
 }
 
 });
+
+document.getElementById("searchBtn").onclick = function(){
+
+let type = document.getElementById("typeSearch").value;
+let inst = document.getElementById("instSearch").value.toLowerCase();
+let branch = document.getElementById("branchSearch").value.toLowerCase();
+
+CURRENT_DATA = ORIGINAL_DATA.filter(item=>{
+
+let match = true;
+let name = item["Institute"].toLowerCase();
+
+if(type==="IIT" && !name.includes("indian institute of technology")) match=false;
+if(type==="NIT" && !name.includes("national institute of technology")) match=false;
+if(type==="IIIT" && !name.includes("information technology")) match=false;
+if(type==="GFTI" && (
+name.includes("indian institute of technology") ||
+name.includes("national institute of technology") ||
+name.includes("information technology")
+)) match=false;
+
+if(inst && !name.includes(inst)) match=false;
+if(branch && !item["Academic Program Name"].toLowerCase().includes(branch)) match=false;
+
+return match;
+});
+
+previewBtn.click();
+};
+
+function resetSearch(){
+
+document.getElementById("typeSearch").value="";
+document.getElementById("instSearch").value="";
+document.getElementById("branchSearch").value="";
+
+CURRENT_DATA = [...ORIGINAL_DATA];
+
+previewBtn.click();
+}
+
+document.getElementById("clearFilters").onclick = resetSearch;
