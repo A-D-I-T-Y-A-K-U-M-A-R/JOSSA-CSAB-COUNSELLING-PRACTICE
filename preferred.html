@@ -15,7 +15,7 @@
 border:2px solid black;
 }
 
-/* 🔥 PERFECT EDGE GAP LAYOUT */
+/* 🔥 FINAL EDGE GAP LAYOUT */
 
 .custom-search-row{
 position:relative;
@@ -40,28 +40,30 @@ font-weight:bold;
 #typeSearch{ width:14%; }
 #branchSearch{ width:14%; }
 
-/* CENTER */
+/* CENTER (UNCHANGED) */
 #instSearch{
 left:50%;
 }
 
-/* EDGE GAP CALCULATION */
+/* TYPE (35px from inst edge) */
 #typeSearch{
-left:calc(50% - (9% + 7% + 70px));
+left:calc(50% - (9% + 35px + 7%));
 }
 
+/* BRANCH (35px from inst edge) */
 #branchSearch{
-left:calc(50% + (9% + 7% + 70px));
+left:calc(50% + (9% + 35px + 7%));
 }
 
-/* OUTER BUTTONS */
-#clearFilters{
-left:calc(50% - (9% + 7% + 70px + 7% + 70px));
+/* SEARCH (35px from branch edge) */
+#searchBtn{
+left:calc(50% + (9% + 35px + 14% + 35px));
 transform:translate(-50%,-50%);
 }
 
-#searchBtn{
-left:calc(50% + (9% + 7% + 70px + 7% + 70px));
+/* CLEAR (70px from type edge) */
+#clearFilters{
+left:calc(50% - (9% + 35px + 14% + 70px));
 transform:translate(-50%,-50%);
 }
 
@@ -141,6 +143,7 @@ UNFILTER_ALL
 
 </div>
 
+<!-- 🔥 SEARCH UI -->
 <div class="custom-search-row">
 
 <button id="clearFilters">CLEAR_ALL_SEARCHES</button>
