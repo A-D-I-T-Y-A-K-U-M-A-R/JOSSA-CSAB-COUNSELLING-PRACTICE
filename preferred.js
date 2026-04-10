@@ -15,6 +15,20 @@ async function loadJSON(){
     CURRENT_DATA = [...ORIGINAL_DATA];
 
     populateSearchLists();
+
+    // 🔥 RESTORE SEARCH STATE
+    let savedType = localStorage.getItem("typeSearch") || "";
+    let savedInst = localStorage.getItem("instSearch") || "";
+    let savedBranch = localStorage.getItem("branchSearch") || "";
+
+    document.getElementById("typeSearch").value = savedType;
+    document.getElementById("instSearch").value = savedInst;
+    document.getElementById("branchSearch").value = savedBranch;
+
+    if(savedType || savedInst || savedBranch){
+        document.getElementById("searchBtn").click();
+    }
+
 }
 loadJSON();
 
@@ -552,6 +566,11 @@ let type = document.getElementById("typeSearch").value;
 let inst = document.getElementById("instSearch").value.toLowerCase();
 let branch = document.getElementById("branchSearch").value.toLowerCase();
 
+    // 🔥 SAVE SEARCH STATE
+localStorage.setItem("typeSearch", type);
+localStorage.setItem("instSearch", inst);
+localStorage.setItem("branchSearch", branch);
+    
 CURRENT_DATA = ORIGINAL_DATA.filter(item=>{
 
 let match = true;
@@ -581,6 +600,10 @@ document.getElementById("typeSearch").value="";
 document.getElementById("instSearch").value="";
 document.getElementById("branchSearch").value="";
 
+localStorage.removeItem("typeSearch");
+localStorage.removeItem("instSearch");
+localStorage.removeItem("branchSearch");
+    
 CURRENT_DATA = [...ORIGINAL_DATA];
 
 previewBtn.click();
