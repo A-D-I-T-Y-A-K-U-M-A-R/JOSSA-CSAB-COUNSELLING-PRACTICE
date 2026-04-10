@@ -15,6 +15,56 @@
 border:2px solid black;
 }
 
+/* 🔥 SEARCH BAR ABSOLUTE PERFECT LAYOUT */
+
+.custom-search-row{
+position:relative;
+width:100%;
+height:50px;
+margin-top:70px;
+margin-bottom:70px;
+}
+
+.custom-search-row select,
+.custom-search-row input,
+.custom-search-row button{
+position:absolute;
+top:50%;
+transform:translate(-50%, -50%);
+padding:8px 10px;
+font-weight:bold;
+}
+
+/* LEFT */
+#clearFilters{
+left:0%;
+transform:translate(0,-50%);
+}
+
+/* RIGHT */
+#searchBtn{
+left:100%;
+transform:translate(-100%,-50%);
+}
+
+/* CENTER */
+#instSearch{
+left:50%;
+width:18%;
+}
+
+/* LEFT-MID */
+#typeSearch{
+left:25%;
+width:14%;
+}
+
+/* RIGHT-MID */
+#branchSearch{
+left:75%;
+width:14%;
+}
+
 /* 🔥 NEW SEARCH BAR CUSTOM LAYOUT */
 .custom-search-row{
 display:flex;
