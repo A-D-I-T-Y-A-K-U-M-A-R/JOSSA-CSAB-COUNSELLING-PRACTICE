@@ -199,7 +199,7 @@ let n = inst.toLowerCase();
 if(n.includes("indian institute of technology")) return "IIT";
 if(n.includes("national institute of technology")) return "NIT";
 if(n.includes("indian institute of information technology")) return "IIIT";
-return "OTHER";
+if(n.includes("birla institute of technology, mesra"))return "OTHER";
 }
 
 function populateSearchLists(){
