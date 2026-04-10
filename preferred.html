@@ -15,7 +15,7 @@
 border:2px solid black;
 }
 
-/* 🔥 FINAL EDGE GAP LAYOUT */
+/* 🔥 FINAL LAYOUT FIX */
 
 .custom-search-row{
 position:relative;
@@ -45,26 +45,34 @@ font-weight:bold;
 left:50%;
 }
 
-/* TYPE (35px from inst edge) */
+/* TYPE (UNCHANGED FROM YOUR CURRENT PERFECT POSITION) */
 #typeSearch{
 left:calc(50% - (9% + 35px + 7%));
 }
 
-/* BRANCH (35px from inst edge) */
+/* BRANCH (UNCHANGED) */
 #branchSearch{
 left:calc(50% + (9% + 35px + 7%));
 }
 
-/* SEARCH (35px from branch edge) */
-#searchBtn{
-left:calc(50% + (9% + 35px + 14% + 35px));
-transform:translate(-50%,-50%);
+/* 🔥 CLEAR BUTTON (40px gap from TYPE left edge) */
+#clearFilters{
+left:calc(
+    (50% - (9% + 35px + 7%))  /* type center */
+    - 7%                      /* move to type left edge */
+    - 40px                    /* gap */
+);
+transform:translate(-100%,-50%);
 }
 
-/* CLEAR (70px from type edge) */
-#clearFilters{
-left:calc(50% - (9% + 35px + 14% + 70px));
-transform:translate(-50%,-50%);
+/* 🔥 SEARCH BUTTON (20px gap from BRANCH right edge) */
+#searchBtn{
+left:calc(
+    (50% + (9% + 35px + 7%))  /* branch center */
+    + 7%                      /* move to branch right edge */
+    + 20px                    /* gap */
+);
+transform:translate(0,-50%);
 }
 
 /* SAFE */
@@ -146,7 +154,7 @@ UNFILTER_ALL
 <!-- 🔥 SEARCH UI -->
 <div class="custom-search-row">
 
-<button id="clearFilters">CLEAR_ALL_SEARCHES</button>
+<button id="clearFilters">CLEAR_SEARCH</button>
 
 <select id="typeSearch">
 <option value="">Institute Type</option>
