@@ -616,11 +616,13 @@ document.getElementById("clearFilters").onclick = resetSearch;
 // ==========================
 document.getElementById("addTableBtn").onclick = function(){
 
-    let rows = document.querySelectorAll("#previewTable tbody tr");
+    let rows = document.querySelectorAll("#previewTable  tr");
 
     let main = JSON.parse(localStorage.getItem("mainList") || "[]");
 
-    rows.forEach(row => {
+   rows.forEach((row, index) => {
+
+    if(index === 0) return; // 🔥 header skip
 
         // 🔥 column 4 & 5 → inst & branch
         let inst = row.children[3].textContent.trim();
