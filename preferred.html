@@ -15,7 +15,7 @@
 border:2px solid black;
 }
 
-/* 🔥 SEARCH BAR ABSOLUTE PERFECT LAYOUT */
+/* 🔥 PERFECT EDGE GAP LAYOUT */
 
 .custom-search-row{
 position:relative;
@@ -35,39 +35,37 @@ padding:8px 10px;
 font-weight:bold;
 }
 
-/* 🔥 FIXED GEOMETRY (70px GAP EACH SIDE) */
+/* WIDTHS */
+#instSearch{ width:18%; }
+#typeSearch{ width:14%; }
+#branchSearch{ width:14%; }
 
 /* CENTER */
 #instSearch{
 left:50%;
-width:18%;
 }
 
-/* TYPE */
+/* EDGE GAP CALCULATION */
 #typeSearch{
-left:calc(50% - 140px);
-width:14%;
+left:calc(50% - (9% + 7% + 70px));
 }
 
-/* BRANCH */
 #branchSearch{
-left:calc(50% + 140px);
-width:14%;
+left:calc(50% + (9% + 7% + 70px));
 }
 
-/* CLEAR */
+/* OUTER BUTTONS */
 #clearFilters{
-left:calc(50% - 280px);
+left:calc(50% - (9% + 7% + 70px + 7% + 70px));
 transform:translate(-50%,-50%);
 }
 
-/* SEARCH */
 #searchBtn{
-left:calc(50% + 280px);
+left:calc(50% + (9% + 7% + 70px + 7% + 70px));
 transform:translate(-50%,-50%);
 }
 
-/* SAFE WIDTH */
+/* SAFE */
 .custom-search-row input,
 .custom-search-row select{
 box-sizing:border-box;
@@ -143,7 +141,6 @@ UNFILTER_ALL
 
 </div>
 
-<!-- 🔥 SEARCH UI -->
 <div class="custom-search-row">
 
 <button id="clearFilters">CLEAR_ALL_SEARCHES</button>
@@ -170,27 +167,6 @@ UNFILTER_ALL
 
 <div style="width:95%;margin:auto;overflow:auto">
 <table id="previewTable"></table>
-</div>
-
-<div id="footer" class="footer">
-<div class="line"></div>
-<div class="footerText">MADE__BY__ADITYA_KUMAR_SINGH</div>
-<div class="line"></div>
-
-<div style="text-align:center;margin-top:15px;">
-<a href="#top">
-<button style="background:lime;color:white;padding:6px 14px;">
-GO_TO_TOP
-</button>
-</a>
-</div>
-
-<h2 style="text-align:center;margin-top:40px;text-decoration:underline;">FAQs</h2>
-
-<div style="max-width:900px;margin:auto;font-size:16px;line-height:1.7">
-<p><b>WHAT DOES THIS PAGE DO?</b><br>It generates counselling results.</p>
-</div>
-
 </div>
 
 <script src="preferred.js"></script>
