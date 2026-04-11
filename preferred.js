@@ -4,6 +4,7 @@ let removeLocked = false;
 let undoStack = [];
 let JSON_DATA = {};
 
+
 let ORIGINAL_DATA = [];
 let CURRENT_DATA = [];
 
@@ -488,6 +489,45 @@ previewTable.innerHTML="";
 localStorage.clear();
 undoStack = [];
 }
+
+/* 🔥 AUTO ADD TABLE SYSTEM */
+
+document.getElementById("addTableBtn").onclick = async function(){
+
+let btn = this;
+btn.disabled = true;
+
+let rows = Array.from(document.querySelectorAll("#previewTable tr"));
+
+// header skip
+rows = rows.slice(1);
+
+// valid rows only
+let validRows = rows.filter(r => r.children.length > 2);
+
+for(let i=0; i<validRows.length; i++){
+
+    let row = validRows[i];
+
+    let addBtn = row.children[2]?.querySelector("button");
+
+    if(addBtn){
+
+        // same manual click effect
+        addBtn.click();
+
+        // delay so mechanism completes properly
+        await new Promise(res => setTimeout(res, 3));
+    }
+}
+
+// last row complete hone ke baad hi alert
+alert("ALL ROWS ADDED");
+
+btn.disabled = false;
+
+};
+
 
 /* UNDO */
 function undoRemove(){
