@@ -610,4 +610,3 @@ previewBtn.click();
 }
 
 document.getElementById("clearFilters").onclick = resetSearch;
-
