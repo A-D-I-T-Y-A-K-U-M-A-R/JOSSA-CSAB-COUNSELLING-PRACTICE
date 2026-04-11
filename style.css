@@ -45,7 +45,7 @@ box-sizing:border-box;
 
 #downloadBtn{
 position:absolute;
-right:0;
+right:40px;
 background:#b3003c;
 color:white;
 border:none;
