@@ -8,13 +8,157 @@ let JSON_DATA = {};
 let ORIGINAL_DATA = [];
 let CURRENT_DATA = [];
 
+// 🔥 NORMALIZE FUNCTION (Seat Type safe compare)
+function normalizeSeat(value){
+    return (value || "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/-/g, " ");
+}
+
+// 🔥 SEAT TYPE FILTER
+function applySeatTypeFilter(data){
+    let selectedSeat = document.getElementById("seatType").value;
+
+    // default = OPEN
+    if(!selectedSeat){
+        selectedSeat = "OPEN";
+    }
+
+    const normalizedSelected = normalizeSeat(selectedSeat);
+
+    return data.filter(item => {
+        const jsonSeat = normalizeSeat(item["Seat Type"]);
+        return jsonSeat === normalizedSelected;
+    });
+}
+
+// 🔥 NORMALIZE FUNCTION (Gender full-proof)
+function normalizeGender(value){
+    return (value || "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/-/g, " ")
+        .replace(/\(\s*/g, "(")
+        .replace(/\s*\)/g, ")");
+}
+
+// 🔥 GENDER FILTER
+function applyGenderFilter(data){
+    let selectedGender = document.getElementById("genderType").value;
+
+    if(!selectedGender){
+        selectedGender = "Gender-Neutral";
+    }
+
+    const normalizedSelected = normalizeGender(selectedGender);
+
+    return data.filter(item => {
+        const jsonGender = normalizeGender(item["Gender"]);
+        return jsonGender === normalizedSelected;
+    });
+}
+
+// 🔥 NORMALIZE QUOTA
+function normalizeQuota(q){
+    return (q || "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ");
+}
+
+// 🔥 NORMALIZE STATE
+function normalizeState(s){
+    return (s || "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/\(.*?\)/g, "")   // remove brackets
+        .replace(/nct/g, "")       // Delhi (NCT)
+        .replace(/pondicherry/g, "puducherry");
+
+}
+
+// 🔥 HOME STATE FILTER
+function applyHomeStateFilter(data){
+
+    let selectedState = document.getElementById("homeState").value;
+
+    if(!selectedState) return data; // agar select nahi kiya to skip
+
+    selectedState = normalizeState(selectedState);
+
+    return data.filter(item => {
+
+       let instRaw = item["Institute"];
+let inst = instRaw.toLowerCase().trim().replace(/\s+/g," ");
+
+// 🔥 direct match
+let instState = STATE_MAP[inst];
+
+// 🔥 fallback (important)
+if(!instState){
+    for(let key in STATE_MAP){
+        if(inst.includes(key)){
+            instState = STATE_MAP[key];
+            break;
+        }
+    }
+}
+
+instState = normalizeState(instState || "");
+
+        let quotaRaw = normalizeQuota(item["Quota"]);
+
+        // 🔥 normalize quota types
+        let quota = "";
+        if(quotaRaw.includes("home")) quota = "hs";
+        else if(quotaRaw === "hs") quota = "hs";
+        else if(quotaRaw.includes("all")) quota = "ai";
+        else if(quotaRaw === "ai") quota = "ai";
+        else if(quotaRaw.includes("other")) quota = "os";
+        else if(quotaRaw === "os") quota = "os";
+        else if(quotaRaw === "jk") quota = "jk";
+        else if(quotaRaw === "go") quota = "go";
+        else if(quotaRaw === "la") quota = "la";
+        else if(quotaRaw.includes("dasa")) return false; // ❌ remove always
+
+        // 🔴 SAME STATE
+        if(instState === selectedState){
+
+            // special states
+            if(instState === "jammu and kashmir" && (quota === "hs" || quota === "jk")) return true;
+            if(instState === "goa" && (quota === "hs" || quota === "go")) return true;
+            if(instState === "ladakh" && (quota === "hs" || quota === "la")) return true;
+
+            // normal states
+            if(quota === "hs") return true;
+
+            return false;
+        }
+
+        // 🔴 DIFFERENT STATE
+        else{
+            return (quota === "ai" || quota === "os");
+        }
+
+    });
+}
+
+
 async function loadJSON(){
     const res = await fetch("preferred_data.json");
     JSON_DATA = await res.json();
 
     ORIGINAL_DATA = JSON_DATA["ROUND 1 JOSSA 2025"] || [];
-    CURRENT_DATA = [...ORIGINAL_DATA];
 
+    let tempData = [...ORIGINAL_DATA];
+
+    CURRENT_DATA = tempData;
+
+    // ✅ populate after filtering
     populateSearchLists();
 
     // 🔥 RESTORE SEARCH STATE
@@ -29,9 +173,24 @@ async function loadJSON(){
     if(savedType || savedInst || savedBranch){
         document.getElementById("searchBtn").click();
     }
-
 }
+
+
 loadJSON();
+
+// 🔴 SAVE FILTER VALUES
+
+document.getElementById("seatType").onchange = function(){
+localStorage.setItem("seatType", this.value);
+};
+
+document.getElementById("genderType").onchange = function(){
+localStorage.setItem("genderType", this.value);
+};
+
+document.getElementById("homeState").onchange = function(){
+localStorage.setItem("homeState", this.value);
+};
 
 let files = [
 "ROUND 1 JOSSA 2025",
@@ -185,6 +344,149 @@ const OTHER_ORDER = {
 "university of hyderabad":128
 };
 
+// 🔥 FULL STATE MAP (ALL COLLEGES)
+const STATE_MAP = {
+
+// ===== IIT =====
+"indian institute of technology (bhu) varanasi":"uttar pradesh",
+"indian institute of technology madras":"tamil nadu",
+"indian institute of technology delhi":"delhi",
+"indian institute of technology bombay":"maharashtra",
+"indian institute of technology kanpur":"uttar pradesh",
+"indian institute of technology kharagpur":"west bengal",
+"indian institute of technology roorkee":"uttarakhand",
+"indian institute of technology guwahati":"assam",
+"indian institute of technology hyderabad":"telangana",
+"indian institute of technology indore":"madhya pradesh",
+"indian institute of technology (ism) dhanbad":"jharkhand",
+"indian institute of technology bhilai":"chhattisgarh",
+"indian institute of technology bhubaneswar":"odisha",
+"indian institute of technology dharwad":"karnataka",
+"indian institute of technology gandhinagar":"gujarat",
+"indian institute of technology goa":"goa",
+"indian institute of technology jammu":"jammu and kashmir",
+"indian institute of technology jodhpur":"rajasthan",
+"indian institute of technology mandi":"himachal pradesh",
+"indian institute of technology palakkad":"kerala",
+"indian institute of technology patna":"bihar",
+"indian institute of technology ropar":"punjab",
+"indian institute of technology tirupati":"andhra pradesh",
+
+// ===== NIT =====
+"national institute of technology, tiruchirappalli":"tamil nadu",
+"national institute of technology karnataka, surathkal":"karnataka",
+"national institute of technology, rourkela":"odisha",
+"malaviya national institute of technology jaipur":"rajasthan",
+"national institute of technology, warangal":"telangana",
+"national institute of technology calicut":"kerala",
+"motilal nehru national institute of technology allahabad":"uttar pradesh",
+"national institute of technology, kurukshetra":"haryana",
+"sardar vallabhbhai national institute of technology, surat":"gujarat",
+"national institute of technology hamirpur":"himachal pradesh",
+"visvesvaraya national institute of technology, nagpur":"maharashtra",
+"national institute of technology durgapur":"west bengal",
+"national institute of technology, silchar":"assam",
+"dr. b r ambedkar national institute of technology, jalandhar":"punjab",
+"national institute of technology raipur":"chhattisgarh",
+"national institute of technology, jamshedpur":"jharkhand",
+"national institute of technology patna":"bihar",
+"national institute of technology delhi":"delhi",
+"maulana azad national institute of technology bhopal":"madhya pradesh",
+"national institute of technology, andhra pradesh":"andhra pradesh",
+"national institute of technology, uttarakhand":"uttarakhand",
+"national institute of technology agartala":"tripura",
+"national institute of technology goa":"goa",
+"national institute of technology puducherry":"puducherry",
+"national institute of technology arunachal pradesh":"arunachal pradesh",
+"national institute of technology meghalaya":"meghalaya",
+"national institute of technology nagaland":"nagaland",
+"national institute of technology sikkim":"sikkim",
+"national institute of technology, manipur":"manipur",
+"national institute of technology, mizoram":"mizoram",
+"national institute of technology, srinagar":"jammu and kashmir",
+
+// ===== IIIT =====
+"indian institute of information technology, allahabad":"uttar pradesh",
+"atal bihari vajpayee indian institute of information technology & management gwalior":"madhya pradesh",
+"indian institute of information technology lucknow":"uttar pradesh",
+"indian institute of information technology (iiit) nagpur":"maharashtra",
+"indian institute of information technology (iiit) pune":"maharashtra",
+"indian institute of information technology, raichur, karnataka":"karnataka",
+"indian institute of information technology surat":"gujarat",
+"indian institute of information technology (iiit) ranchi":"jharkhand",
+"indian institute of information technology (iiit), sri city, chittoor":"andhra pradesh",
+"indian institute of information technology (iiit)kota, rajasthan":"rajasthan",
+"indian institute of information technology(iiit) una, himachal pradesh":"himachal pradesh",
+"indian institute of information technology(iiit), vadodara, gujrat":"gujarat",
+"indian institute of information technology bhagalpur":"bihar",
+"indian institute of information technology bhopal":"madhya pradesh",
+"indian institute of information technology design & manufacturing kurnool, andhra pradesh":"andhra pradesh",
+"indian institute of information technology guwahati":"assam",
+"indian institute of information technology tiruchirappalli":"tamil nadu",
+"indian institute of information technology(iiit) dharwad":"karnataka",
+"indian institute of information technology(iiit) kalyani, west bengal":"west bengal",
+"indian institute of information technology(iiit) kilohrad, sonepat, haryana":"haryana",
+"indian institute of information technology(iiit) kottayam":"kerala",
+"indian institute of information technology, agartala":"tripura",
+"indian institute of information technology, design & manufacturing, kancheepuram":"tamil nadu",
+"indian institute of information technology, vadodara international campus diu (iiitvicd)":"daman and diu",
+"international institute of information technology, bhubaneswar":"odisha",
+"international institute of information technology, naya raipur":"chhattisgarh",
+"indian institute of information technology senapati manipur":"manipur",
+
+// ===== OTHER / GFTI =====
+"birla institute of technology, mesra, ranchi":"jharkhand",
+"national institute of electronics and information technology, ajmer (rajasthan)":"rajasthan",
+"national institute of electronics and information technology, aurangabad (maharashtra)":"maharashtra",
+"national institute of electronics and information technology, gorakhpur (up)":"uttar pradesh",
+"national institute of electronics and information technology, patna (bihar)":"bihar",
+"national institute of electronics and information technology, ropar (punjab)":"punjab",
+"pt. dwarka prasad mishra indian institute of information technology, design & manufacture jabalpur":"madhya pradesh",
+"assam university, silchar":"assam",
+"birla institute of technology, deoghar off-campus":"jharkhand",
+"birla institute of technology, patna off-campus":"bihar",
+"cu jharkhand":"jharkhand",
+"central university of haryana":"haryana",
+"central university of jammu":"jammu and kashmir",
+"central university of rajasthan, rajasthan":"rajasthan",
+"central institute of technology kokrajar, assam":"assam",
+"chhattisgarh swami vivekanada technical university, bhilai (csvtu bhilai)":"chhattisgarh",
+"gati shakti vishwavidyalaya, vadodara":"gujarat",
+"ghani khan choudhary institute of engineering and technology, malda, west bengal":"west bengal",
+"gurukula kangri vishwavidyalaya, haridwar":"uttarakhand",
+"indian institute of carpet technology, bhadohi":"uttar pradesh",
+"indian institute of engineering science and technology, shibpur":"west bengal",
+"indian institute of handloom technology(iiht), varanasi":"uttar pradesh",
+"indian institute of handloom technology, salem":"tamil nadu",
+"institute of chemical technology, mumbai: indian oil odisha campus, bhubaneswar":"odisha",
+"institute of engineering and technology, dr. h. s. gour university. sagar (a central university)":"madhya pradesh",
+"institute of infrastructure, technology, research and management-ahmedabad":"gujarat",
+"islamic university of science and technology kashmir":"jammu and kashmir",
+"j.k. institute of applied physics & technology, department of electronics & communication, university of allahabad- allahabad":"uttar pradesh",
+"jawaharlal nehru university, delhi":"delhi",
+"mizoram university, aizawl":"mizoram",
+"national institute of advanced manufacturing technology, ranchi":"jharkhand",
+"national institute of food technology entrepreneurship and management, kundli":"haryana",
+"national institute of food technology entrepreneurship and management, thanjavur":"tamil nadu",
+"north eastern regional institute of science and technology, nirjuli-791109 (itanagar),arunachal pradesh":"arunachal pradesh",
+"north-eastern hill university, shillong":"meghalaya",
+"puducherry technological university, puducherry":"puducherry",
+"punjab engineering college, chandigarh":"chandigarh",
+"rajiv gandhi national aviation university, fursatganj, amethi (up)":"uttar pradesh",
+"sant longowal institute of engineering and technology":"punjab",
+"school of engineering, tezpur university, napaam, tezpur":"assam",
+"school of planning & architecture, bhopal":"madhya pradesh",
+"school of planning & architecture, new delhi":"delhi",
+"school of planning & architecture: vijayawada":"andhra pradesh",
+"school of studies of engineering and technology, guru ghasidas vishwavidyalaya, bilaspur":"chhattisgarh",
+"shri g. s. institute of technology and science indore":"madhya pradesh",
+"shri mata vaishno devi university, katra, jammu & kashmir":"jammu and kashmir",
+"university of hyderabad":"telangana"
+
+};
+
+
+
 
 function getPriority(inst){
 let name = inst.toLowerCase();
@@ -250,6 +552,16 @@ lock.value = saved;
 removeLocked = (saved === "lock");
 }
 updateRemove();
+
+// 🔴 RESTORE FILTER VALUES
+
+let savedSeat = localStorage.getItem("seatType");
+let savedGender = localStorage.getItem("genderType");
+let savedState = localStorage.getItem("homeState");
+
+if(savedSeat) document.getElementById("seatType").value = savedSeat;
+if(savedGender) document.getElementById("genderType").value = savedGender;
+if(savedState) document.getElementById("homeState").value = savedState;
 
 lock.onchange=()=>{
 localStorage.setItem("lockStatus", lock.value);
@@ -342,6 +654,22 @@ let branch = r["Academic Program Name"];
 let opening = parseInt(r["Opening Rank"]);
 let closing = parseInt(r["Closing Rank"]);
 
+// 🔴 APPLY ALL FILTERS ROW-WISE (FINAL FIX)
+
+let tempRow = [r];
+
+// Seat Type
+tempRow = applySeatTypeFilter(tempRow);
+if(tempRow.length === 0) continue;
+
+// Gender
+tempRow = applyGenderFilter(tempRow);
+if(tempRow.length === 0) continue;
+
+// Home State
+tempRow = applyHomeStateFilter(tempRow);
+if(tempRow.length === 0) continue;
+
 if(!closing || closing < rank) continue;
 if(!valid(inst, exam)) continue;
 
@@ -368,13 +696,6 @@ let arr=[];
 for(let k in records){
 let d=records[k];
 
-if(CURRENT_DATA.length){
-let found = CURRENT_DATA.some(x =>
-    x["Institute"]===d.inst &&
-    x["Academic Program Name"]===d.branch
-);
-if(!found) continue;
-}
 
 arr.push([
 d.inst,d.branch,
@@ -403,11 +724,44 @@ alert("Data loading... please wait 1 second");
 return;
 }
 
+// 🔴 NO PRE-FILTERING (ROW FILTERING IN process)
+
 let r=parseInt(rank.value);
 let e=exam.value;
 
 await process(r,e);
 let data=buildData();
+
+// 🔴 APPLY SEARCH ON FINAL DATA
+
+if(window.SEARCH_ACTIVE){
+
+data = data.filter(row=>{
+
+let name = row[0].toLowerCase();
+let branchName = row[1].toLowerCase();
+
+let match = true;
+
+if(window.SEARCH_TYPE==="IIT" && !name.includes("indian institute of technology")) match=false;
+if(window.SEARCH_TYPE==="NIT" && !name.includes("national institute of technology")) match=false;
+if(window.SEARCH_TYPE==="IIIT" && !name.includes("information technology")) match=false;
+if(window.SEARCH_TYPE==="GFTI" && (
+name.includes("indian institute of technology") ||
+name.includes("national institute of technology") ||
+name.includes("information technology")
+)) match=false;
+
+if(window.SEARCH_INST && !name.includes(window.SEARCH_INST)) match=false;
+if(window.SEARCH_BRANCH && !branchName.includes(window.SEARCH_BRANCH)) match=false;
+
+return match;
+});
+
+window.SEARCH_ACTIVE = false;
+}
+
+    
 
 previewTable.innerHTML="";
 
@@ -611,25 +965,19 @@ localStorage.setItem("typeSearch", type);
 localStorage.setItem("instSearch", inst);
 localStorage.setItem("branchSearch", branch);
     
-CURRENT_DATA = ORIGINAL_DATA.filter(item=>{
+let tempData = [...ORIGINAL_DATA];
 
-let match = true;
-let name = item["Institute"].toLowerCase();
+// 🔥 Apply all filters first
+tempData = applySeatTypeFilter(tempData);
+tempData = applyGenderFilter(tempData);
+tempData = applyHomeStateFilter(tempData);
 
-if(type==="IIT" && !name.includes("indian institute of technology")) match=false;
-if(type==="NIT" && !name.includes("national institute of technology")) match=false;
-if(type==="IIIT" && !name.includes("information technology")) match=false;
-if(type==="GFTI" && (
-name.includes("indian institute of technology") ||
-name.includes("national institute of technology") ||
-name.includes("information technology")
-)) match=false;
+// 🔴 SAFE SEARCH STORE (no filtering here)
 
-if(inst && !name.includes(inst)) match=false;
-if(branch && !item["Academic Program Name"].toLowerCase().includes(branch)) match=false;
-
-return match;
-});
+window.SEARCH_ACTIVE = true;
+window.SEARCH_TYPE = type;
+window.SEARCH_INST = inst;
+window.SEARCH_BRANCH = branch;
 
 previewBtn.click();
 };
@@ -644,9 +992,61 @@ localStorage.removeItem("typeSearch");
 localStorage.removeItem("instSearch");
 localStorage.removeItem("branchSearch");
     
-CURRENT_DATA = [...ORIGINAL_DATA];
+window.SEARCH_ACTIVE = false;
+window.SEARCH_TYPE = "";
+window.SEARCH_INST = "";
+window.SEARCH_BRANCH = "";
 
 previewBtn.click();
 }
 
 document.getElementById("clearFilters").onclick = resetSearch;
+
+document.getElementById("cleanTableBtn").onclick = function(){
+
+let table = document.getElementById("previewTable");
+if(!table) return;
+
+// 🔴 CLEAR UNDO STACK (important)
+undoStack = [];
+localStorage.removeItem("undoStack");
+
+let rows = Array.from(table.querySelectorAll("tr"));
+
+let cleaned = [];
+let prevWasSeparator = false;
+
+for(let i=0;i<rows.length;i++){
+
+let row = rows[i];
+let isSeparator = row.innerText.trim() === "";
+
+if(isSeparator){
+
+let prevIsData = i>0 && rows[i-1].innerText.trim() !== "";
+let nextIsData = i<rows.length-1 && rows[i+1].innerText.trim() !== "";
+
+if(prevIsData && nextIsData){
+if(!prevWasSeparator){
+cleaned.push(row);
+prevWasSeparator = true;
+}
+}else{
+// skip
+}
+
+}else{
+cleaned.push(row);
+prevWasSeparator = false;
+}
+
+}
+
+// 🔴 rebuild table
+table.innerHTML="";
+cleaned.forEach(r=>table.appendChild(r));
+
+// 🔴 SAVE (IMPORTANT for refresh persistence)
+saveTable();
+
+};
