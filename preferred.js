@@ -554,6 +554,8 @@ lock.value = saved;
 removeLocked = (saved === "lock");
 }
 updateRemove();
+    
+window.addEventListener("storage", updateStatusColumn); // 🔥 ADDED (LIVE SYNC)
 
 // 🔴 RESTORE FILTER VALUES
 
@@ -807,14 +809,9 @@ tr.appendChild(td1);
 
 // INPUT
 let td2=document.createElement("td");
-let input=document.createElement("input");
-input.type="number";
-input.style.width="60px";
-input.style.textAlign="center";
-input.style.border="2px solid black";
-td2.appendChild(input);
+td2.innerText="NOT ADDED";
 tr.appendChild(td2);
-
+    
 // ADD
 let td3=document.createElement("td");
 let add=document.createElement("button");
@@ -933,25 +930,17 @@ let row = e.target.closest("tr");
 let inst=row.children[3].innerText;
 let branch=row.children[4].innerText;
 
-let input=row.children[1].querySelector("input");
-let value = input.value.trim();
-let pos = parseInt(value);
-
 let main=JSON.parse(localStorage.getItem("mainList")||"[]");
 
 if(main.some(m=>m.inst===inst && m.branch===branch)) return;
 
-if(value === ""){
-main.splice(main.length,0,{inst,branch});
-}
-else if(!isNaN(pos) && pos>0 && pos<=main.length){
-main.splice(pos-1,0,{inst,branch});
-}
-else{
-main.splice(main.length,0,{inst,branch});
-}
+// always push (no manual position)
+main.push({inst,branch});
 
 localStorage.setItem("mainList",JSON.stringify(main));
+
+// 🔥 update status
+updateStatusColumn();
 }
 
 });
@@ -1067,3 +1056,32 @@ cleaned.forEach(r=>table.appendChild(r));
 saveTable();
 
 };
+
+function updateStatusColumn(){
+
+let main = JSON.parse(localStorage.getItem("mainList")||"[]");
+
+let rows = document.querySelectorAll("#previewTable tr");
+
+// header skip
+rows = Array.from(rows).slice(1);
+
+rows.forEach(row=>{
+
+// skip separator rows
+if(row.children.length < 5) return;
+
+let inst = row.children[3].innerText;
+let branch = row.children[4].innerText;
+
+let index = main.findIndex(m=>m.inst===inst && m.branch===branch);
+
+if(index !== -1){
+row.children[1].innerText = index + 1;
+}else{
+row.children[1].innerText = "NOT ADDED";
+}
+
+});
+
+}
