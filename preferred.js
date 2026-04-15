@@ -1,4 +1,3 @@
-alert("done");
 let records = {};
 let removeLocked = false;
 
