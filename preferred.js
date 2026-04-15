@@ -594,6 +594,7 @@ let t=localStorage.getItem("previewTableData");
 if(t){
 previewTable.innerHTML=t;
 updateRemove();
+updateStatusColumn();
 }
 }
 loadTable();
