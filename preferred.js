@@ -1016,31 +1016,46 @@ localStorage.removeItem("undoStack");
 let rows = Array.from(table.querySelectorAll("tr"));
 
 let cleaned = [];
-let prevWasSeparator = false;
+let i = 0;
 
-for(let i=0;i<rows.length;i++){
+while(i < rows.length){
 
 let row = rows[i];
-let isSeparator = row.innerText.trim() === "";
+let isSeparator = row.children.length === 1 && row.children[0].colSpan == 11
 
-if(isSeparator){
-
-let prevIsData = i>0 && rows[i-1].innerText.trim() !== "";
-let nextIsData = i<rows.length-1 && rows[i+1].innerText.trim() !== "";
-
-if(prevIsData && nextIsData){
-if(!prevWasSeparator){
+if(!isSeparator){
 cleaned.push(row);
-prevWasSeparator = true;
-}
-}else{
-// skip
+i++;
+continue;
 }
 
-}else{
-cleaned.push(row);
-prevWasSeparator = false;
+// 🔴 START OF GROUP
+let groupStart = i;
+
+while(i < rows.length && rows[i].children.length === 1 && rows[i].children[0].colSpan == 11){
+i++;
 }
+
+let groupEnd = i - 1;
+
+// 🔴 CHECK POSITION
+let isTop = groupStart === 1; // header ke baad
+let isEnd = groupEnd === rows.length - 1;
+
+// 🔴 APPLY RULES
+
+// TOP → remove all
+if(isTop){
+continue;
+}
+
+// END → remove all
+if(isEnd){
+continue;
+}
+
+// MIDDLE → keep only last
+cleaned.push(rows[groupEnd]);
 
 }
 
