@@ -593,6 +593,20 @@ function loadTable(){
 let t=localStorage.getItem("previewTableData");
 if(t){
 previewTable.innerHTML=t;
+// 🔥 REMOVE OLD INPUT SYSTEM (COLUMN 2 FIX)
+let rows = document.querySelectorAll("#previewTable tr");
+
+rows.forEach(row=>{
+if(row.children.length > 2){
+
+let cell = row.children[1];
+
+// ❌ agar input hai to hatao
+// 🔥 FORCE RESET COLUMN 2 (NO OLD SYSTEM)
+cell.innerText = "NOT ADDED";
+
+}
+});
 updateRemove();
 updateStatusColumn();
 }
