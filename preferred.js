@@ -555,8 +555,7 @@ removeLocked = (saved === "lock");
 }
 updateRemove();
     
-window.addEventListener("storage", updateStatusColumn);
-setInterval(updateStatusColumn,500); // 🔥 ADDED (LIVE SYNC)
+window.addEventListener("storage", updateStatusColumn);  // 🔥 ADDED (LIVE SYNC)
 
 // 🔴 RESTORE FILTER VALUES
 
