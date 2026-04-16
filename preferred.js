@@ -1,4 +1,3 @@
-// ROLL BACK 1 PREFERRED.JS
 let records = {};
 let removeLocked = false;
 
@@ -592,6 +591,9 @@ let t=localStorage.getItem("previewTableData");
 if(t){
 previewTable.innerHTML=t;
 updateRemove();
+refreshAllButtons();
+
+
 }
 }
 loadTable();
@@ -630,6 +632,35 @@ resetBtn.disabled = removeLocked;
 resetBtn.classList.toggle("locked-btn", removeLocked);
 }
 
+}
+
+// 🔥 GLOBAL BUTTON COLOR REFRESH (NO LAG)
+function refreshAllButtons(){
+
+let main = JSON.parse(localStorage.getItem("mainList")||"[]");
+
+let rows = document.querySelectorAll("#previewTable tr");
+
+rows.forEach((row,i)=>{
+    if(i===0) return;
+
+    let instCell = row.children[3];
+    let branchCell = row.children[4];
+    let btn = row.children[2]?.querySelector("button");
+
+    if(!instCell || !branchCell || !btn) return;
+
+    let inst = instCell.innerText;
+    let branch = branchCell.innerText;
+
+    let exists = main.some(m=>m.inst===inst && m.branch===branch);
+
+    if(exists){
+        btn.style.background="red";
+    }else{
+        btn.style.background="lightgreen";
+    }
+});
 }
 
 /* PROCESS */
@@ -820,7 +851,18 @@ tr.appendChild(td2);
 let td3=document.createElement("td");
 let add=document.createElement("button");
 add.innerText="ADD";
-add.style.background="lightgreen";
+
+// 🔥 CHECK FROM mainList
+let main=JSON.parse(localStorage.getItem("mainList")||"[]");
+
+let exists = main.some(m=>m.inst===r[0] && m.branch===r[1]);
+
+if(exists){
+    add.style.background="red";
+}else{
+    add.style.background="lightgreen";
+}
+
 td3.appendChild(add);
 tr.appendChild(td3);
 
@@ -890,26 +932,62 @@ btn.disabled = false;
 function undoRemove(){
 
 if(undoStack.length === 0) return;
-if(!document.getElementById("previewTable")) return;
 
 let last = undoStack.pop();
 localStorage.setItem("undoStack", JSON.stringify(undoStack));
 
-let temp = document.createElement("table");
-temp.innerHTML = "<tbody>" + last.html + "</tbody>";
+// 🔴 CASE 1: REMOVE undo → restore row
+if(last.type === "REMOVE"){
 
-let restoredRow = temp.querySelector("tr");
+    let temp = document.createElement("table");
+    temp.innerHTML = "<tbody>" + last.html + "</tbody>";
 
-let table = document.querySelector("#previewTable");
+    let restoredRow = temp.querySelector("tr");
+    let table = document.querySelector("#previewTable");
 
-if(table.rows.length > last.index){
-table.insertBefore(restoredRow, table.rows[last.index]);
-}else{
-table.appendChild(restoredRow);
+    if(table.rows.length > last.index){
+        table.insertBefore(restoredRow, table.rows[last.index]);
+    }else{
+        table.appendChild(restoredRow);
+    }
+
+    saveTable();
+    updateRemove();
 }
 
-saveTable();
-updateRemove();
+// 🔴 CASE 2: ADD undo → remove from mainList
+if(last.type === "ADD"){
+
+    let main = JSON.parse(localStorage.getItem("mainList")||"[]");
+
+    let index = main.findIndex(m=>m.inst===last.inst && m.branch===last.branch);
+
+    if(index !== -1){
+        main.splice(index,1);
+    }
+
+    localStorage.setItem("mainList", JSON.stringify(main));
+
+    // 🔥 BUTTON COLOR BACK TO GREEN
+    let rows = document.querySelectorAll("#previewTable tr");
+
+    rows.forEach((row,i)=>{
+        if(i===0) return;
+
+        let instCell = row.children[3];
+        let branchCell = row.children[4];
+        let btn = row.children[2]?.querySelector("button");
+
+        if(!instCell || !branchCell || !btn) return;
+
+        let inst = instCell.innerText;
+        let branch = branchCell.innerText;
+
+        if(inst === last.inst && branch === last.branch){
+            btn.style.background="lightgreen";
+        }
+    });
+}
 }
 
 /* 🔥 FINAL EVENT SYSTEM (FIXED) */
@@ -921,11 +999,17 @@ if(removeLocked) return;
 let row = e.target.closest("tr");
 let index = Array.from(row.parentNode.children).indexOf(row);
 
-undoStack.push({ html: row.outerHTML, index: index });
+undoStack.push({ 
+    type: "REMOVE",
+    html: row.outerHTML, 
+    index: index 
+});
 localStorage.setItem("undoStack", JSON.stringify(undoStack));
 
 row.remove();
 saveTable();
+// 🔥 GLOBAL SYNC
+refreshAllButtons();
 }
 
 if(e.target.innerText.trim().includes("ADD")){
@@ -952,7 +1036,18 @@ else{
 main.splice(main.length,0,{inst,branch});
 }
 
+ undoStack.push({
+ type: "ADD",
+ inst: inst,
+ branch: branch
+});
+localStorage.setItem("undoStack", JSON.stringify(undoStack));
 localStorage.setItem("mainList",JSON.stringify(main));
+// 🔥 GLOBAL SYNC
+refreshAllButtons();
+
+// 🔥 BUTTON COLOR CHANGE
+
 }
 
 });
@@ -1068,3 +1163,35 @@ cleaned.forEach(r=>table.appendChild(r));
 saveTable();
 
 };
+
+// 🔥 LIVE SYNC (NO LAG - STORAGE EVENT)
+window.addEventListener("storage", function(e){
+
+    if(e.key !== "mainList") return;
+
+    let main = JSON.parse(localStorage.getItem("mainList")||"[]");
+
+    let rows = document.querySelectorAll("#previewTable tr");
+
+    rows.forEach((row,i)=>{
+        if(i===0) return;
+
+        let instCell = row.children[3];
+        let branchCell = row.children[4];
+        let btn = row.children[2]?.querySelector("button");
+
+        if(!instCell || !branchCell || !btn) return;
+
+        let inst = instCell.innerText;
+        let branch = branchCell.innerText;
+
+        let exists = main.some(m=>m.inst===inst && m.branch===branch);
+
+        if(exists){
+            btn.style.background="red";
+        }else{
+            btn.style.background="lightgreen";
+        }
+    });
+
+});
