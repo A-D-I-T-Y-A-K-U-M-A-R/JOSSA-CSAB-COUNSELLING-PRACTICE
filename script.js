@@ -1,3 +1,4 @@
+// 1ST PAGE JS ROLL BACK 1
 let preferences=[];
 
 const leftTable=document.querySelector("#leftTable tbody");
