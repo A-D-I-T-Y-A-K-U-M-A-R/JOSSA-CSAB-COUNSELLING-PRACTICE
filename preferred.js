@@ -816,8 +816,48 @@ data.forEach(r=>{
 
 if(last && last!==r[0]){
 let sep=document.createElement("tr");
-sep.innerHTML="<td colspan='11' style='height:10px;background:#eee'></td>";
+sep.setAttribute("data-separator","true");
+
+sep.innerHTML=`
+<td colspan='11' style='height:40px;background:#eee;position:relative;'>
+
+<button class="removeBlockBtn" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:red;color:white;border:none;padding:5px 10px;cursor:pointer;box-shadow:0 0 10px rgba(0,0,0,0.4);
+">
+REMOVE_COLLEGE_BLOCK
+</button>
+
+</td>
+`;
 previewTable.appendChild(sep);
+sep.querySelector(".removeBlockBtn").onclick = function(){
+
+let current = sep.nextElementSibling;
+let toDelete = [];
+
+// 🔴 collect rows
+while(current){
+
+if(current.getAttribute && current.getAttribute("data-separator")==="true"){
+break;
+}
+
+toDelete.push(current);
+current = current.nextElementSibling;
+}
+
+// 🔴 ALSO include separator itself
+toDelete.push(sep);
+
+// 🔴 FULL UNDO RESET (BLOCK = PERMANENT DELETE)
+undoStack = [];
+localStorage.removeItem("undoStack");
+
+// 🔥 DELETE FROM DOM
+toDelete.forEach(r=>r.remove());
+
+// 🔥 SAVE
+saveTable();
+};
 }
 
 last=r[0];
@@ -919,7 +959,6 @@ localStorage.setItem("undoStack", JSON.stringify(undoStack));
 
 // 🔴 CASE 1: REMOVE undo → restore row
 if(last.type === "REMOVE"){
-
     let temp = document.createElement("table");
     temp.innerHTML = "<tbody>" + last.html + "</tbody>";
 
@@ -935,6 +974,8 @@ if(last.type === "REMOVE"){
     saveTable();
     updateRemove();
 }
+
+
 
 // 🔴 CASE 2: ADD undo → remove from mainList
 if(last.type === "ADD"){
@@ -974,7 +1015,7 @@ if(last.type === "ADD"){
 /* 🔥 FINAL EVENT SYSTEM (FIXED) */
 document.addEventListener("click", function(e){
 
-if(e.target.innerText.trim().includes("REMOVE")){
+if(e.target.innerText.trim() === "REMOVE"){
 if(removeLocked) return;
 
 let row = e.target.closest("tr");
