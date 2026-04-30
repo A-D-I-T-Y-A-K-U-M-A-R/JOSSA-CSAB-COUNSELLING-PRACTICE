@@ -1,6 +1,5 @@
-// 1ST PAGE JS ROLL BACK 1
 let preferences=[];
-
+let isFrozen = JSON.parse(localStorage.getItem("freezeState")) || false;
 const leftTable=document.querySelector("#leftTable tbody");
 const rightTable=document.querySelector("#rightTable tbody");
 
@@ -27,23 +26,34 @@ data=json;
 filteredData=[...data];
 populateLists();
 loadSaved();
-loadMainList();   // 🔥 FIXED
+// 🔥 SAFE SYNC: only run when NOT frozen
+// 🔥 ROOT FIX: sync ONLY ONCE, then never depend again
+if(!isFrozen){
+loadMainList();
+
+}
 renderLeft();
 renderRight();
 });
+
 
 /* =========================
    LOAD MAIN LIST FROM 2ND PAGE (FIXED)
 ========================= */
 function loadMainList(){
 
+// 🔥 IMPORTANT FIX: only ADD, never REMOVE existing preferences
+
 let main = JSON.parse(localStorage.getItem("mainList")||"[]");
 
-preferences = preferences.filter(p=>{
-return !main.some(m=>m.inst===p.inst && m.branch===p.branch);
-});
+// 🔥 HARD FIX: ignore empty or cleared mainList
+if(!main.length) return;
+
+// 🔥 ALSO IGNORE if mainList suddenly reduced (UNFILTER case)
+if(main.length < preferences.length) return;
 
 main.forEach((m,i)=>{
+
 
 if(preferences.some(p=>p.inst===m.inst && p.branch===m.branch)) return;
 
@@ -92,7 +102,6 @@ function renderLeft(){
 leftTable.innerHTML="";
 let last="";
 
-let main = JSON.parse(localStorage.getItem("mainList")||"[]");
 
 filteredData.forEach(item=>{
 
@@ -109,9 +118,7 @@ last=item.inst;
 let row=document.createElement("tr");
 
 let already =
-preferences.some(p=>p.inst===item.inst && p.branch===item.branch)
-||
-main.some(m=>m.inst===item.inst && m.branch===item.branch);
+preferences.some(p=>p.inst===item.inst && p.branch===item.branch);
 
 row.innerHTML=`
 <td>${item.inst}</td>
@@ -143,6 +150,7 @@ availableCount.textContent="Total Available Choices: "+filteredData.length;
    ADD PREF
 ========================= */
 function addPref(inst,branch,choice){
+if(isFrozen) return;
 
 if(preferences.some(p=>p.inst===inst && p.branch===branch)) return;
 
@@ -175,17 +183,26 @@ row.innerHTML=`
 <td>${p.inst}</td>
 <td>${p.branch}</td>
 <td><input type="number" value="${i+1}" min="1"></td>
-<td><button class="deleteBtn">Delete</button></td>
+<td><button class="deleteBtn" ${isFrozen?"disabled":""}>Delete</button></td>
 `;
 
 row.querySelector(".deleteBtn").onclick=()=>{
+
+if(isFrozen) return;
+
 preferences.splice(i,1);
 renderRight();
 renderLeft();
 autoSave();
+
 };
 
 row.querySelector("input").onchange=(e)=>{
+
+if(isFrozen){
+renderRight();
+return;
+}
 
 let n=parseInt(e.target.value);
 
@@ -267,6 +284,8 @@ renderLeft();
 ========================= */
 document.getElementById("deleteAllBtn").onclick=()=>{
 
+if(isFrozen) return;
+
 preferences=[];
 localStorage.removeItem("mainList");
 renderRight();
@@ -274,7 +293,6 @@ renderLeft();
 autoSave();
 
 };
-
 /* =========================
    DOWNLOAD (ONLY MODIFIED PART)
 ========================= */
@@ -352,3 +370,36 @@ win.document.write(html);
 win.document.close();
 
 }
+
+const freezeSelect = document.getElementById("freezeSelect");
+
+/* 🔥 LOAD STATE ON PAGE LOAD */
+if(isFrozen){
+freezeSelect.value = "freeze";
+freezeSelect.style.background = "#8B0000";   // 🔴 FREEZE = RED
+freezeSelect.style.color = "white";
+}else{
+freezeSelect.value = "float";
+freezeSelect.style.background = "darkgreen"; // 🟢 FLOAT = GREEN
+freezeSelect.style.color = "white";
+}
+
+/* 🔥 ON CHANGE */
+freezeSelect.onchange = () => {
+
+if(freezeSelect.value === "freeze"){
+isFrozen = true;
+freezeSelect.style.background = "#8B0000";   // 🔴 FREEZE
+freezeSelect.style.color = "white";
+}else{
+isFrozen = false;
+freezeSelect.style.background = "darkgreen"; // 🟢 FLOAT
+freezeSelect.style.color = "white";
+}
+
+localStorage.setItem("freezeState", JSON.stringify(isFrozen));
+
+renderRight();
+renderLeft();
+
+};
