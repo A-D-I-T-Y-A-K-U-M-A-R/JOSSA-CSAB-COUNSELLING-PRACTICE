@@ -23,3 +23,7 @@ CSAB simulator
 JoSAA counselling practice  
 CSAB counselling practice  
 choice filling simulator
+
+#FUTURE MAINTAINANCE RULES#
+1. for next year official josaa and csab data's json file name it in format as "preferred_data(year).json" and add it in repo directly.
+2. add a dropdown option of latest year in preferred.html file above the current year.
