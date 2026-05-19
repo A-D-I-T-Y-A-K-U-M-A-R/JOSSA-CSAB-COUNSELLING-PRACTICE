@@ -108,15 +108,54 @@ GO_TO_CHOICE_FILLING
 style="background:lime;padding:5px 10px;cursor:pointer;font-weight:bold;">
 FAQs
 </button>
-
 </div>
+    
 <div style="height:25px;"></div>
-
-
-
-<!-- 🔥 FILTER BUTTONS (CUSTOM POSITION) -->
 <div class="line"></div>
 <div style="height:15px;"></div>
+
+<!-- VARIOUR YEARS DATA -->
+<p style="text-align:center;font-size:22px;margin-top:10px;font-weight:bold;text-decoration:underline;color:black;letter-spacing:0.5px;">
+OFFICIAL DATA OF VARIOUS YEARS FOR BETTER ANALYSIS.
+</p>
+
+<div style="text-align:center;margin-top:20px;margin-bottom:25px;">
+<select id="yearSelector"
+style="background:#b8860b;color:white;padding:12px 22px;font-size:16px;font-weight:bold;border:2px solid black;border-radius:8px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.35);transition:all 0.12s ease;outline:none;">
+<option value="2025">2025</option>
+<option value="2024">2024</option>
+<option value="2023">2023</option>
+<option value="2022">2022</option>
+<option value="2021">2021</option>
+</select>
+</div>
+
+    
+
+<script>
+/* 🔥 YEAR DROPDOWN SAVE SYSTEM */
+const yearSelector = document.getElementById("yearSelector");
+const currentSourceText = document.getElementById("currentSourceText");
+/* LOAD DROPDOWN YEAR */
+const savedYear = localStorage.getItem("selectedYear");
+if(savedYear){
+yearSelector.value = savedYear;
+}
+/* LOAD CURRENT SOURCE */
+const savedCurrentSource =
+localStorage.getItem("currentResultSourceYear");
+if(savedCurrentSource){
+currentSourceText.textContent =
+"CURRENT SOURCE: " + savedCurrentSource;
+}
+/* SAVE ONLY DROPDOWN SELECTION */
+yearSelector.addEventListener("change", function(){
+localStorage.setItem("selectedYear", this.value);
+});
+</script>
+    
+
+<!-- 🔥 FILTER BUTTONS (CUSTOM POSITION) --> 
 <div style="position:relative;height:60px;margin-top:40px;margin-bottom:10px;">
 
 <!-- CENTER: GENDER -->
@@ -215,7 +254,7 @@ ADD_TABLE
 <button id="previewBtn"
 onclick="handlePreviewClick()"
 style="padding:10px 20px;background:#ff69b4;color:black;font-weight:bold;border:none;cursor:pointer;">
-SEE_PREVIEW
+SEE_RESULTS
 </button>
 
 </div>
@@ -258,7 +297,11 @@ style="position:absolute;left:0;padding:10px;border:2px solid black;font-weight:
 <div style="height:15px;"></div>
 <div class="line"></div>
 <div style="height:20px;"></div>
-<h2 style="text-align:center;margin-top:0px">PREVIEW</h2>
+<h2 style="text-align:center;margin-top:0px">RESULTS</h2>
+
+<div id="currentSourceText"style="text-align:center;font-size:18px;font-weight:bold;margin-top:15px;margin-bottom:25px;color:#111;text-decoration:underline;">
+CURRENT SOURCE: 2025
+</div>
 
 <div style="width:95%;margin:auto;overflow:auto">
 <table id="previewTable">
