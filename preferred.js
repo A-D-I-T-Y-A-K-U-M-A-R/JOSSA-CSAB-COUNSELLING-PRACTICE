@@ -156,10 +156,22 @@ instState = normalizeState(instState || "");
 
 
 async function loadJSON(){
-    const res = await fetch("preferred_data.json");
+
+    /* 🔥 GET CURRENT SELECTED YEAR */
+    const selectedYear =
+    document.getElementById("yearSelector").value;
+
+    /* 🔥 DYNAMIC JSON FILE NAME */
+    const jsonFile =
+    `preferred_data(${selectedYear}).json`;
+
+    /* 🔥 FETCH CURRENT YEAR SOURCE */
+    const res = await fetch(jsonFile);
+
     JSON_DATA = await res.json();
 
-    ORIGINAL_DATA = JSON_DATA["ROUND 1 JOSSA 2025"] || [];
+    ORIGINAL_DATA =
+JSON_DATA["ROUND 1 JOSSA 2025"] || [];
 
     let tempData = [...ORIGINAL_DATA];
 
@@ -181,7 +193,6 @@ async function loadJSON(){
         document.getElementById("searchBtn").click();
     }
 }
-
 
 loadJSON();
 
@@ -755,9 +766,10 @@ return arr;
 /* PREVIEW */
 
 previewBtn.onclick = async ()=>{
-
+/* 🔥 LOAD CURRENT SELECTED YEAR JSON */
+await loadJSON();
 if(Object.keys(JSON_DATA).length === 0){
-alert("Data loading... please wait 1 second");
+alert("DATA SOURCE FETCHING ERROR, REPORT THE ERROR TO DEVELOPER OR ELSE CAN'T DO ANYTHING RADHE RADHE.");
 return;
 }
 
@@ -913,6 +925,29 @@ previewTable.appendChild(tr);
 
 saveTable();
 updateRemove();
+
+/* 🔥 SAVE CURRENT ACTIVE RESULT SOURCE */
+
+const selectedYear =
+document.getElementById("yearSelector").value;
+
+localStorage.setItem(
+"currentResultSourceYear",
+selectedYear
+);
+
+/* 🔥 UPDATE CURRENT SOURCE UI */
+
+const currentSourceText =
+document.getElementById("currentSourceText");
+
+if(currentSourceText){
+
+currentSourceText.textContent =
+"CURRENT SOURCE: " + selectedYear;
+
+}
+
 };
 
 
