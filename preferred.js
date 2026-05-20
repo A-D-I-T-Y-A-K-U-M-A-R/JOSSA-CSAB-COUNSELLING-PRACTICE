@@ -189,9 +189,7 @@ JSON_DATA["ROUND 1 JOSSA 2025"] || [];
     document.getElementById("instSearch").value = savedInst;
     document.getElementById("branchSearch").value = savedBranch;
 
-    if(savedType || savedInst || savedBranch){
-        document.getElementById("searchBtn").click();
-    }
+  
 }
 
 loadJSON();
