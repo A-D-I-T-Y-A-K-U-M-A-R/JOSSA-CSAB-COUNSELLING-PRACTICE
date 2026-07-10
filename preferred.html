@@ -301,20 +301,15 @@ style="position:absolute;left:0;padding:10px;border:2px solid black;font-weight:
 <button id="analysisBtn"style="display:block;margin:20px auto;padding:10px 24px;background:#800000;color:white;border:2px solid black;border-radius:6px;font-weight:bold;cursor:pointer;transition:transform 0.1s ease, box-shadow 0.1s ease;box-shadow:0 3px 6px rgba(0,0,0,0.3);"
 onmouseover="if(!this.locked && !this.clicked){this.style.transform='scale(1.1)'}"
 onmousedown="if(!this.locked){this.clicked=true;this.locked=true;this.style.transform='scale(0.9)';setTimeout(()=>{this.style.transform='scale(1)';this.clicked=false;},100);setTimeout(()=>{this.locked=false;if(this.matches(':hover'))this.style.transform='scale(1.1)';},1000)}"
-onmouseleave="if(!this.clicked)this.style.transform='scale(1)'">ANALYSIS</button>
+onmouseleave="if(!this.clicked)this.style.transform='scale(1)'">SPECIFIC_ANALYSIS</button>
 
-<select id="round_number" style="display:block;margin:20px auto;padding:10px 24px;background:#800000;color:white;border:2px solid black;border-radius:6px;font-weight:bold;cursor:pointer;transition:transform 0.1s ease, box-shadow 0.1s ease;box-shadow:0 3px 6px rgba(0,0,0,0.3);"
+<select id="round_analysisBtn" style="display:block;margin:20px auto;padding:10px 24px;background:#800000;color:white;border:2px solid black;border-radius:6px;font-weight:bold;cursor:pointer;transition:transform 0.1s ease, box-shadow 0.1s ease;box-shadow:0 3px 6px rgba(0,0,0,0.3);"
 onmouseover="if(!this.locked && !this.clicked){this.style.transform='scale(1.1)'}"
 onmousedown="if(!this.locked){this.clicked=true;this.locked=true;this.style.transform='scale(0.9)';setTimeout(()=>{this.style.transform='scale(1)';this.clicked=false;},100);setTimeout(()=>{this.locked=false;if(this.matches(':hover'))this.style.transform='scale(1.1)';},1000)}"
 onmouseleave="if(!this.clicked)this.style.transform='scale(1)'">
-<option value="">Select_Round</option>
-<option value="ORDERED">ORDERED</option>
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-<option value="6">6</option>
+<option value="">ROUND_ANALYSIS</option>
+<option value="JOSAA">JOSAA</option>
+<option value="CSAB">CSAB</option>
 </select>
 </div>
 
