@@ -1,4 +1,4 @@
-alert("h"),
+
 let records = {};
 let removeLocked = false;
 
