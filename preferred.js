@@ -200,7 +200,22 @@ JSON_DATA[firstRoundKey] || [];
     document.getElementById("instSearch").value = savedInst;
     document.getElementById("branchSearch").value = savedBranch;
 
-  
+  /* 🔥 UPDATE CURRENT SOURCE LABEL */
+
+const currentSource =
+document.getElementById("currentSourceText");
+
+if(currentSource){
+
+    currentSource.textContent =
+    "CURRENT SOURCE: " + selectedYear;
+
+    localStorage.setItem(
+        "currentResultSourceYear",
+        selectedYear
+    );
+
+}
 }
 
 loadJSON();
@@ -950,31 +965,7 @@ previewTable.appendChild(tr);
 saveTable();
 updateRemove();
 
-/* 🔥 SAVE CURRENT ACTIVE RESULT SOURCE */
 
-const selectedYear =
-document.getElementById("yearSelector").value;
-
-localStorage.setItem(
-"currentResultSourceYear",
-selectedYear
-);
-localStorage.setItem(
-    "selectedYear",
-    selectedYear
-);
-
-/* 🔥 UPDATE CURRENT SOURCE UI */
-
-const currentSourceText =
-document.getElementById("currentSourceText");
-
-if(currentSourceText){
-
-currentSourceText.textContent =
-"CURRENT SOURCE: " + selectedYear;
-
-}
 
 };
 
