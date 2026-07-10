@@ -210,14 +210,7 @@ document.getElementById("yearSelector").addEventListener("change", async functio
 
     await loadJSON();
 
-    const currentSource =
-    document.getElementById("currentSourceText");
-
-    if(currentSource){
-        currentSource.textContent =
-        "CURRENT SOURCE: " + this.value;
-    }
-
+   
 });
 
 // 🔴 SAVE FILTER VALUES
@@ -640,7 +633,20 @@ refreshAllButtons();
 }
 }
 loadTable();
+/* 🔥 RESTORE LAST PREVIEW SOURCE */
 
+const currentSourceText =
+document.getElementById("currentSourceText");
+
+const savedSourceYear =
+localStorage.getItem("currentResultSourceYear");
+
+if(currentSourceText && savedSourceYear){
+
+    currentSourceText.textContent =
+    "CURRENT SOURCE: " + savedSourceYear;
+
+}
 /* UNDO LOAD */
 let savedUndo = localStorage.getItem("undoStack");
 if(savedUndo){
