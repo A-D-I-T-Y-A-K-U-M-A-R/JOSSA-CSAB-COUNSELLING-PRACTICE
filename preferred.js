@@ -157,9 +157,19 @@ instState = normalizeState(instState || "");
 
 async function loadJSON(){
 
-    /* 🔥 GET CURRENT SELECTED YEAR */
-    const selectedYear =
-    document.getElementById("yearSelector").value;
+  /* 🔥 GET CURRENT SELECTED YEAR */
+
+const yearSelector =
+document.getElementById("yearSelector");
+
+const savedYear =
+localStorage.getItem("selectedYear");
+
+if(savedYear && yearSelector.value !== savedYear){
+    yearSelector.value = savedYear;
+}
+
+const selectedYear = yearSelector.value;
 
     /* 🔥 DYNAMIC JSON FILE NAME */
     const jsonFile =
@@ -170,9 +180,10 @@ async function loadJSON(){
 
     JSON_DATA = await res.json();
 
-    ORIGINAL_DATA =
-JSON_DATA["ROUND 1 JOSSA 2025"] || [];
+  const firstRoundKey = `ROUND 1 JOSSA ${selectedYear}`;
 
+ORIGINAL_DATA =
+JSON_DATA[firstRoundKey] || [];
     let tempData = [...ORIGINAL_DATA];
 
     CURRENT_DATA = tempData;
@@ -193,6 +204,21 @@ JSON_DATA["ROUND 1 JOSSA 2025"] || [];
 }
 
 loadJSON();
+document.getElementById("yearSelector").addEventListener("change", async function(){
+
+    localStorage.setItem("selectedYear", this.value);
+
+    await loadJSON();
+
+    const currentSource =
+    document.getElementById("currentSourceText");
+
+    if(currentSource){
+        currentSource.textContent =
+        "CURRENT SOURCE: " + this.value;
+    }
+
+});
 
 // 🔴 SAVE FILTER VALUES
 
@@ -932,6 +958,10 @@ document.getElementById("yearSelector").value;
 localStorage.setItem(
 "currentResultSourceYear",
 selectedYear
+);
+localStorage.setItem(
+    "selectedYear",
+    selectedYear
 );
 
 /* 🔥 UPDATE CURRENT SOURCE UI */
