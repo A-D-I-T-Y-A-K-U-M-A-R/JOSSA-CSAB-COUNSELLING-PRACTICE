@@ -925,9 +925,15 @@ saveTable();
 updateRemove();
 
 /* 🔥 SAVE CURRENT ACTIVE RESULT SOURCE */
+/* 🔥 THIS IS THE ONLY COMMIT POINT — SEE_RESULTS click */
 
 const selectedYear =
 document.getElementById("yearSelector").value;
+
+localStorage.setItem(
+"selectedYear",
+selectedYear
+);
 
 localStorage.setItem(
 "currentResultSourceYear",
@@ -1430,9 +1436,10 @@ function renderAnalysisTable(analysisRows){
     saveTable();
     updateRemove();
 
-    // 🔥 keep "CURRENT SOURCE" text in sync with the year used for this analysis
+    // 🔥 show the year used for THIS analysis on screen only — NOT saved.
+    // (SEE_RESULTS remains the only commit point; refreshing will fall back
+    // to the last SEE_RESULTS-committed year, exactly as required.)
     let selectedYear = document.getElementById("yearSelector").value;
-    localStorage.setItem("currentResultSourceYear", selectedYear);
 
     let currentSourceText = document.getElementById("currentSourceText");
     if(currentSourceText){
@@ -1440,7 +1447,7 @@ function renderAnalysisTable(analysisRows){
     }
 
     if(analysisRows.length === 0){
-        alert("NO DATA FOUND FOR GIVEN INSTITUTE/BRANCH WITH CURRENT EXAM TYPE FILTER.");
+        alert("NO DATA FOUND FOR GIVEN INSTITUTE/BRANCH WITH CURRENT FILTERS.");
     }
 }
 
@@ -1454,3 +1461,64 @@ document.getElementById("analysisBtn").onclick = function(){
    first table step inside their existing, untouched logic — so clicking
    any of those three automatically wipes this analysis table and rebuilds
    the normal filtered table in its place, exactly as required. */
+
+/* ======================================================================
+   🔥🔥🔥 YEAR DROPDOWN — "SEE_RESULTS IS THE ONLY COMMIT BUTTON" FLOW 🔥🔥🔥
+   ======================================================================
+   Required behaviour:
+   - On page load/refresh -> dropdown always shows the LAST COMMITTED
+     year (localStorage "selectedYear"), never a temporary selection.
+   - Changing the dropdown -> pure temporary selection, NOTHING saved.
+   - Clicking SEE_RESULTS -> the only commit point (already handled just
+     above, inside previewBtn.onclick, where "selectedYear" AND
+     "currentResultSourceYear" both get saved together).
+
+   The existing inline <script> in preferred.html attaches a "change"
+   listener on #yearSelector that saves immediately on every change —
+   that is exactly the behaviour we must remove, but per your request
+   this is fixed ENTIRELY here in JS, without editing the HTML file.
+
+   Since that listener was attached via addEventListener() in a
+   different <script> block, the only reliable JS-only way to strip it
+   (without touching preferred.html) is to clone the element — a clone
+   carries over all attributes/options but NONE of the previously
+   attached addEventListener listeners — and swap it into the DOM in
+   its exact place. Every other part of the code (loadJSON, previewBtn,
+   runSpecificAnalysis) already reads the dropdown fresh via
+   document.getElementById("yearSelector") each time, so this swap is
+   completely safe and nothing else needs to change.
+   ====================================================================== */
+
+(function(){
+
+    let yearSel = document.getElementById("yearSelector");
+    if(!yearSel) return;
+
+    // preserve whatever value is currently showing, just in case
+    let fallbackValue = yearSel.value;
+
+    // 🔥 STRIP any pre-existing "change" listeners (e.g. the immediate-save
+    // listener from preferred.html's inline script) by cloning the node.
+    let cleanYearSel = yearSel.cloneNode(true);
+    yearSel.parentNode.replaceChild(cleanYearSel, yearSel);
+    yearSel = cleanYearSel;
+
+    // 🔥 ALWAYS RESTORE THE LAST *COMMITTED* YEAR ON LOAD/REFRESH
+    let savedYear = localStorage.getItem("selectedYear");
+    yearSel.value = savedYear || fallbackValue;
+
+    // 🔥 CURRENT SOURCE text also reflects the last *committed* result,
+    // never a temporary/unsaved dropdown selection
+    let srcText = document.getElementById("currentSourceText");
+    let savedSource = localStorage.getItem("currentResultSourceYear");
+    if(srcText && savedSource){
+        srcText.textContent = "CURRENT SOURCE: " + savedSource;
+    }
+
+    // ❌ INTENTIONALLY NO "change" LISTENER HERE.
+    // Selecting a different year in the dropdown is a purely temporary,
+    // unsaved action. Nothing is written to localStorage until the user
+    // clicks SEE_RESULTS (the sole commit point, handled earlier in this
+    // file inside previewBtn.onclick).
+
+})();
