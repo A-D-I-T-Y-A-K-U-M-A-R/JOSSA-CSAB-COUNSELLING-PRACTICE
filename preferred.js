@@ -1440,7 +1440,7 @@ function renderAnalysisTable(analysisRows){
     }
 
     if(analysisRows.length === 0){
-        alert("NO DATA FOUND FOR GIVEN INSTITUTE/BRANCH WITH CURRENT FILTERS.");
+        alert("NO DATA FOUND FOR GIVEN INSTITUTE/BRANCH WITH CURRENT EXAM TYPE FILTER.");
     }
 }
 
