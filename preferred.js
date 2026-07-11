@@ -1249,3 +1249,208 @@ window.addEventListener("storage", function(e){
     });
 
 });
+
+/* ======================================================================
+   🔥🔥🔥 NEW FEATURE ADDED BELOW — "SPECIFIC_ANALYSIS" (analysisBtn) 🔥🔥🔥
+   ======================================================================
+   IMPORTANT: Nothing above this line has been modified.
+   process(), buildData(), records{}, SEARCH_ACTIVE, rank filter, and
+   typeSearch filter are completely untouched and are NOT used here.
+   This feature works 100% independently, exactly like the plan:
+
+   analysisBtn -> runSpecificAnalysis() -> loadJSON() -> clear previewTable
+   -> loop every JSON round-file -> (Seat -> Gender -> HomeState -> Exam
+   -> Institute -> Branch) filters -> push matching row directly to table
+   (one row per round, no "lowest round" merging, no buildData()).
+   ====================================================================== */
+
+async function runSpecificAnalysis(){
+
+    let instVal = document.getElementById("instSearch").value.trim();
+    let branchVal = document.getElementById("branchSearch").value.trim();
+
+    // 🔴 MANDATORY: both Institute Name and Branch must be filled
+    if(!instVal || !branchVal){
+        alert("PLEASE SELECT INSTITUTE NAME AND BRANCH");
+        return;
+    }
+
+    // 🔥 keep search bars in sync so loadJSON()'s restore-from-localStorage
+    // step doesn't visually revert what the user just typed
+    localStorage.setItem("typeSearch", document.getElementById("typeSearch").value);
+    localStorage.setItem("instSearch", instVal.toLowerCase());
+    localStorage.setItem("branchSearch", branchVal.toLowerCase());
+
+    let instLower = instVal.toLowerCase();
+    let branchLower = branchVal.toLowerCase();
+
+    /* 🔥 LOAD CURRENT SELECTED YEAR JSON (reuses existing loadJSON, untouched) */
+    await loadJSON();
+
+    if(Object.keys(JSON_DATA).length === 0){
+        alert("DATA SOURCE FETCHING ERROR, REPORT THE ERROR TO DEVELOPER OR ELSE CAN'T DO ANYTHING RADHE RADHE.");
+        return;
+    }
+
+    let examVal = document.getElementById("exam").value;
+
+    let analysisRows = [];
+
+    // 🔥 LOOP THROUGH EVERY ROUND FILE (ROUND 1 JOSSA ... ROUND 3 CSAB)
+    for(let file of files){
+
+        let rows = JSON_DATA[file];
+        if(!rows) continue;
+
+        let m = file.match(/round (\d+)/i);
+        let roundNum = m ? parseInt(m[1]) : 0;
+        let source = file.toLowerCase().includes("jossa") ? "JOSSA" : "CSAB";
+
+        for(let i=0; i<rows.length; i++){
+
+            let r = rows[i];
+
+            let instName = r["Institute"] || "";
+            let branchName = r["Academic Program Name"] || "";
+
+            // 🔥 INSTITUTE FILTER (instSearch)
+            if(!instName.toLowerCase().includes(instLower)) continue;
+
+            // 🔥 BRANCH FILTER (branchSearch)
+            if(!branchName.toLowerCase().includes(branchLower)) continue;
+
+            let tempRow = [r];
+
+            // 🔥 SEAT TYPE FILTER (reuses existing function, untouched)
+            tempRow = applySeatTypeFilter(tempRow);
+            if(tempRow.length === 0) continue;
+
+            // 🔥 GENDER FILTER (reuses existing function, untouched)
+            tempRow = applyGenderFilter(tempRow);
+            if(tempRow.length === 0) continue;
+
+            // 🔥 HOME STATE FILTER (reuses existing function, untouched)
+            tempRow = applyHomeStateFilter(tempRow);
+            if(tempRow.length === 0) continue;
+
+            // 🔥 EXAM FILTER (reuses existing valid() function, untouched)
+            if(!valid(instName, examVal)) continue;
+
+            // ❌ NO rank filter
+            // ❌ NO typeSearch filter
+            // ❌ NO "lowest round" merge logic
+            // -> every matching round becomes its own row
+
+            let opening = parseInt(r["Opening Rank"]);
+            let closing = parseInt(r["Closing Rank"]);
+
+            analysisRows.push({
+                inst: instName,
+                branch: branchName,
+                source: source,
+                round: roundNum,
+                opening: isNaN(opening) ? "" : opening,
+                closing: isNaN(closing) ? "" : closing
+            });
+        }
+    }
+
+    renderAnalysisTable(analysisRows);
+}
+
+/* 🔥 DIRECT TABLE BUILDER FOR ANALYSIS ONLY (does NOT use buildData()) */
+function renderAnalysisTable(analysisRows){
+
+    previewTable.innerHTML = "";
+
+    let headers=[
+        "REMOVE","ADD",
+        "Institute","Branch",
+        "JoSAA Opening","JoSAA Closing","JoSAA Round",
+        "CSAB Opening","CSAB Closing","CSAB Round"
+    ];
+
+    let trh=document.createElement("tr");
+    headers.forEach(h=>{
+        let th=document.createElement("th");
+        th.innerText=h;
+        trh.appendChild(th);
+    });
+    previewTable.appendChild(trh);
+
+    // 🔥 reuse existing mainList so ADD button colors (green/red) stay correct
+    let main = JSON.parse(localStorage.getItem("mainList")||"[]");
+
+    analysisRows.forEach(row=>{
+
+        let tr=document.createElement("tr");
+
+        // REMOVE (same markup/behaviour as normal preview rows)
+        let td1=document.createElement("td");
+        let rm=document.createElement("button");
+        rm.innerText="REMOVE";
+        rm.style.background="red";
+        rm.style.color="white";
+        td1.appendChild(rm);
+        tr.appendChild(td1);
+
+        // ADD (same markup/behaviour as normal preview rows)
+        let td3=document.createElement("td");
+        let add=document.createElement("button");
+        add.innerText="ADD";
+
+        let exists = main.some(mm=>mm.inst===row.inst && mm.branch===row.branch);
+        add.style.background = exists ? "red" : "lightgreen";
+
+        td3.appendChild(add);
+        tr.appendChild(td3);
+
+        // DATA — only the relevant source (JOSSA or CSAB) side is filled
+        let values = [
+            row.inst,
+            row.branch,
+            row.source==="JOSSA" ? row.opening : "",
+            row.source==="JOSSA" ? row.closing : "",
+            row.source==="JOSSA" ? row.round : "",
+            row.source==="CSAB" ? row.opening : "",
+            row.source==="CSAB" ? row.closing : "",
+            row.source==="CSAB" ? row.round : ""
+        ];
+
+        values.forEach(v=>{
+            let td=document.createElement("td");
+            td.innerText=v;
+            tr.appendChild(td);
+        });
+
+        previewTable.appendChild(tr);
+    });
+
+    // 🔥 persist table + respect lock state, exactly like normal preview
+    saveTable();
+    updateRemove();
+
+    // 🔥 keep "CURRENT SOURCE" text in sync with the year used for this analysis
+    let selectedYear = document.getElementById("yearSelector").value;
+    localStorage.setItem("currentResultSourceYear", selectedYear);
+
+    let currentSourceText = document.getElementById("currentSourceText");
+    if(currentSourceText){
+        currentSourceText.textContent = "CURRENT SOURCE: " + selectedYear;
+    }
+
+    if(analysisRows.length === 0){
+        alert("NO DATA FOUND FOR GIVEN INSTITUTE/BRANCH WITH CURRENT FILTERS.");
+    }
+}
+
+/* 🔥 ANALYSIS BUTTON EVENT LISTENER (does not touch previewBtn/searchBtn/clearFilters) */
+document.getElementById("analysisBtn").onclick = function(){
+    runSpecificAnalysis();
+};
+
+/* NOTE: previewBtn (SEE_RESULTS), searchBtn (SEARCH) and clearFilters
+   (CLEAR_SEARCH) already run previewTable.innerHTML = "" as their very
+   first table step inside their existing, untouched logic — so clicking
+   any of those three automatically wipes this analysis table and rebuilds
+   the normal filtered table in its place, exactly as required. */
