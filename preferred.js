@@ -189,7 +189,13 @@ JSON_DATA["ROUND 1 JOSSA 2025"] || [];
     document.getElementById("instSearch").value = savedInst;
     document.getElementById("branchSearch").value = savedBranch;
 
-  
+    // 🔥 instSearch.value was just restored from localStorage AFTER
+    // populateSearchLists() already ran (with an empty/stale Institute
+    // box), so the Branch dropdown at this point may still be the
+    // "ALL branches" list instead of being linked to the restored
+    // Institute. Rebuild it now so a page refresh with a saved
+    // Institute value shows the correctly filtered Branch list too.
+    populateBranchList();
 }
 
 loadJSON();
@@ -524,27 +530,71 @@ return "OTHER";
   
 }
 
-function populateSearchLists(){
+/* 🔥 INSTITUTE DROPDOWN — UNCHANGED BEHAVIOUR
+   Always shows ALL unique institutes from the currently loaded year's
+   ORIGINAL_DATA. Nothing about this list depends on any other field. */
+function populateInstituteList(){
 
     let instSet = new Set();
-    let branchSet = new Set();
 
     ORIGINAL_DATA.forEach(d=>{
         instSet.add(d["Institute"]);
-        branchSet.add(d["Academic Program Name"]);
     });
 
     let instList = document.getElementById("instList");
-    let branchList = document.getElementById("branchList");
+    if(!instList) return;
 
     instList.innerHTML="";
-    branchList.innerHTML="";
 
     instSet.forEach(i=>{
         let o=document.createElement("option");
         o.value=i;
         instList.appendChild(o);
     });
+}
+
+/* 🔥 BRANCH DROPDOWN — DYNAMIC, LINKED TO INSTITUTE NAME
+   Rules (as required):
+   1. Institute Name blank  -> Branch dropdown = ALL unique
+      "Academic Program Name" values from CURRENT YEAR's ORIGINAL_DATA.
+   2. Institute Name has an EXACT match in ORIGINAL_DATA["Institute"]
+      -> Branch dropdown = ONLY the unique "Academic Program Name"
+      values belonging to that exact institute.
+   3. Institute Name typed but does NOT (yet) exactly match any
+      institute (user still typing / mid-selection) -> fall back to
+      ALL unique branches so the dropdown never goes blank while
+      the user is typing.
+   No hardcoding — always rebuilt fresh from CURRENT YEAR's
+   ORIGINAL_DATA, so new/renamed branches show up automatically.
+   Institute dropdown, search logic, preview/result logic are all
+   completely untouched by this function. */
+function populateBranchList(){
+
+    let branchList = document.getElementById("branchList");
+    if(!branchList) return;
+
+    let instBox = document.getElementById("instSearch");
+    let selectedInstitute = ((instBox && instBox.value) || "").trim();
+
+    let rows;
+
+    if(!selectedInstitute){
+        rows = ORIGINAL_DATA;
+    }else{
+        rows = ORIGINAL_DATA.filter(d => d["Institute"] === selectedInstitute);
+
+        // exact institute not matched yet (partial typing) -> show all
+        if(rows.length === 0){
+            rows = ORIGINAL_DATA;
+        }
+    }
+
+    let branchSet = new Set();
+    rows.forEach(d=>{
+        branchSet.add(d["Academic Program Name"]);
+    });
+
+    branchList.innerHTML="";
 
     branchSet.forEach(b=>{
         let o=document.createElement("option");
@@ -552,6 +602,26 @@ function populateSearchLists(){
         branchList.appendChild(o);
     });
 }
+
+/* 🔥 KEEPS OLD FUNCTION NAME WORKING — called from loadJSON(), untouched
+   there. Just builds Institute list (unchanged) + Branch list (now
+   dynamic/linked to whatever Institute value is currently in the box). */
+function populateSearchLists(){
+    populateInstituteList();
+    populateBranchList();
+}
+
+/* 🔥 RE-FILTER BRANCH DROPDOWN EVERY TIME USER TYPES/SELECTS IN
+   INSTITUTE NAME BOX. "input" event (not just "change") so it reacts
+   instantly whether the user types, pastes, clears the box, or picks
+   an option from the Institute datalist. Institute box itself is
+   NOT touched/modified in any way — read-only listener. */
+(function(){
+    let instBox = document.getElementById("instSearch");
+    if(instBox){
+        instBox.addEventListener("input", populateBranchList);
+    }
+})();
 
 function valid(inst, exam){
 let t = getType(inst);
