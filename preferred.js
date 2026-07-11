@@ -1517,7 +1517,7 @@ function renderAnalysisTable(analysisRows){
     }
 
     if(analysisRows.length === 0){
-        alert("NO DATA FOUND FOR GIVEN INSTITUTE/BRANCH WITH CURRENT EXAM TYPE FILTER.");
+        alert("PLEASE ADJUST EXAM TYPE INPUT JEE MAINS/ADVANCE OR PLEASE INPUT IN ALL AREAS");
     }
 }
 
