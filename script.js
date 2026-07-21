@@ -1,3 +1,42 @@
+/* =========================
+   BUTTON HOVER/CLICK EFFECT 
+========================= */
+function applyButtonEffect(btn){
+if(!btn) return;
+
+btn.style.cursor="pointer";
+
+btn.onmouseover=function(){
+if(!this.locked && !this.clicked){
+this.style.setProperty('--s','1.1');
+}
+};
+
+btn.onmousedown=function(){
+if(!this.locked){
+this.clicked=true;
+this.locked=true;
+this.style.setProperty('--s','0.9');
+
+setTimeout(()=>{
+this.style.setProperty('--s','1');
+this.clicked=false;
+},100);
+
+setTimeout(()=>{
+this.locked=false;
+if(this.matches(':hover')) this.style.setProperty('--s','1.1');
+},100);
+}
+};
+
+btn.onmouseleave=function(){
+if(!this.clicked){
+this.style.setProperty('--s','1');
+}
+};
+}
+
 let preferences=[];
 let isFrozen = JSON.parse(localStorage.getItem("freezeState")) || false;
 const leftTable=document.querySelector("#leftTable tbody");
@@ -26,8 +65,7 @@ data=json;
 filteredData=[...data];
 populateLists();
 loadSaved();
-// 🔥 SAFE SYNC: only run when NOT frozen
-// 🔥 ROOT FIX: sync ONLY ONCE, then never depend again
+
 if(!isFrozen){
 loadMainList();
 
@@ -138,6 +176,9 @@ addPref(item.inst,item.branch,choice);
 
 }
 
+// 🔥 pointer + hover + press animation on every Add button
+applyButtonEffect(row.querySelector(".addBtn"));
+
 leftTable.appendChild(row);
 
 });
@@ -218,6 +259,9 @@ renderRight();
 autoSave();
 
 };
+
+// 🔥 pointer + hover + press animation on every Delete button
+applyButtonEffect(row.querySelector(".deleteBtn"));
 
 rightTable.appendChild(row);
 
