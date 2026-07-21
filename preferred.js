@@ -8,6 +8,46 @@ let JSON_DATA = {};
 let ORIGINAL_DATA = [];
 let CURRENT_DATA = [];
 
+/* =========================
+   BUTTON HOVER/CLICK EFFECT (reusable)
+  
+========================= */
+function applyButtonEffect(btn){
+if(!btn) return;
+
+btn.style.cursor="pointer";
+
+btn.onmouseover=function(){
+if(!this.locked && !this.clicked){
+this.style.setProperty('--s','1.1');
+}
+};
+
+btn.onmousedown=function(){
+if(!this.locked){
+this.clicked=true;
+this.locked=true;
+this.style.setProperty('--s','0.9');
+
+setTimeout(()=>{
+this.style.setProperty('--s','1');
+this.clicked=false;
+},100);
+
+setTimeout(()=>{
+this.locked=false;
+if(this.matches(':hover')) this.style.setProperty('--s','1.1');
+},100);
+}
+};
+
+btn.onmouseleave=function(){
+if(!this.clicked){
+this.style.setProperty('--s','1');
+}
+};
+}
+
 // 🔥 NORMALIZE FUNCTION (Seat Type safe compare)
 function normalizeSeat(value){
     return (value || "")
@@ -190,10 +230,6 @@ JSON_DATA["ROUND 1 JOSSA 2025"] || [];
     document.getElementById("branchSearch").value = savedBranch;
 
     // 🔥 instSearch.value was just restored from localStorage AFTER
-    // populateSearchLists() already ran (with an empty/stale Institute
-    // box), so the Branch dropdown at this point may still be the
-    // "ALL branches" list instead of being linked to the restored
-    // Institute. Rebuild it now so a page refresh with a saved
     // Institute value shows the correctly filtered Branch list too.
     populateBranchList();
 }
@@ -530,9 +566,7 @@ return "OTHER";
   
 }
 
-/* 🔥 INSTITUTE DROPDOWN — UNCHANGED BEHAVIOUR
-   Always shows ALL unique institutes from the currently loaded year's
-   ORIGINAL_DATA. Nothing about this list depends on any other field. */
+
 function populateInstituteList(){
 
     let instSet = new Set();
@@ -553,21 +587,7 @@ function populateInstituteList(){
     });
 }
 
-/* 🔥 BRANCH DROPDOWN — DYNAMIC, LINKED TO INSTITUTE NAME
-   Rules (as required):
-   1. Institute Name blank  -> Branch dropdown = ALL unique
-      "Academic Program Name" values from CURRENT YEAR's ORIGINAL_DATA.
-   2. Institute Name has an EXACT match in ORIGINAL_DATA["Institute"]
-      -> Branch dropdown = ONLY the unique "Academic Program Name"
-      values belonging to that exact institute.
-   3. Institute Name typed but does NOT (yet) exactly match any
-      institute (user still typing / mid-selection) -> fall back to
-      ALL unique branches so the dropdown never goes blank while
-      the user is typing.
-   No hardcoding — always rebuilt fresh from CURRENT YEAR's
-   ORIGINAL_DATA, so new/renamed branches show up automatically.
-   Institute dropdown, search logic, preview/result logic are all
-   completely untouched by this function. */
+
 function populateBranchList(){
 
     let branchList = document.getElementById("branchList");
@@ -603,19 +623,13 @@ function populateBranchList(){
     });
 }
 
-/* 🔥 KEEPS OLD FUNCTION NAME WORKING — called from loadJSON(), untouched
-   there. Just builds Institute list (unchanged) + Branch list (now
-   dynamic/linked to whatever Institute value is currently in the box). */
+
 function populateSearchLists(){
     populateInstituteList();
     populateBranchList();
 }
 
-/* 🔥 RE-FILTER BRANCH DROPDOWN EVERY TIME USER TYPES/SELECTS IN
-   INSTITUTE NAME BOX. "input" event (not just "change") so it reacts
-   instantly whether the user types, pastes, clears the box, or picks
-   an option from the Institute datalist. Institute box itself is
-   NOT touched/modified in any way — read-only listener. */
+
 (function(){
     let instBox = document.getElementById("instSearch");
     if(instBox){
@@ -667,6 +681,52 @@ exam.onchange=()=>localStorage.setItem("exam",exam.value);
 rank.value=localStorage.getItem("rank")||"";
 exam.value=localStorage.getItem("exam")||"";
 
+
+function removeCollegeBlock(){
+
+let sep = this.closest("tr");
+let current = sep.nextElementSibling;
+let toDelete = [];
+
+// 🔴 collect rows
+while(current){
+
+if(current.getAttribute && current.getAttribute("data-separator")==="true"){
+break;
+}
+
+toDelete.push(current);
+current = current.nextElementSibling;
+}
+
+// 🔴 ALSO include separator itself
+toDelete.push(sep);
+
+// 🔴 FULL UNDO RESET (BLOCK = PERMANENT DELETE)
+undoStack = [];
+localStorage.removeItem("undoStack");
+
+// 🔥 DELETE FROM DOM
+toDelete.forEach(r=>r.remove());
+
+// 🔥 SAVE
+saveTable();
+}
+
+
+function attachPreviewEvents(){
+
+document.querySelectorAll("#previewTable .removeBlockBtn").forEach(btn=>{
+btn.onclick = removeCollegeBlock;
+applyButtonEffect(btn);
+});
+
+document.querySelectorAll("#previewTable .js-remove-btn, #previewTable .js-add-btn").forEach(btn=>{
+applyButtonEffect(btn);
+});
+
+}
+
 /* SAVE TABLE */
 function saveTable(){
 localStorage.setItem("previewTableData",previewTable.innerHTML);
@@ -679,7 +739,7 @@ if(t){
 previewTable.innerHTML=t;
 updateRemove();
 refreshAllButtons();
-
+attachPreviewEvents();   // 🔥 FIX: restores REMOVE_COLLEGE_BLOCK + button animation after refresh
 
 }
 }
@@ -908,7 +968,7 @@ sep.setAttribute("data-separator","true");
 sep.innerHTML=`
 <td colspan='11' style='height:40px;background:#eee;position:relative;'>
 
-<button class="removeBlockBtn" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:red;color:white;border:none;padding:5px 10px;cursor:pointer;box-shadow:0 0 10px rgba(0,0,0,0.4);
+<button class="removeBlockBtn" style="position:absolute;left:50%;top:50%;background:red;color:white;border:none;padding:5px 10px;box-shadow:0 0 10px rgba(0,0,0,0.4);
 ">
 REMOVE_COLLEGE_BLOCK
 </button>
@@ -916,35 +976,7 @@ REMOVE_COLLEGE_BLOCK
 </td>
 `;
 previewTable.appendChild(sep);
-sep.querySelector(".removeBlockBtn").onclick = function(){
 
-let current = sep.nextElementSibling;
-let toDelete = [];
-
-// 🔴 collect rows
-while(current){
-
-if(current.getAttribute && current.getAttribute("data-separator")==="true"){
-break;
-}
-
-toDelete.push(current);
-current = current.nextElementSibling;
-}
-
-// 🔴 ALSO include separator itself
-toDelete.push(sep);
-
-// 🔴 FULL UNDO RESET (BLOCK = PERMANENT DELETE)
-undoStack = [];
-localStorage.removeItem("undoStack");
-
-// 🔥 DELETE FROM DOM
-toDelete.forEach(r=>r.remove());
-
-// 🔥 SAVE
-saveTable();
-};
 }
 
 last=r[0];
@@ -955,6 +987,7 @@ let tr=document.createElement("tr");
 let td1=document.createElement("td");
 let rm=document.createElement("button");
 rm.innerText="REMOVE";
+rm.classList.add("js-remove-btn");
 rm.style.background="red";
 rm.style.color="white";
 td1.appendChild(rm);
@@ -966,6 +999,7 @@ tr.appendChild(td1);
 let td3=document.createElement("td");
 let add=document.createElement("button");
 add.innerText="ADD";
+add.classList.add("js-add-btn");
 
 // 🔥 CHECK FROM mainList
 let main=JSON.parse(localStorage.getItem("mainList")||"[]");
@@ -993,9 +1027,7 @@ previewTable.appendChild(tr);
 
 saveTable();
 updateRemove();
-
-/* 🔥 SAVE CURRENT ACTIVE RESULT SOURCE */
-/* 🔥 THIS IS THE ONLY COMMIT POINT — SEE_RESULTS click */
+attachPreviewEvents();   // 🔥 pointer/hover/press animation + REMOVE_COLLEGE_BLOCK binding
 
 const selectedYear =
 document.getElementById("yearSelector").value;
@@ -1328,16 +1360,6 @@ window.addEventListener("storage", function(e){
 
 /* ======================================================================
    🔥🔥🔥 NEW FEATURE ADDED BELOW — "SPECIFIC_ANALYSIS" (analysisBtn) 🔥🔥🔥
-   ======================================================================
-   IMPORTANT: Nothing above this line has been modified.
-   process(), buildData(), records{}, SEARCH_ACTIVE, rank filter, and
-   typeSearch filter are completely untouched and are NOT used here.
-   This feature works 100% independently, exactly like the plan:
-
-   analysisBtn -> runSpecificAnalysis() -> loadJSON() -> clear previewTable
-   -> loop every JSON round-file -> (Seat -> Gender -> HomeState -> Exam
-   -> Institute -> Branch) filters -> push matching row directly to table
-   (one row per round, no "lowest round" merging, no buildData()).
    ====================================================================== */
 
 async function runSpecificAnalysis(){
@@ -1412,10 +1434,6 @@ async function runSpecificAnalysis(){
             // 🔥 EXAM FILTER (reuses existing valid() function, untouched)
             if(!valid(instName, examVal)) continue;
 
-            // ❌ NO rank filter
-            // ❌ NO typeSearch filter
-            // ❌ NO "lowest round" merge logic
-            // -> every matching round becomes its own row
 
             let opening = parseInt(r["Opening Rank"]);
             let closing = parseInt(r["Closing Rank"]);
@@ -1465,6 +1483,7 @@ function renderAnalysisTable(analysisRows){
         let td1=document.createElement("td");
         let rm=document.createElement("button");
         rm.innerText="REMOVE";
+        rm.classList.add("js-remove-btn");
         rm.style.background="red";
         rm.style.color="white";
         td1.appendChild(rm);
@@ -1474,6 +1493,7 @@ function renderAnalysisTable(analysisRows){
         let td3=document.createElement("td");
         let add=document.createElement("button");
         add.innerText="ADD";
+        add.classList.add("js-add-btn");
 
         let exists = main.some(mm=>mm.inst===row.inst && mm.branch===row.branch);
         add.style.background = exists ? "red" : "lightgreen";
@@ -1505,10 +1525,8 @@ function renderAnalysisTable(analysisRows){
     // 🔥 persist table + respect lock state, exactly like normal preview
     saveTable();
     updateRemove();
+    attachPreviewEvents();   // 🔥 pointer/hover/press animation on REMOVE/ADD here too
 
-    // 🔥 show the year used for THIS analysis on screen only — NOT saved.
-    // (SEE_RESULTS remains the only commit point; refreshing will fall back
-    // to the last SEE_RESULTS-committed year, exactly as required.)
     let selectedYear = document.getElementById("yearSelector").value;
 
     let currentSourceText = document.getElementById("currentSourceText");
@@ -1526,38 +1544,6 @@ document.getElementById("analysisBtn").onclick = function(){
     runSpecificAnalysis();
 };
 
-/* NOTE: previewBtn (SEE_RESULTS), searchBtn (SEARCH) and clearFilters
-   (CLEAR_SEARCH) already run previewTable.innerHTML = "" as their very
-   first table step inside their existing, untouched logic — so clicking
-   any of those three automatically wipes this analysis table and rebuilds
-   the normal filtered table in its place, exactly as required. */
-
-/* ======================================================================
-   🔥🔥🔥 YEAR DROPDOWN — "SEE_RESULTS IS THE ONLY COMMIT BUTTON" FLOW 🔥🔥🔥
-   ======================================================================
-   Required behaviour:
-   - On page load/refresh -> dropdown always shows the LAST COMMITTED
-     year (localStorage "selectedYear"), never a temporary selection.
-   - Changing the dropdown -> pure temporary selection, NOTHING saved.
-   - Clicking SEE_RESULTS -> the only commit point (already handled just
-     above, inside previewBtn.onclick, where "selectedYear" AND
-     "currentResultSourceYear" both get saved together).
-
-   The existing inline <script> in preferred.html attaches a "change"
-   listener on #yearSelector that saves immediately on every change —
-   that is exactly the behaviour we must remove, but per your request
-   this is fixed ENTIRELY here in JS, without editing the HTML file.
-
-   Since that listener was attached via addEventListener() in a
-   different <script> block, the only reliable JS-only way to strip it
-   (without touching preferred.html) is to clone the element — a clone
-   carries over all attributes/options but NONE of the previously
-   attached addEventListener listeners — and swap it into the DOM in
-   its exact place. Every other part of the code (loadJSON, previewBtn,
-   runSpecificAnalysis) already reads the dropdown fresh via
-   document.getElementById("yearSelector") each time, so this swap is
-   completely safe and nothing else needs to change.
-   ====================================================================== */
 
 (function(){
 
@@ -1585,10 +1571,6 @@ document.getElementById("analysisBtn").onclick = function(){
         srcText.textContent = "CURRENT SOURCE: " + savedSource;
     }
 
-    // ❌ INTENTIONALLY NO "change" LISTENER HERE.
-    // Selecting a different year in the dropdown is a purely temporary,
-    // unsaved action. Nothing is written to localStorage until the user
-    // clicks SEE_RESULTS (the sole commit point, handled earlier in this
-    // file inside previewBtn.onclick).
+   
 
 })();
